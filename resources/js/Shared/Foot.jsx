@@ -7,7 +7,7 @@ export default function Foot(props) {
         <div className="bg-brand-100 shadow text-white">
             <div className="mx-auto px-6 py-3">
                 <div className="md:grid md:gap-6 md:grid-cols-6">
-                    <div className="md:col-span-1 flex flex-col justify-start items-start">
+                    <div className="md:col-span-2 flex flex-col justify-start items-start">
                         <Link href={route('home')} className="text-white text-xl font-bold md:text-2xl">FranciscoSolis</Link>
                         <span>Quality & Free apps for everyone!</span>
                     </div>
