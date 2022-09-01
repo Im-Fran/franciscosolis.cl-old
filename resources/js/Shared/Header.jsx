@@ -2,8 +2,21 @@ import React from 'react'
 import { Link } from '@inertiajs/inertia-react'
 import AnimatedLink from '@/Components/AnimatedLink';
 import LogoWhite from '$/LogoWhite.png'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export default function Header(props) {
+    const guestLinks = (
+        <div className="flex flex-row justify-between items-center gap-5">
+            <AnimatedLink href={route('login')} className="text-white text-xl font-bold md:text-2xl flex items-center"><FontAwesomeIcon icon="fa-user"/> Log In</AnimatedLink>
+            <AnimatedLink href={route('register')} className="text-white text-xl font-bold md:text-2xl flex items-center"><FontAwesomeIcon icon="fa-user-edit"/> Register</AnimatedLink>
+        </div>
+    );
+    const authenticatedLinks = (
+        <div className="flex flex-row justify-between items-center gap-5">
+            <AnimatedLink href={route('login')} className="text-white text-xl font-bold md:text-2xl flex items-center"><FontAwesomeIcon icon="fa-user"/> Account</AnimatedLink>
+        </div>
+    )
+
     return (
         <div className="bg-brand-100 shadow text-white">
             <div className="mx-auto px-6 py-3">
@@ -13,9 +26,11 @@ export default function Header(props) {
                             <img src={LogoWhite} alt="FranciscoSolis" className="h-8 w-8"/>
                             <Link href={route('home')} className="text-white text-xl font-bold md:text-2xl flex items-center">&nbsp;FranciscoSolis</Link>
                         </div>
-                        <div className="flex flex-row justify-between items-center">
-                            <AnimatedLink href={route('home')} className="text-white text-xl font-bold md:text-2xl flex items-center">&nbsp;Home</AnimatedLink>
+                        <div className="flex flex-row justify-between items-center gap-5">
+                            <AnimatedLink href={route('home')} className="text-white text-xl font-bold md:text-2xl flex items-center"><FontAwesomeIcon icon="fa-home"/> Home</AnimatedLink>
                         </div>
+                        {/* Find a way to implement props.auth.user?: because is giving that props is undefined, I think it may be because we are not passing any props from the main layout to the header... Maybe find a way to share global data... */}
+                        {props.auth.user ? authenticatedLinks : guestLinks}
                     </div>
                 </div>
             </div>

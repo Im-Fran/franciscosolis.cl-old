@@ -5,7 +5,7 @@
 
 .link-underline {
     border-bottom-width: 0;
-    background-size: 0 3px;
+    background-size: 0 2px;
     background-position: 0 100%;
     background-repeat: no-repeat;
     transition: background-size .5s ease-in-out;
@@ -20,7 +20,7 @@
 }
 
 .link-underline:hover {
-    background-size: 100% 3px;
+    background-size: 100% 2px;
     background-position: 0 100%
 }
 
