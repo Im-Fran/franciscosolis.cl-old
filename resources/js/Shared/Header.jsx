@@ -1,10 +1,12 @@
 import React from 'react'
-import { Link } from '@inertiajs/inertia-react'
+import { Link, usePage } from '@inertiajs/inertia-react'
 import AnimatedLink from '@/Components/AnimatedLink';
 import LogoWhite from '$/LogoWhite.png'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-export default function Header(props) {
+export default function Header() {
+    const { auth } = usePage().props
+
     const guestLinks = (
         <div className="flex flex-row justify-between items-center gap-5">
             <AnimatedLink href={route('login')} className="text-white text-xl font-bold md:text-2xl flex items-center"><FontAwesomeIcon icon="fa-user"/> Log In</AnimatedLink>
@@ -29,8 +31,7 @@ export default function Header(props) {
                         <div className="flex flex-row justify-between items-center gap-5">
                             <AnimatedLink href={route('home')} className="text-white text-xl font-bold md:text-2xl flex items-center"><FontAwesomeIcon icon="fa-home"/> Home</AnimatedLink>
                         </div>
-                        {/* Find a way to implement props.auth.user?: because is giving that props is undefined, I think it may be because we are not passing any props from the main layout to the header... Maybe find a way to share global data... */}
-                        {props.auth.user ? authenticatedLinks : guestLinks}
+                        {auth.user ? authenticatedLinks : guestLinks}
                     </div>
                 </div>
             </div>
