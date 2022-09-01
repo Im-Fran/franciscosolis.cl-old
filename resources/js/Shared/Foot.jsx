@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from '@inertiajs/inertia-react'
 import AnimatedLink from "@/Components/AnimatedLink";
+import ThemeSwitch from '@/Components/ThemeSwitch';
 
 export default function Foot(props) {
     return (
@@ -10,6 +11,9 @@ export default function Foot(props) {
                     <div className="md:col-span-2 flex flex-col justify-start items-start">
                         <Link href={route('home')} className="text-white text-xl font-bold md:text-2xl">FranciscoSolis</Link>
                         <span>Quality & Free apps for everyone!</span>
+                        <div className="flex align-bottom">
+                            <ThemeSwitch/>
+                        </div>
                     </div>
                     <div className="md:col-span-1 md:col-start-4 flex flex-col justify-start items-start">
                         <h1 className="text-white text-xl font-bold md:text-2xl">Legal</h1>
