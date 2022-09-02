@@ -5,9 +5,8 @@ import { resolve } from "path";
 
 export default defineConfig({
     server: {
-        host: 'franciscosolis.test',
+        host: 'localhost',
         port: 3000,
-
     },
     resolve: {
         alias: {

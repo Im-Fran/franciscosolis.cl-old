@@ -1,6 +1,6 @@
+import App from '@/Layouts/App';
 import React, { useEffect } from 'react';
 import Button from '@/Components/Button';
-import Guest from '@/Layouts/Guest';
 import Input from '@/Components/Input';
 import InputError from '@/Components/InputError';
 import Label from '@/Components/Label';
@@ -28,14 +28,12 @@ export default function ConfirmPassword() {
     };
 
     return (
-        <Guest>
-            <Head title="Confirm Password" />
+        <App title="Confirm Password" vertical="center" horizontal="center">
+            <form className="flex flex-col items-center justify-center shadow-xl border border-brand-500 dark:border-none dark:bg-gray-800 rounded-2xl w-5/6 md:w-1/2 h-[28rem] py-5" onSubmit={submit}>
+                <div className="mb-4 text-sm">
+                    This is a secure area of the application. Please confirm your password before continuing.
+                </div>
 
-            <div className="mb-4 text-sm text-gray-600">
-                This is a secure area of the application. Please confirm your password before continuing.
-            </div>
-
-            <form onSubmit={submit}>
                 <div className="mt-4">
                     <Label forInput="password" value="Password" />
 
@@ -57,6 +55,6 @@ export default function ConfirmPassword() {
                     </Button>
                 </div>
             </form>
-        </Guest>
+        </App>
     );
 }

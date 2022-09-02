@@ -1,6 +1,6 @@
 import React from 'react';
+import App from '@/Layouts/App';
 import Button from '@/Components/Button';
-import Guest from '@/Layouts/Guest';
 import Input from '@/Components/Input';
 import InputError from '@/Components/InputError';
 import { Head, useForm } from '@inertiajs/inertia-react';
@@ -21,17 +21,13 @@ export default function ForgotPassword({ status }) {
     };
 
     return (
-        <Guest>
-            <Head title="Forgot Password" />
+        <App title="Forgot Password" vertical="center" horizontal="center">
+            <form className="flex flex-col items-center justify-center shadow-xl border border-brand-500 dark:border-none dark:bg-gray-800 rounded-2xl w-5/6 md:w-1/2 h-[28rem] py-5" onSubmit={submit}>
+                <div className="mb-4 text-sm leading-normal">
+                    Forgot your password? No problem. Just let us know your email address and we will email you a password
+                    reset link that will allow you to choose a new one.
+                </div>
 
-            <div className="mb-4 text-sm text-gray-500 leading-normal">
-                Forgot your password? No problem. Just let us know your email address and we will email you a password
-                reset link that will allow you to choose a new one.
-            </div>
-
-            {status && <div className="mb-4 font-medium text-sm text-green-600">{status}</div>}
-
-            <form onSubmit={submit}>
                 <Input
                     type="text"
                     name="email"
@@ -49,6 +45,6 @@ export default function ForgotPassword({ status }) {
                     </Button>
                 </div>
             </form>
-        </Guest>
+        </App>
     );
 }

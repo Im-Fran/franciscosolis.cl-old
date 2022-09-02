@@ -5,19 +5,10 @@ import LogoWhite from '$/LogoWhite.png'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export default function Header() {
-    const { auth } = usePage().props
+    const { auth } = usePage().props;
 
-    const guestLinks = (
-        <div className="flex flex-row justify-between items-center gap-5">
-            <AnimatedLink href={route('login')} className="text-white text-xl font-bold md:text-2xl flex items-center"><FontAwesomeIcon icon="fa-user"/> Log In</AnimatedLink>
-            <AnimatedLink href={route('register')} className="text-white text-xl font-bold md:text-2xl flex items-center"><FontAwesomeIcon icon="fa-user-edit"/> Register</AnimatedLink>
-        </div>
-    );
-    const authenticatedLinks = (
-        <div className="flex flex-row justify-between items-center gap-5">
-            <AnimatedLink href={route('login')} className="text-white text-xl font-bold md:text-2xl flex items-center"><FontAwesomeIcon icon="fa-user"/> Account</AnimatedLink>
-        </div>
-    )
+    const guest = (<AnimatedLink href={route('login')} className="text-white text-xl font-bold md:text-2xl flex items-center"><FontAwesomeIcon icon="fa-user"/> Log In</AnimatedLink>);
+    const authenticated = (<AnimatedLink href={route('login')} className="text-white text-xl font-bold md:text-2xl flex items-center"><FontAwesomeIcon icon="fa-user"/> Account</AnimatedLink>);
 
     return (
         <div className="bg-brand-100 shadow text-white">
@@ -31,7 +22,9 @@ export default function Header() {
                         <div className="flex flex-row justify-between items-center gap-5">
                             <AnimatedLink href={route('home')} className="text-white text-xl font-bold md:text-2xl flex items-center"><FontAwesomeIcon icon="fa-home"/> Home</AnimatedLink>
                         </div>
-                        {auth.user ? authenticatedLinks : guestLinks}
+                        <div className="flex flex-row justify-between items-center gap-5">
+                            {auth.user ? authenticated : guest}
+                        </div>
                     </div>
                 </div>
             </div>
