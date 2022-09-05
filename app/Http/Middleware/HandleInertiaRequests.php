@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
 use Inertia\Middleware;
+use Session;
 use Tightenco\Ziggy\Ziggy;
 
 class HandleInertiaRequests extends Middleware
@@ -37,6 +38,38 @@ class HandleInertiaRequests extends Middleware
         return array_merge(parent::share($request), [
             'auth' => [
                 'user' => $request->user(),
+            ],
+            'flash' => function() {
+                if(flash()->message) {
+                    $flash = flash();
+                    return [
+                        [ 'type' => $flash->class, 'message' => $flash->message ]
+                    ];
+                }
+
+                $filtered = array_filter([
+                    'success' => Session::get('success'),
+				    'error' => Session::get('errors') ? Session::get('errors')->getBag('default')->first() : null
+                ]);
+
+                $data = [];
+                if(isset($filtered['success'])){
+                    $data[] = [
+                        'type' => 'success',
+                        'message' => $filtered['success']
+                    ];
+                }
+
+                if(isset($filtered['error'])){
+                    $data[] = [
+                        'type' => 'error',
+                        'message' => $filtered['error']
+                    ];
+                }
+                return $data;
+            },
+            'utils' => [
+                'global_warning' => 'This is a global warning!'
             ],
             'ziggy' => function () use ($request) {
                 return array_merge((new Ziggy)->toArray(), [

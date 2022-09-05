@@ -1,0 +1,19 @@
+{
+    "recommendations": [
+        "formulahendry.auto-complete-tag",
+        "mgmcdermott.vscode-language-babel",
+        "dsznajder.es7-react-js-snippets",
+        "ecmel.vscode-html-css",
+        "visualstudioexptteam.vscodeintellicode",
+        "zignd.html-css-class-completion",
+        "xabikos.javascriptsnippets",
+        "onecentlin.laravel-extension-pack",
+        "christian-kohler.path-intellisense",
+        "xdebug.php-pack",
+        "bmewburn.vscode-intelephense-client",
+        "phiter.phpstorm-snippets",
+        "mrmlnc.vscode-scss",
+        "bradlc.vscode-tailwindcss",
+        "gamunu.vscode-yarn"
+    ]
+}

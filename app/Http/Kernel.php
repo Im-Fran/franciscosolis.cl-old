@@ -2,19 +2,15 @@
 
 namespace App\Http;
 
-use App\Http\Middleware\ApiTokenMiddleware;
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\EncryptCookies;
 use App\Http\Middleware\HandleInertiaRequests;
-use App\Http\Middleware\HasRoleMiddleware;
 use App\Http\Middleware\PreventRequestsDuringMaintenance;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Middleware\TrimStrings;
 use App\Http\Middleware\TrustHosts;
 use App\Http\Middleware\TrustProxies;
 use App\Http\Middleware\VerifyCsrfToken;
-use Cog\Laravel\Ban\Http\Middleware\ForbidBannedUser;
-use Cog\Laravel\Ban\Http\Middleware\LogsOutBannedUser;
 use Illuminate\Http\Middleware\HandleCors;
 use Illuminate\Auth\Middleware\AuthenticateWithBasicAuth;
 use Illuminate\Auth\Middleware\Authorize;
@@ -75,15 +71,6 @@ class Kernel extends HttpKernel {
             SubstituteBindings::class,
             HandleInertiaRequests::class,
         ],
-
-        'web_errors' => [
-		    EncryptCookies::class,
-		    AddQueuedCookiesToResponse::class,
-		    StartSession::class,
-		    ShareErrorsFromSession::class,
-		    VerifyCsrfToken::class,
-            HandleInertiaRequests::class,
-	    ],
 
         'api' => [
             // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,

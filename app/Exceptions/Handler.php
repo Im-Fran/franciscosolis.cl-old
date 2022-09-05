@@ -5,7 +5,6 @@ namespace App\Exceptions;
 use Carbon\Carbon;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Request;
-use Illuminate\Pipeline\Pipeline;
 use Illuminate\Support\ViewErrorBag;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
@@ -38,7 +37,6 @@ class Handler extends ExceptionHandler
         'current_password',
         'password',
         'password_confirmation',
-        'ip',
     ];
 
     private array $errorMessages = [
@@ -61,39 +59,20 @@ class Handler extends ExceptionHandler
 		    if($code === 419) {
                 return back()->withErrors(['error' => 'Sorry but it looks like your session has expired. Please try again.']);
             } else if(!app()->isProduction() && in_array($code, array_keys($this->errorMessages))) {
-                return $this->loadErrorMiddleware($request, function() use($code, $e, $request) {
-                    $headers = $request->headers;
-                    $headers->add($e->getHeaders());
-                    $data = [
-                        'errors' => new ViewErrorBag,
-                        'exception' => $e,
-                        'data' => [
-                            'host' => gethostname(),
-                            'timestamp' => Carbon::now()->format('m/d/Y H:i:s'),
-                            'code' => $code,
-                            'message' => $e->getMessage() ?: $this->errorMessages[$code],
-                        ],
-                    ];
-                    return inertia('Error', $data)->toResponse($request)->setStatusCode($code)->sendHeaders($headers);
-                });
+                $headers = $request->headers;
+                $headers->add($e->getHeaders());
+                $data = [
+                    'errors' => new ViewErrorBag,
+                    'exception' => $e,
+                    'data' => [
+                        'host' => gethostname(),
+                        'timestamp' => Carbon::now()->format('m/d/Y H:i:s'),
+                        'code' => $code,
+                        'message' => $e->getMessage() ?: $this->errorMessages[$code],
+                    ],
+                ];
+                return inertia('Error', $data)->toResponse($request)->setStatusCode($code)->sendHeaders($headers);
             }
 	    });
     }
-
-    /**
-	 * Load the middleware required to show state/session-enabled error pages.
-	 *
-	 * @param Request $request
-	 * @param $callback
-	 * @return mixed
-	 */
-	protected function loadErrorMiddleware(Request $request, $callback)
-	{
-		$middleware = (\Route::getMiddlewareGroups()['web_errors']);
-
-		return (new Pipeline($this->container))
-			->send($request)
-			->through($middleware)
-			->then($callback);
-	}
 }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasProfilePhoto;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -18,7 +19,8 @@ class User extends Authenticatable implements MustVerifyEmail {
         HasApiTokens,
         Notifiable,
         HasRoles,
-        HasPermissions;
+        HasPermissions,
+        HasProfilePhoto;
 
     /**
      * The attributes that are mass assignable.
@@ -29,6 +31,7 @@ class User extends Authenticatable implements MustVerifyEmail {
         'name',
         'email',
         'password',
+        'profile_photo_path',
     ];
 
     /**
