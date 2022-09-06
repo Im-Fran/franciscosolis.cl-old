@@ -1,11 +1,12 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
+import { Link, useForm } from '@inertiajs/inertia-react';
+
 import App from '@/Layouts/App';
 import Button from '@/Components/Button';
 import Input from '@/Components/Forms/Input';
 import Label from '@/Components/Forms/Label';
 import Checkbox from '@/Components/Forms/Checkbox';
 import InputError from '@/Components/Forms/InputError';
-import { Link, useForm } from '@inertiajs/inertia-react';
 
 
 export default function Login({ status, canResetPassword }) {

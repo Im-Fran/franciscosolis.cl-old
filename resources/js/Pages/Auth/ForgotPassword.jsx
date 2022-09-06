@@ -1,9 +1,10 @@
+import { useForm } from '@inertiajs/inertia-react';
+
 import App from '@/Layouts/App';
 import Button from '@/Components/Button';
 import Label from '@/Components/Forms/Label';
 import Input from '@/Components/Forms/Input';
 import InputError from '@/Components/Forms/InputError';
-import { useForm } from '@inertiajs/inertia-react';
 
 export default function ForgotPassword({ status }) {
     const { data, setData, post, processing, errors } = useForm({

@@ -35,6 +35,15 @@ class User extends Authenticatable implements MustVerifyEmail {
     ];
 
     /**
+     * The attributes that should be appended to arrays.
+     *
+     * @var array<int, string>
+     */
+    protected $appends = [
+        'profile_photo_url',
+    ];
+
+    /**
      * The attributes that should be hidden for serialization.
      *
      * @var array<int, string>

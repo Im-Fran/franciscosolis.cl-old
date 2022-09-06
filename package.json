@@ -27,6 +27,7 @@
         "@fortawesome/free-solid-svg-icons": "^6.2.0",
         "@fortawesome/react-fontawesome": "^0.2.0",
         "@heroicons/react": "^2.0.10",
-        "react-hot-toast": "^2.3.0"
+        "react-hot-toast": "^2.3.0",
+        "use-click-outside": "^2.0.0"
     }
 }
