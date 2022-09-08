@@ -17,7 +17,7 @@ export default function App({ children, title, vertical = "top", horizontal = "l
                 })
             }
         })
-    }, flash);
+    }, [flash]);
 
     const warning = utils ? utils.global_warning : null;
     const [HiddenWarning, setHiddenWarning] = useState((localStorage.getItem('HiddenWarning') || null) === warning);
@@ -31,7 +31,7 @@ export default function App({ children, title, vertical = "top", horizontal = "l
     return (
         <div className={(localStorage.getItem('theme') === 'dark') ? 'dark' : ''}>
             <Head title={title}/>
-            <div className="transition transform-all duration-200 bg-white dark:bg-gray-900 text-gray-900 dark:text-white">
+            <div className="transition transform-all duration-200 bg-white dark:bg-[#212121] text-gray-900 dark:text-white">
                 <Header/>
                 {warning && !HiddenWarning && <div className="w-full text-brand-500 bg-yellow-500">
                     <div className="container flex items-center justify-between px-6 py-1 mx-auto">

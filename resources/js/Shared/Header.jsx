@@ -38,7 +38,7 @@ export default function Header() {
     );
 
     return (
-        <div className="bg-brand-100 shadow text-white">
+        <div className="transition transform-all duration-200 bg-brand-100 dark:bg-[#353535] shadow text-white">
             <div className="mx-auto px-6 py-3">
                 <div className="md:flex md:items-center md:justify-between">
                     <div className="flex justify-between items-center w-full">

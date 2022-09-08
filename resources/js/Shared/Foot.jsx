@@ -5,7 +5,7 @@ import ThemeSwitch from '@/Components/ThemeSwitch';
 
 export default function Foot(props) {
     return (
-        <div className="bg-brand-100 shadow text-white">
+        <div className="transition transform-all duration-200 bg-brand-100 dark:bg-[#353535] shadow text-white">
             <div className="mx-auto px-6 py-3">
                 <div className="md:grid md:gap-6 md:grid-cols-6">
                     <div className="md:col-span-2 flex flex-col justify-start items-start">
