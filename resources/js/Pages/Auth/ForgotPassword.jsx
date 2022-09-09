@@ -23,7 +23,7 @@ export default function ForgotPassword({ status }) {
 
     return (
         <App title="Forgot Password" vertical="center" horizontal="center">
-            <form className="flex flex-col items-center justify-center shadow-xl border border-brand-500 dark:border-none dark:bg-gray-800 rounded-2xl w-5/6 md:w-1/2 h-[28rem] py-5" onSubmit={submit}>
+            <form className="flex flex-col items-center justify-center shadow-xl border border-brand-500 dark:border-none dark:bg-[#303030] rounded-2xl w-5/6 md:w-1/2 h-[28rem] py-5" onSubmit={submit}>
                 <h1 className="text-2xl font-black mb-10">Password Reset</h1>
 
                 <div className="flex flex-col mx-20">

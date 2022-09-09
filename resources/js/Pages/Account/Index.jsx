@@ -1,16 +1,16 @@
 import App from "@/Layouts/App";
 import Sidebar from "@/Components/Sidebar/Sidebar";
 import SidebarLink from "@/Components/Sidebar/SidebarLink";
+import SidebarTitle from "@/Components/Sidebar/SidebarTitle";
 
 export default function Index({ notifications }) {
-    const links = [
-
-    ];
     return (
         <App title="My Account" vertical="top" horizontal="center">
-            <Sidebar>
+            <Sidebar className="mx-5">
                 <Sidebar.Links>
-                    <SidebarLink title="Account" href="#"/>
+                    <SidebarTitle title="ACCOUNT" icon="fa-user"/>
+                    <SidebarLink title="Overview" icon="fa-bars-staggered" href="#"/>
+                    <SidebarLink title="Settings" icon="fa-user-cog" href="#"/>
                 </Sidebar.Links>
 
                 <Sidebar.Content>

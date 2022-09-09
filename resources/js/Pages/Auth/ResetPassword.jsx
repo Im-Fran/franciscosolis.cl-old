@@ -34,7 +34,7 @@ export default function ResetPassword({ token, email }) {
     return (
         <App title="Reset Password" horizontal="center" vertical="center">
 
-            <form className="flex flex-col items-center justify-center shadow-xl border border-brand-500 dark:border-none dark:bg-gray-800 rounded-2xl w-5/6 md:w-1/2 h-[28rem] py-5" onSubmit={submit}>
+            <form className="flex flex-col items-center justify-center shadow-xl border border-brand-500 dark:border-none dark:bg-[#303030] rounded-2xl w-5/6 md:w-1/2 h-[28rem] py-5" onSubmit={submit}>
                 <div className="mb-10 font-black text-3xl">Reset Password</div>
 
                 <div className="w-2/3">
