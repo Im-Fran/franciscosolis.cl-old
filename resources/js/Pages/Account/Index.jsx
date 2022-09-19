@@ -1,22 +1,11 @@
-import App from "@/Layouts/App";
-import Sidebar from "@/Components/Sidebar/Sidebar";
-import SidebarLink from "@/Components/Sidebar/SidebarLink";
-import SidebarTitle from "@/Components/Sidebar/SidebarTitle";
+import AccountLayout from "@/Layouts/AccountLayout";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function Index({ notifications }) {
     return (
-        <App title="My Account" vertical="top" horizontal="center">
-            <Sidebar className="mx-5">
-                <Sidebar.Links>
-                    <SidebarTitle title="ACCOUNT" icon="fa-user"/>
-                    <SidebarLink title="Overview" icon="fa-bars-staggered" href="#"/>
-                    <SidebarLink title="Settings" icon="fa-user-cog" href="#"/>
-                </Sidebar.Links>
-
-                <Sidebar.Content>
-                    Content!
-                </Sidebar.Content>
-            </Sidebar>
-        </App>
+        <AccountLayout title="My Account">
+            <FontAwesomeIcon className="text-6xl" icon="fas fa-screwdriver-wrench"/>
+            <h1 className="text-2xl mt-5">We're currently working on this feature!</h1>
+        </AccountLayout>
     );
 }

@@ -9,7 +9,9 @@ export default function Input({
     required,
     isFocused,
     handleChange,
-    placeholder = null,
+    handleBlur,
+    placeholder,
+    pattern,
 }) {
     const input = useRef();
 
@@ -26,7 +28,7 @@ export default function Input({
                 name={name}
                 value={value}
                 className={
-                    `focus:border-brand-100 focus:ring focus:ring-brand-100 rounded-md shadow-sm border border-brand-500 dark:border-none dark:bg-[#202020] text-brand-500 dark:text-white placeholder-gray-400 ` +
+                    `focus:border-brand-100 focus:ring focus:ring-brand-100 rounded-md shadow-sm border border-brand-500 dark:bg-[#202020] text-brand-500 dark:text-white placeholder-gray-400 ` +
                     className
                 }
                 ref={input}
@@ -34,6 +36,8 @@ export default function Input({
                 required={required}
                 onChange={(e) => handleChange(e)}
                 placeholder={placeholder}
+                pattern={pattern}
+                onBlur={handleBlur}
             />
         </div>
     );
