@@ -11,7 +11,15 @@ class AccountController extends Controller {
 
     /* Show the account overview page */
     public function index(Request $request) {
-        return inertia('Account/Index');
+        return inertia('Account/Index', [
+            'notifications' => fn() => $request->user()->unreadNotifications()->get(),
+        ]);
+    }
+
+    /* Mark the given notification as read */
+    public function markAsRead($notification){
+        \Auth::user()->notifications()->find($notification)->markAsRead();
+        return redirect()->back();
     }
 
     /* Show the settings page */

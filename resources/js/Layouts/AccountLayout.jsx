@@ -3,7 +3,7 @@ import Sidebar from "@/Components/Sidebar/Sidebar";
 import SidebarLink from "@/Components/Sidebar/SidebarLink";
 import SidebarTitle from "@/Components/Sidebar/SidebarTitle";
 
-export default function AccountLayout({ children, title, meta }) {
+export default function AccountLayout({ children, title, meta, className }) {
     return (
         <App title={title} meta={meta} vertical="top" horizontal="center">
             <Sidebar className="mx-5">
@@ -14,7 +14,7 @@ export default function AccountLayout({ children, title, meta }) {
                 </Sidebar.Links>
 
                 <Sidebar.Content>
-                    <div className="flex flex-col items-center justify-start w-full h-full">
+                    <div className={"flex flex-col items-center justify-start w-full h-full " + className}>
                         {children}
                     </div>
                 </Sidebar.Content>
