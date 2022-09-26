@@ -38,8 +38,11 @@ class AccountController extends Controller {
     /* Update the profile photo for the current user */
     public function uploadProfilePhoto(ProfilePhotoUpdateRequest $request) {
         $user = $request->user();
-        $file = $request->profile_photo;
-        $user->updateProfilePhoto($file);
+        $photo = $request->gravatar ? 'gravatar' : $request->profile_photo;
+        if($photo === 'gravatar' && $user->profile_photo_path === 'gravatar') {
+            return back()->withErrors(['You already have a gravatar set as your profile photo.']);
+        }
+        $user->updateProfilePhoto($photo);
         return back();
     }
 

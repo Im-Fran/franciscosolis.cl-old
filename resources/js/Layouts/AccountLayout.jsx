@@ -11,6 +11,12 @@ export default function AccountLayout({ children, title, meta, className }) {
                     <SidebarTitle title="ACCOUNT" icon="fa-user"/>
                     <SidebarLink title="Overview" icon="fa-bars-staggered" href={route('account')}/>
                     <SidebarLink title="Settings" icon="fa-user-cog" href={route('account.settings')}/>
+                    <div className="my-5"/>
+                    <SidebarTitle title="SECURITY" icon="fa-shield-alt"/>
+                    <SidebarLink title="Login & Sessions" icon="fa-key" href={'#'}/>
+                    <div className="my-5"/>
+                    <SidebarTitle title="OTHERS" icon="fa-list"/>
+                    <SidebarLink title="Notifications" icon="fa-bell" href={'#'}/>
                 </Sidebar.Links>
 
                 <Sidebar.Content>

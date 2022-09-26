@@ -7,23 +7,21 @@ use Illuminate\Support\Facades\Storage;
 
 trait HasProfilePhoto {
 
-    protected string $nameColumn = 'name';
-
     /**
      * Updates the profile photo.
      *
-     * @param \Illuminate\Http\UploadedFile $photo
+     * @param \Illuminate\Http\UploadedFile|string $photo
      * @return void
      */
-    public function updateProfilePhoto(UploadedFile $photo){
+    public function updateProfilePhoto($photo){
         tap($this->profile_photo_path, function ($previous) use ($photo) {
             $this->forceFill([
-                'profile_photo_path' => $photo->storePublicly(
+                'profile_photo_path' => $photo === 'gravatar' ? 'gravatar' : $photo->storePublicly(
                     'profile-photos', ['disk' => $this->profilePhotoDisk()]
                 ),
             ])->save();
 
-            if ($previous) {
+            if ($previous && $previous !== 'gravatar') {
                 Storage::disk($this->profilePhotoDisk())->delete($previous);
             }
         });
@@ -52,7 +50,7 @@ trait HasProfilePhoto {
      * @return string
      */
     public function getProfilePhotoUrlAttribute() {
-        return $this->profile_photo_path ? Storage::disk($this->profilePhotoDisk())->url($this->profile_photo_path) : $this->defaultProfilePhotoUrl();
+        return $this->profile_photo_path ? ($this->profile_photo_path === 'gravatar' ? ('https://www.gravatar.com/avatar/'.md5(strtolower($this->email)).'?s=200') : Storage::disk($this->profilePhotoDisk())->url($this->profile_photo_path)) : $this->defaultProfilePhotoUrl();
     }
 
     /**
@@ -61,8 +59,7 @@ trait HasProfilePhoto {
      * @return string
      */
     protected function defaultProfilePhotoUrl() {
-        $column = $this->nameColumn;
-        $name = trim(collect(explode(' ', $this->$column))->map(function ($segment) {
+        $name = trim(collect(explode(' ', $this->name))->map(function ($segment) {
             return mb_substr($segment, 0, 1);
         })->join(' '));
 
