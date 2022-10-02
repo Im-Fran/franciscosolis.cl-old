@@ -1,5 +1,4 @@
-import React from 'react'
-import App from '@/Layouts/App'
+import App from '@/js/Layouts/App'
 
 export default function Index(){
     return (

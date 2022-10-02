@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 import { Link, useForm } from '@inertiajs/inertia-react';
 
-import App from '@/Layouts/App';
-import Button from '@/Components/Button';
-import Input from '@/Components/Forms/Input';
-import Label from '@/Components/Forms/Label';
-import InputError from '@/Components/Forms/InputError';
+import App from '@/js/Layouts/App';
+import Button from '@/js/Components/Button';
+import Input from '@/js/Components/Forms/Input';
+import Label from '@/js/Components/Forms/Label';
+import InputError from '@/js/Components/Forms/InputError';
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({

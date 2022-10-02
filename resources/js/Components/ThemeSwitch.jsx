@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+
 import ThemeLight from '$/theme-light.png';
 import ThemeDark from '$/theme-dark.png';
 

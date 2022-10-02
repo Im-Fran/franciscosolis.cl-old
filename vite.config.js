@@ -10,8 +10,7 @@ export default defineConfig({
     },
     resolve: {
         alias: {
-            '~': resolve(__dirname, 'resources'),
-            '@': resolve(__dirname, 'resources/js'),
+            '@': resolve(__dirname, 'resources/'),
             '$': resolve(__dirname, 'resources/images'),
         },
     },
@@ -22,4 +21,16 @@ export default defineConfig({
         }),
         react(),
     ],
+    build: {
+        rollupOptions: {
+            input: {
+                app: 'resources/js/app.jsx',
+            },
+            output: {
+                entryFileNames: '[name].js',
+                chunkFileNames: '[name].js',
+                assetFileNames: '[name].[ext]'
+            }
+        },
+    },
 });

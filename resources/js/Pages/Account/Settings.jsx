@@ -1,15 +1,14 @@
 import { useState } from 'react';
 import { useForm, usePage } from "@inertiajs/inertia-react";
 import { Inertia } from '@inertiajs/inertia';
-import { handleError } from '@/Utils/Utils'
+import { handleError } from '@/js/Utils/Utils'
 import toast from 'react-hot-toast';
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import AccountLayout from "@/Layouts/AccountLayout";
-import Label from "@/Components/Forms/Label";
-import Input from "@/Components/Forms/Input";
-import InputError from "@/Components/Forms/InputError";
-import Button from '~/js/Components/Button';
+import AccountLayout from "@/js/Layouts/AccountLayout";
+import Label from "@/js/Components/Forms/Label";
+import Input from "@/js/Components/Forms/Input";
+import InputError from "@/js/Components/Forms/InputError";
+import Button from '@/js/Components/Button';
 
 export default function Settings() {
     const meta = [

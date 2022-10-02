@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 import { useForm } from '@inertiajs/inertia-react';
 
-import App from '@/Layouts/App';
-import Button from '@/Components/Button';
-import Input from '@/Components/Forms/Input';
-import InputError from '@/Components/Forms/InputError';
-import Label from '@/Components/Forms/Label';
+import App from '@/js/Layouts/App';
+import Button from '@/js/Components/Button';
+import Input from '@/js/Components/Forms/Input';
+import InputError from '@/js/Components/Forms/InputError';
+import Label from '@/js/Components/Forms/Label';
 
 export default function ConfirmPassword() {
     const { data, setData, post, processing, errors, reset } = useForm({

@@ -1,10 +1,11 @@
-import ColoredBlack from '$/Colored-Black.svg';
-import ColoredWhite from '$/Colored-White.svg';
-
 import { useState } from 'react';
 import { Link } from '@inertiajs/inertia-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Foot from '@/Shared/Foot';
+
+import ColoredBlack from '$/Colored-Black.svg';
+import ColoredWhite from '$/Colored-White.svg';
+
+import Foot from '@/js/Shared/Foot';
 
 export default function Error({ errors, exception, data }){
 

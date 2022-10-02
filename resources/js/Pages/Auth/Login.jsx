@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
 import { Link, useForm } from '@inertiajs/inertia-react';
 
-import App from '@/Layouts/App';
-import Button from '@/Components/Button';
-import Input from '@/Components/Forms/Input';
-import Label from '@/Components/Forms/Label';
-import Checkbox from '@/Components/Forms/Checkbox';
-import InputError from '@/Components/Forms/InputError';
+import App from '@/js/Layouts/App';
+import Button from '@/js/Components/Button';
+import Input from '@/js/Components/Forms/Input';
+import Label from '@/js/Components/Forms/Label';
+import Checkbox from '@/js/Components/Forms/Checkbox';
+import InputError from '@/js/Components/Forms/InputError';
 
 
 export default function Login({ status, canResetPassword }) {

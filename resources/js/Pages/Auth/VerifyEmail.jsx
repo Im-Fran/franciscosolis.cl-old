@@ -1,7 +1,7 @@
 import { Link, useForm } from '@inertiajs/inertia-react';
 
-import App from '@/Layouts/App';
-import Button from '@/Components/Button';
+import App from '@/js/Layouts/App';
+import Button from '@/js/Components/Button';
 
 export default function VerifyEmail({ status }) {
     const { post, processing } = useForm();

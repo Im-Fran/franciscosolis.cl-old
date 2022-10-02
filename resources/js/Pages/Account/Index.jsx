@@ -1,8 +1,9 @@
-import AccountLayout from "@/Layouts/AccountLayout";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Inertia } from "@inertiajs/inertia";
 import toast from "react-hot-toast";
-import LoginNotification from "~/js/Components/Notifications/LoginNotification";
+
+import AccountLayout from "@/js/Layouts/AccountLayout";
+import LoginNotification from "@/js/Components/Notifications/LoginNotification";
 
 export default function Index({ notifications }) {
 

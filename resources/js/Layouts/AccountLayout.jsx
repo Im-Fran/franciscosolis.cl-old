@@ -1,7 +1,7 @@
-import App from "@/Layouts/App";
-import Sidebar from "@/Components/Sidebar/Sidebar";
-import SidebarLink from "@/Components/Sidebar/SidebarLink";
-import SidebarTitle from "@/Components/Sidebar/SidebarTitle";
+import App from "@/js/Layouts/App";
+import Sidebar from "@/js/Components/Sidebar/Sidebar";
+import SidebarLink from "@/js/Components/Sidebar/SidebarLink";
+import SidebarTitle from "@/js/Components/Sidebar/SidebarTitle";
 
 export default function AccountLayout({ children, title, meta, className }) {
     return (

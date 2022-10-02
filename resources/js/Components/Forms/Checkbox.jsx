@@ -1,5 +1,3 @@
-import React from 'react';
-
 export default function Checkbox({ name, value, label = 'None', handleChange}) {
     return (
         <div className="flex items-center justify-center w-full mb-12">

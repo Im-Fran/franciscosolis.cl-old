@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Head, usePage } from '@inertiajs/inertia-react';
-
-import Header from '@/Shared/Header';
-import Foot from '@/Shared/Foot';
 import toast, { Toaster } from 'react-hot-toast';
+
+import Header from '@/js/Shared/Header';
+import Foot from '@/js/Shared/Foot';
 
 export default function App({ children, title, meta = [], vertical = "top", horizontal = "left"}){
     const { flash } = usePage().props;

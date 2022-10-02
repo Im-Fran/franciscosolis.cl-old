@@ -1,22 +1,24 @@
-import { useState, useRef } from 'react';
-import useClickOutside from 'use-click-outside';
+import ClickAwayListener from 'react-click-away-listener';
+import { useState } from 'react';
 import { Link, usePage } from '@inertiajs/inertia-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import AnimatedLink from '@/Components/AnimatedLink';
 import LogoWhite from '$/LogoWhite.png';
-import AccountDropdownItem from '../Components/Header/AccountDropdownItem';
+
+import AnimatedLink from '@/js/Components/AnimatedLink';
+import AccountDropdownItem from '@/js/Components/Header/AccountDropdownItem';
 
 export default function Header() {
     /* Account Dropdown State */
-    const dropdown = useRef();
     const [isOpen, setOpen] = useState(false);
     const toggleMenu = (e) => {
         e.stopPropagation();
         e.preventDefault();
         setOpen((prev) => !prev);
     }
-    useClickOutside(dropdown, () => setOpen((prev) => false));
+    const hideMenu = () => {
+        setOpen((_) => false);
+    };
 
     /* Authentication & User Data */
     const { auth, utils } = usePage().props;
@@ -70,26 +72,28 @@ export default function Header() {
                             </div>
                             <div className="flex flex-row justify-between items-center">
                                 {auth.user ? authenticated : guest}
-                                {(isOpen && auth.user) && <div ref={dropdown} className="relative inline-block mt-5">
-                                    <div className="absolute right-0 z-20 w-56 py-2 mt-2 overflow-hidden bg-white rounded-md shadow-xl dark:bg-[#232323]">
-                                        <AccountDropdownItem href={/*route('profile', { user: auth.user.slug })*/ '#'} className="w-full flex items-center py-3 px-1 -mt-2 text-sm text-gray-600 transition-colors duration-300 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-[#303030] dark:hover:text-white">
-                                            <img className="flex-shrink-0 object-cover mx-1 rounded-full w-9 h-9" src={auth.user.profile_photo_url} alt="Avatar"/>
-                                            <div className="mx-1 text-left">
-                                                <h1 className="text-sm font-semibold text-gray-700 dark:text-gray-200">{auth.user.name}</h1>
-                                                <p className="text-sm text-gray-500 dark:text-gray-400">{auth.user.email}</p>
-                                            </div>
-                                        </AccountDropdownItem>
+                                {(isOpen && auth.user) && <ClickAwayListener onClickAway={hideMenu}>
+                                    <div className="relative inline-block mt-5">
+                                        <div className="absolute right-0 z-20 w-56 py-2 mt-2 overflow-hidden bg-white rounded-md shadow-xl dark:bg-[#232323]">
+                                            <AccountDropdownItem href={/*route('profile', { user: auth.user.slug })*/ '#'} className="w-full flex items-center py-3 px-1 -mt-2 text-sm text-gray-600 transition-colors duration-300 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-[#303030] dark:hover:text-white">
+                                                <img className="flex-shrink-0 object-cover mx-1 rounded-full w-9 h-9" src={auth.user.profile_photo_url} alt="Avatar"/>
+                                                <div className="mx-1 text-left">
+                                                    <h1 className="text-sm font-semibold text-gray-700 dark:text-gray-200">{auth.user.name}</h1>
+                                                    <p className="text-sm text-gray-500 dark:text-gray-400">{auth.user.email}</p>
+                                                </div>
+                                            </AccountDropdownItem>
 
-                                        <hr className="border-gray-200 dark:border-gray-700"/>
+                                            <hr className="border-gray-200 dark:border-gray-700"/>
 
-                                        <AccountDropdownItem href={route('account')} method="GET" icon="fa-bars-staggered" display="Account Overview"/>
-                                        <AccountDropdownItem href={route('account.settings')} method="GET" icon="fa-user-cog" display="Account Settings"/>
+                                            <AccountDropdownItem href={route('account')} method="GET" icon="fa-bars-staggered" display="Account Overview"/>
+                                            <AccountDropdownItem href={route('account.settings')} method="GET" icon="fa-user-cog" display="Account Settings"/>
 
-                                        <hr className="border-gray-200 dark:border-gray-700 mt-5"/>
-                                        <AccountDropdownItem href={route('logout')} method="POST" icon="fa-solid fa-arrow-right-from-bracket" display="Logout"/>
+                                            <hr className="border-gray-200 dark:border-gray-700 mt-5"/>
+                                            <AccountDropdownItem href={route('logout')} method="POST" icon="fa-solid fa-arrow-right-from-bracket" display="Logout"/>
 
+                                        </div>
                                     </div>
-                                </div>}
+                                </ClickAwayListener>}
                             </div>
                         </div>
                     </div>
