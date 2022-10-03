@@ -25,6 +25,7 @@ class UpdateProfileRequest extends FormRequest {
         return [                                                 /* Except this user */
             'name' => ['required', 'string', ('unique:users,name,' . Auth::id()), 'between:4,255', 'regex:([a-zA-Z]+[a-zA-Z0-9_\. ][a-zA-Z0-9]+)'],
             'email' => ['required', 'email', ('unique:users,email,' . Auth::id())],
+            'gravatar_email' => ['nullable', 'email'],
         ];
     }
 }

@@ -22,15 +22,39 @@ export default defineConfig({
         react(),
     ],
     build: {
+        input: {
+            app: 'resources/js/app.jsx',
+        },
         rollupOptions: {
-            input: {
-                app: 'resources/js/app.jsx',
-            },
             output: {
-                entryFileNames: '[name].js',
-                chunkFileNames: '[name].js',
-                assetFileNames: '[name].[ext]'
-            }
+                manualChunks: {
+                    'fsolis/react': ['react'],
+                    'fsolis/react-dom': ['react-dom'],
+                    'fsolis/http-requests': [
+                        'axios',
+                        '@inertiajs/inertia',
+                        '@inertiajs/inertia-react',
+                        '@inertiajs/progress'
+                    ],
+                    'fsolis/ui': [
+                        'autoprefixer',
+                        'tailwindcss',
+                        '@tailwindcss/forms',
+                        '@headlessui/react',
+                        'react-click-away-listener',
+                        'react-hot-toast',
+                    ],
+                    'fsolis/utils': [
+                        'lodash',
+                    ],
+                    'fontawesome': [
+                        '@fortawesome/fontawesome-svg-core',
+                        '@fortawesome/free-regular-svg-icons',
+                        '@fortawesome/free-solid-svg-icons',
+                        '@fortawesome/react-fontawesome'
+                    ],
+                },
+            },
         },
     },
 });

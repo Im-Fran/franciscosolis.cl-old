@@ -32,6 +32,7 @@ class User extends Authenticatable implements MustVerifyEmail {
         'email',
         'password',
         'profile_photo_path',
+        'gravatar_email',
     ];
 
     /**

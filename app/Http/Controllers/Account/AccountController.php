@@ -29,7 +29,7 @@ class AccountController extends Controller {
 
     /* Update the user's settings */
     public function update(UpdateProfileRequest $request) {
-        $data = $request->only('name', 'email');
+        $data = $request->only('name', 'email', 'gravatar_email');
         $request->user()->update($data);
 
         return back();

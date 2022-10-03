@@ -20,6 +20,7 @@ export default function Settings() {
     const { data, setData, errors, patch, clearErrors, setError } = useForm({
         name: auth.user.name,
         email: auth.user.email,
+        gravatar_email: auth.user.gravatar_email,
     });
 
     const submit = (e) => {
@@ -222,6 +223,23 @@ export default function Settings() {
                             />
 
                             <InputError message={errors.email} className="mt-2" />
+                        </div>
+
+                        {/* Gravatar Email */}
+                        <div className="flex flex-col">
+                            <Label forInput="gravatar_email" value="Gravatar Email"/>
+
+                            <Input
+                                type="gravatar_email"
+                                name="gravatar_email"
+                                placeholder="fran.gravatar@franciscosolis.cl"
+                                className="mt-1 w-full"
+                                autoComplete="email"
+                                handleChange={onHandleChange}
+                                value={data.gravatar_email}
+                            />
+
+                            <InputError message={errors.gravatar_email} className="mt-2" />
                         </div>
                     </div>
 
