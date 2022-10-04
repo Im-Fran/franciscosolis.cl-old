@@ -27,9 +27,11 @@
         "@fortawesome/free-solid-svg-icons": "^6.2.0",
         "@fortawesome/react-fontawesome": "^0.2.0",
         "@heroicons/react": "^2.0.11",
+        "dayjs": "^1.11.5",
         "picocolors": "^1.0.0",
         "react-click-away-listener": "^2.2.2",
-        "react-hot-toast": "^2.4.0"
+        "react-hot-toast": "^2.4.0",
+        "react-tooltip": "^4.2.21"
     },
     "packageManager": "yarn@3.2.3"
 }

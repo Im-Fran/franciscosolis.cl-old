@@ -4,8 +4,13 @@ import toast from "react-hot-toast";
 
 import AccountLayout from "@/js/Layouts/AccountLayout";
 import LoginNotification from "@/js/Components/Notifications/LoginNotification";
+import RelativeTime from "@/js/Components/RelativeTime";
 
 export default function Index({ notifications }) {
+
+    const meta = [
+        { property: 'og:title', content: 'Account > Overview | FranciscoSolis' },
+    ];
 
     const markAsRead = (notification) => {
         Inertia.post(route('account.notifications.markasread', {notification: notification.id}), {}, {
@@ -31,12 +36,16 @@ export default function Index({ notifications }) {
             )
         } else {
             return notifications.map((notification, index) => (
-                <div key={index} className={"flex flex-row items-center justify-start w-full px-4 py-2 border-b border-gray-200 whitespace-nowrap overflow-scroll " + (index === (notifications.length-1) ? ' border-none ' : '')}>
-                    <div onClick={() => markAsRead(notification)} className="text-brand-300 cursor-pointer">
-                        <FontAwesomeIcon icon="fas fa-check-circle"/>
+                <div key={index} className={"flex flex-row items-center justify-between w-full px-4 py-2 border-b border-gray-200 whitespace-nowrap overflow-scroll " + (index === (notifications.length-1) ? ' border-none ' : '')}>
+                    <div className="flex flex-row justify-start overflow-scroll w-full max-w-screen-md">
+                        <div onClick={() => markAsRead(notification)} className="text-brand-300 cursor-pointer">
+                            <FontAwesomeIcon icon="fas fa-check-circle"/>
+                        </div>
+                        &nbsp;&nbsp;&nbsp;
+                        {notification.type === 'App\\Notifications\\Account\\LoginNotification' && <LoginNotification notification={notification}/>}
                     </div>
-                    &nbsp;&nbsp;&nbsp;
-                    {notification.type === 'App\\Notifications\\Account\\LoginNotification' && <LoginNotification notification={notification}/>}
+
+                    <RelativeTime date={notification.created_at} className="text-xs text-gray-400"/>
                 </div>
             ))
         }
@@ -44,7 +53,7 @@ export default function Index({ notifications }) {
     console.log(notifications)
 
     return (
-        <AccountLayout title="My Account">
+        <AccountLayout title="My Account" meta={meta}>
             <div className="md:grid md:grid-cols-3 gap-16 w-full text-brand-500 dark:text-white">
                 <div className="col-span-3 bg-gray-50 dark:bg-brand-500 border border-brand-500 border-solid border-opacity-10 dark:border-none shadow-md rounded-lg w-full py-2 transition-all">
                     <div className="flex flex-col items-center w-full text-4xl">

@@ -12,7 +12,7 @@ import Button from '@/js/Components/Button';
 
 export default function Settings() {
     const meta = [
-        { property: 'og:title', content: 'Account Settings > FranciscoSolis' },
+        { property: 'og:title', content: 'Account > Settings | FranciscoSolis' },
     ];
 
     const { auth } = usePage().props;
@@ -230,13 +230,14 @@ export default function Settings() {
                             <Label forInput="gravatar_email" value="Gravatar Email"/>
 
                             <Input
-                                type="gravatar_email"
+                                type="email"
                                 name="gravatar_email"
-                                placeholder="fran.gravatar@franciscosolis.cl"
+                                placeholder="gravatar.fran@franciscosolis.cl"
                                 className="mt-1 w-full"
                                 autoComplete="email"
                                 handleChange={onHandleChange}
                                 value={data.gravatar_email}
+                                required
                             />
 
                             <InputError message={errors.gravatar_email} className="mt-2" />

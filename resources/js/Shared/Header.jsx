@@ -29,7 +29,7 @@ export default function Header() {
     const authenticated = (
         auth.user ? <div className="flex flex-row justify-between items-center gap-2">
             <div className="flex items-center">{greeting},&nbsp;<Link href={/*route('profile', { user: auth.user.slug })*/ '#'} className="flex items-center hover:text-red-500 transition-all duration-200">{auth.user.name}</Link>!</div>
-            <span onClick={toggleMenu} className="flex items-center cursor-pointer"><img className="h-8 w-8 border border-white rounded-full object-cover" src={auth.user.profile_photo_url} alt="Avatar"/></span>
+            <span onClick={toggleMenu} className="flex items-center cursor-pointer"><img className="h-8 w-8 border border-white rounded-full object-cover" src={auth.user.profile_photo_url} alt="Avatar" loading="lazy" /></span>
         </div> : <></>
     );
     const guest = (
@@ -62,7 +62,7 @@ export default function Header() {
                         <div className="flex justify-between items-center w-full">
                             <div className="flex flex-row justify-between items-center">
                                 <Link href={route('home')} className="text-white text-xl font-bold md:text-2xl flex items-center">
-                                    <img src={LogoWhite} alt="FranciscoSolis" className="h-8 w-8"/>
+                                    <img src={LogoWhite} alt="FranciscoSolis" className="h-8 w-8" loading="lazy"/>
                                     &nbsp;
                                     FranciscoSolis
                                 </Link>

@@ -50,7 +50,7 @@ trait HasProfilePhoto {
      * @return string
      */
     public function getProfilePhotoUrlAttribute() {
-        return $this->profile_photo_path ? ($this->profile_photo_path === 'gravatar' ? ('https://www.gravatar.com/avatar/'.md5(strtolower($this->gravatar_email)).'?s=200') : Storage::disk($this->profilePhotoDisk())->url($this->profile_photo_path)) : $this->defaultProfilePhotoUrl();
+        return $this->profile_photo_path ? ($this->profile_photo_path === 'gravatar' ? ('https://www.gravatar.com/avatar/'.md5(strtolower($this->gravatar_email ?? $this->email)).'?s=200') : Storage::disk($this->profilePhotoDisk())->url($this->profile_photo_path)) : $this->defaultProfilePhotoUrl();
     }
 
     /**

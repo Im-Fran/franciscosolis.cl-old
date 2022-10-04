@@ -16,7 +16,7 @@ export default function AccountLayout({ children, title, meta, className }) {
                     <SidebarLink title="Login & Sessions" icon="fa-key" href={'#'}/>
                     <div className="my-5"/>
                     <SidebarTitle title="OTHERS" icon="fa-list"/>
-                    <SidebarLink title="Notifications" icon="fa-bell" href={'#'}/>
+                    <SidebarLink title="Notifications" icon="fa-bell" href={route('account.notifications')}/>
                 </Sidebar.Links>
 
                 <Sidebar.Content>

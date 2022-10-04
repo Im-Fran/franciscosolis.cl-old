@@ -2,6 +2,7 @@
 
 use App\Http\Controllers;
 use App\Http\Controllers\Account;
+use App\Http\Controllers\Account\Settings as AccountSettings;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,20 +23,21 @@ Route::prefix('/account')->middleware(['auth', 'verified'])->group(function() {
 
     /* Settings */
     Route::prefix('/settings')->group(function(){
-        Route::get('/', [Account\AccountController::class, 'settings'])->name('account.settings');
-        Route::patch('/', [Account\AccountController::class, 'update'])->name('account.settings.update');
+        Route::get('/', [AccountSettings\SettingsController::class, 'index'])->name('account.settings');
+        Route::patch('/', [AccountSettings\SettingsController::class, 'update'])->name('account.settings.update');
 
         /* Profile Photo */
         Route::prefix('/profilephoto')->group(function(){
-            Route::post('/', [Account\AccountController::class, 'uploadProfilePhoto'])->name('account.settings.profilephoto');
-            Route::delete('/', [Account\AccountController::class, 'clearProfilePhoto'])->name('account.settings.profilephoto.delete');
+            Route::post('/', [AccountSettings\ImagesController::class, 'uploadProfilePhoto'])->name('account.settings.profilephoto');
+            Route::delete('/', [AccountSettings\ImagesController::class, 'clearProfilePhoto'])->name('account.settings.profilephoto.delete');
         });
     });
 
     /* Notifications */
     Route::prefix('/notifications')->group(function(){
-        //Route::get('/', [Account\AccountController::class, 'notifications'])->name('account.notifications');
-        Route::post('/{notification}', [Account\AccountController::class, 'markAsRead'])->name('account.notifications.markasread');
+        Route::get('/', [Account\NotificationsController::class, 'index'])->name('account.notifications');
+        Route::post('/{notification}', [Account\NotificationsController::class, 'markAsRead'])->name('account.notifications.markasread');
+        Route::delete('/{notification}', [Account\NotificationsController::class, 'delete'])->name('account.notifications.delete');
     });
 });
 

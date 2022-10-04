@@ -29,7 +29,7 @@ export default function ConfirmPassword() {
     };
 
     return (
-        <App title="Confirm Password" vertical="center" horizontal="center">
+        <App title="Confirm Password" vertical="center" horizontal="center" meta={[{ property: 'og:title', content: 'Confirm Password | FranciscoSolis' }]}>
             <form className="flex flex-col items-center justify-center shadow-xl border border-brand-500 dark:border-none dark:bg-[#303030] rounded-2xl w-5/6 md:w-1/2 h-[28rem] py-5" onSubmit={submit}>
                 <div className="mb-4 text-sm">
                     This is a secure area of the application. Please confirm your password before continuing.

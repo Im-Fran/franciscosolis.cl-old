@@ -1,12 +1,13 @@
 import { useEffect } from 'react';
 import { Head, usePage } from '@inertiajs/inertia-react';
 import toast, { Toaster } from 'react-hot-toast';
+import ReactTooltip from 'react-tooltip';
 
 import Header from '@/js/Shared/Header';
 import Foot from '@/js/Shared/Foot';
 
 export default function App({ children, title, meta = [], vertical = "top", horizontal = "left"}){
-    const { flash } = usePage().props;
+    const { flash, auth } = usePage().props;
     useEffect(() => {
         flash.forEach(item => {
             if(typeof toast[item.type] === 'function') {
@@ -25,6 +26,13 @@ export default function App({ children, title, meta = [], vertical = "top", hori
         return <meta key={`meta-${index}`} head-key={`meta-${index}`} {...item} />
     })
 
+    // Check if user's preference is dark mode
+    const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+    const darkMode = prefersDarkScheme.matches;
+    if(!localStorage.getItem('theme')) {
+        localStorage.setItem('theme', darkMode ? 'dark' : 'light');
+    }
+
     return (
         <div className={(localStorage.getItem('theme') === 'dark') ? 'dark' : ''}>
             <Head>
@@ -35,6 +43,7 @@ export default function App({ children, title, meta = [], vertical = "top", hori
                 <Toaster position="top-right" reverseOrder/>
                 <div className={"container mx-auto my-10 min-h-screen flex " + (vertical === "center" ? "items-center" : (vertical === "bottom" ? "items-end" : "items-start")) + " " + (horizontal === "center" ? "justify-center" : (horizontal === "right" ? "justify-end" : "justify-start"))}>
                     {children}
+                    <ReactTooltip backgroundColor="#111827" textColor="#fff"/>
                 </div>
                 <Foot/>
             </div>
