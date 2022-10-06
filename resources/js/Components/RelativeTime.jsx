@@ -1,14 +1,28 @@
 import dayjs from 'dayjs';
+import { useEffect, useRef } from 'react';
 
 export default function RelativeTime({ date, className }) {
     const obj = dayjs(date);
-    let display;
-    if(obj.isToday() || obj.isFuture()) {
-        display = obj.fromNow();
-    } else {
-        display = obj.format('MMM D, YYYY hh:mm');
-    }
+    const span = useRef(null);
+
+    useEffect(() => {
+        const diff = dayjs().diff(obj, 'minute')
+        const intervalGap = diff > 1 ? (diff < 60 ? 30000 : 1_800_000) : 500;
+
+        const interval = setInterval(() => {
+            if(span && span.current) {
+                const diff = dayjs().diff(obj, 'second');
+                if(diff < 60) {
+                    span.current.innerText = `${diff} seconds ago`;
+                } else {
+                    span.current.innerText = obj.fromNow();
+                }
+            }
+        }, intervalGap);
+        return () => clearInterval(interval);
+    });
+
     return (
-        <span className={className}>{dayjs(date).fromNow()}</span>
+        <span ref={span} data-time={date} className={className}>{obj.isToday() || obj.isFuture() ? (dayjs().diff(obj, 'second') < 60 ? `${dayjs().diff(obj, 'second')} seconds ago` : obj.fromNow()) : obj.format('MMM D, YYYY HH:mm')}</span>
     )
 }

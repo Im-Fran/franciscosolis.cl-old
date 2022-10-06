@@ -8,10 +8,6 @@ import isFuture from './Utils/dayjs/isFuture';
 
 import { createRoot } from 'react-dom/client';
 
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { fas } from '@fortawesome/free-solid-svg-icons';
-import { far } from '@fortawesome/free-regular-svg-icons';
-
 import { createInertiaApp } from '@inertiajs/inertia-react';
 import { InertiaProgress } from '@inertiajs/progress';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
@@ -19,7 +15,6 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 dayjs.extend(relativeTime);
 dayjs.extend(isToday);
 dayjs.extend(isFuture);
-library.add(fas, far);
 
 createInertiaApp({
     title: (title) => `${title} | FranciscoSolis`,

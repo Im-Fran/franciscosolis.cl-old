@@ -1,8 +1,8 @@
 import ClickAwayListener from 'react-click-away-listener';
 import { useState } from 'react';
 import { Link, usePage } from '@inertiajs/inertia-react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+import { Bars4Icon, Bars3CenterLeftIcon, ArrowRightOnRectangleIcon, ArrowLeftOnRectangleIcon, PencilSquareIcon, HomeIcon, ExclamationTriangleIcon, XMarkIcon, Cog6ToothIcon } from '@heroicons/react/24/outline'
 import LogoWhite from '$/LogoWhite.png';
 
 import AnimatedLink from '@/js/Components/AnimatedLink';
@@ -20,6 +20,17 @@ export default function Header() {
         setOpen((_) => false);
     };
 
+    /* Mobile Dropdown */
+    const [isMobileOpen, setMobileOpen] = useState(false);
+    const toggleMobileMenu = (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        setMobileOpen((prev) => !prev);
+    }
+    const hideMobileMenu = () => {
+        setMobileOpen((_) => false);
+    };
+
     /* Authentication & User Data */
     const { auth, utils } = usePage().props;
     const hour = new Date().getHours();
@@ -34,8 +45,8 @@ export default function Header() {
     );
     const guest = (
         <div className="flex flex-row justify-between items-center gap-5">
-            <AnimatedLink href={route('register')} className="text-white font-bold text-lg"><FontAwesomeIcon icon="fa-solid fa-user-pen"/> Register</AnimatedLink>
-            <AnimatedLink href={route('login')} className="text-white font-bold text-lg"><FontAwesomeIcon icon="fa-solid fa-right-to-bracket"/> Login</AnimatedLink>
+            <AnimatedLink href={route('register')} className="text-white font-bold flex items-center"><PencilSquareIcon className="w-5 h-5"/>&nbsp;Register</AnimatedLink>
+            <AnimatedLink href={route('login')} className="text-white font-bold flex items-center"><ArrowRightOnRectangleIcon className="w-5 h-5"/>&nbsp;Login</AnimatedLink>
         </div>
     );
 
@@ -67,10 +78,12 @@ export default function Header() {
                                     FranciscoSolis
                                 </Link>
                             </div>
-                            <div className="flex flex-row justify-between items-center gap-5">
-                                <AnimatedLink href={route('home')} className="text-white text-xl font-bold md:text-2xl flex items-center"><FontAwesomeIcon icon="fa-home"/> Home</AnimatedLink>
+
+                            {/* Hide in phones */}
+                            <div className="hidden md:flex flex-row justify-between items-center gap-5">
+                                <AnimatedLink href={route('home')} className="text-white font-bold md:text-2xl flex items-center"><HomeIcon className="w-5 h-5"/>&nbsp;Home</AnimatedLink>
                             </div>
-                            <div className="flex flex-row justify-between items-center">
+                            <div className="hidden md:flex flex-row justify-between items-center">
                                 {auth.user ? authenticated : guest}
                                 {(isOpen && auth.user) && <ClickAwayListener onClickAway={hideMenu}>
                                     <div className="relative inline-block mt-5">
@@ -85,15 +98,20 @@ export default function Header() {
 
                                             <hr className="border-gray-200 dark:border-gray-700"/>
 
-                                            <AccountDropdownItem href={route('account')} method="GET" icon="fa-bars-staggered" display="Account Overview"/>
-                                            <AccountDropdownItem href={route('account.settings')} method="GET" icon="fa-user-cog" display="Account Settings"/>
+                                            <AccountDropdownItem href={route('account')} method="GET" icon={<Bars3CenterLeftIcon className="w-6 h-6"/>} display="Account Overview"/>
+                                            <AccountDropdownItem href={route('account.settings')} method="GET" icon={<Cog6ToothIcon className="w-6 h-6"/>} display="Account Settings"/>
 
                                             <hr className="border-gray-200 dark:border-gray-700 mt-5"/>
-                                            <AccountDropdownItem href={route('logout')} method="POST" icon="fa-solid fa-arrow-right-from-bracket" display="Logout"/>
+                                            <AccountDropdownItem href={route('logout')} method="POST" icon={<ArrowLeftOnRectangleIcon className="w-6 h-6"/>} display="Logout"/>
 
                                         </div>
                                     </div>
                                 </ClickAwayListener>}
+                            </div>
+
+                            {/* Phone Dropdown */}
+                            <div className="flex md:hidden">
+                                <Bars4Icon className="h-6 w-6 cursor-pointer"/>
                             </div>
                         </div>
                     </div>
@@ -102,17 +120,13 @@ export default function Header() {
             {warning && !HiddenWarning && <div id="globalWarningWrapper" className="absolute inset-x-0 w-full text-brand-500 bg-yellow-500 transition-all z-10 h-10">
                 <div id="globalWarningContent" className="container flex items-center justify-between px-6 py-1 mx-auto">
                     <div className="flex">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
-                        </svg>
+                        <ExclamationTriangleIcon className="w-6 h-6"/>
 
                         <p className="mx-3">{warning}</p>
                     </div>
 
                     <button onClick={hideWarning} className="p-1 transition-colors duration-300 transform rounded-md hover:bg-opacity-25 hover:bg-gray-600 focus:outline-none">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
+                        <XMarkIcon className="w-6 h-6"/>
                     </button>
                 </div>
             </div>}

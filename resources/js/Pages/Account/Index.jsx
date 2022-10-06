@@ -1,31 +1,14 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Inertia } from "@inertiajs/inertia";
-import toast from "react-hot-toast";
+import { useRef } from 'react';
 
+import { BellIcon } from '@heroicons/react/24/outline';
 import AccountLayout from "@/js/Layouts/AccountLayout";
 import LoginNotification from "@/js/Components/Notifications/LoginNotification";
 import RelativeTime from "@/js/Components/RelativeTime";
 
-export default function Index({ notifications }) {
-
+export default function Index({ notifications, notificationsCount }) {
     const meta = [
         { property: 'og:title', content: 'Account > Overview | FranciscoSolis' },
     ];
-
-    const markAsRead = (notification) => {
-        Inertia.post(route('account.notifications.markasread', {notification: notification.id}), {}, {
-            onSuccess: () => {
-                toast.success('Notification marked as read', {
-                    duration: 3000,
-                });
-            },
-            onError: () => {
-                toast.error('Unable to mark notification as read', {
-                    duration: 5000,
-                });
-            },
-        });
-    };
 
     const renderNotifications = () => {
         if(notifications.length == 0) {
@@ -37,12 +20,8 @@ export default function Index({ notifications }) {
         } else {
             return notifications.map((notification, index) => (
                 <div key={index} className={"flex flex-row items-center justify-between w-full px-4 py-2 border-b border-gray-200 whitespace-nowrap overflow-scroll " + (index === (notifications.length-1) ? ' border-none ' : '')}>
-                    <div className="flex flex-row justify-start overflow-scroll w-full max-w-screen-md">
-                        <div onClick={() => markAsRead(notification)} className="text-brand-300 cursor-pointer">
-                            <FontAwesomeIcon icon="fas fa-check-circle"/>
-                        </div>
-                        &nbsp;&nbsp;&nbsp;
-                        {notification.type === 'App\\Notifications\\Account\\LoginNotification' && <LoginNotification notification={notification}/>}
+                    <div className="flex justify-start overflow-scroll w-full max-w-[14rem]">
+                        {notification.type === 'App\\Notifications\\Account\\LoginNotification' && <LoginNotification notification={notification} short/>}
                     </div>
 
                     <RelativeTime date={notification.created_at} className="text-xs text-gray-400"/>
@@ -50,19 +29,26 @@ export default function Index({ notifications }) {
             ))
         }
     };
-    console.log(notifications)
+
+    const openNotifications = () => {
+        document.getElementById('sidebar-' + route('account.notifications')).click();
+    };
 
     return (
         <AccountLayout title="My Account" meta={meta}>
-            <div className="md:grid md:grid-cols-3 gap-16 w-full text-brand-500 dark:text-white">
-                <div className="col-span-3 bg-gray-50 dark:bg-brand-500 border border-brand-500 border-solid border-opacity-10 dark:border-none shadow-md rounded-lg w-full py-2 transition-all">
+            <div className="md:grid md:grid-cols-5 gap-16 w-full text-brand-500 dark:text-white">
+                <div className="col-span-2 col-start-4 bg-gray-50 dark:bg-brand-500 border border-brand-500 border-solid border-opacity-10 dark:border-none shadow-md rounded-lg w-full pt-2 transition-all">
                     <div className="flex flex-col items-center w-full text-4xl">
-                        <FontAwesomeIcon icon="fas fa-bell"/>
+                        <BellIcon className="w-6 h-6"/>
                         <h1 className="text-xl font-bold">Notifications</h1>
                         <hr className="border-0 border-b border-b-brand-500 dark:border-b-brand-600 border-solid w-full"/>
                     </div>
                     <div className="flex flex-col items-center w-full py-2">
                         {renderNotifications()}
+                    </div>
+
+                    <div onClick={() => openNotifications()} className="transition-all duration-300 flex justify-center items-center rounded-b-lg bg-gray-300 dark:bg-[#3c3c3c] dark:hover:bg-[#2c2c2c] bg-opacity-60 dark:bg-opacity-100 hover:bg-opacity-100 py-2 cursor-pointer">
+                    {notificationsCount > 0 ? <>Show other {notificationsCount} notifications.</> : <>View All Notifications</> }
                     </div>
                 </div>
             </div>

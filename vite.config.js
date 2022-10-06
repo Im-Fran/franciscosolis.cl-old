@@ -47,12 +47,6 @@ export default defineConfig({
                     'fsolis/utils': [
                         'lodash',
                     ],
-                    'fontawesome': [
-                        '@fortawesome/fontawesome-svg-core',
-                        '@fortawesome/free-regular-svg-icons',
-                        '@fortawesome/free-solid-svg-icons',
-                        '@fortawesome/react-fontawesome'
-                    ],
                 },
             },
         },
