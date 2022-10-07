@@ -1,7 +1,6 @@
-import React, { useState } from 'react'
 import { Link } from '@inertiajs/inertia-react'
-import AnimatedLink from "@/Components/AnimatedLink";
-import ThemeSwitch from '@/Components/ThemeSwitch';
+import AnimatedLink from "@/js/Components/AnimatedLink";
+import ThemeSwitch from '@/js/Components/ThemeSwitch';
 
 export default function Foot(props) {
     return (

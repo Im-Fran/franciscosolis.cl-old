@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
 import { Link, useForm } from '@inertiajs/inertia-react';
 
-import App from '@/Layouts/App';
-import Button from '@/Components/Button';
-import Input from '@/Components/Forms/Input';
-import Label from '@/Components/Forms/Label';
-import Checkbox from '@/Components/Forms/Checkbox';
-import InputError from '@/Components/Forms/InputError';
+import App from '@/js/Layouts/App';
+import Button from '@/js/Components/Button';
+import Input from '@/js/Components/Forms/Input';
+import Label from '@/js/Components/Forms/Label';
+import Checkbox from '@/js/Components/Forms/Checkbox';
+import InputError from '@/js/Components/Forms/InputError';
 
 
 export default function Login({ status, canResetPassword }) {
@@ -33,7 +33,7 @@ export default function Login({ status, canResetPassword }) {
     };
 
     return (
-        <App title="Sign In" horizontal="center" vertical="center">
+        <App title="Sign In" horizontal="center" vertical="center" meta={[{ property: 'og:title', content: 'Auth > Login | FranciscoSolis' }]}>
             <form className="flex flex-col items-center justify-center shadow-xl border border-brand-500 dark:border-none dark:bg-[#303030] rounded-2xl w-5/6 md:w-1/2 h-[28rem] py-5" onSubmit={submit}>
                 <div className="mb-10 font-black text-3xl">Log In</div>
 

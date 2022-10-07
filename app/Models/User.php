@@ -32,6 +32,7 @@ class User extends Authenticatable implements MustVerifyEmail {
         'email',
         'password',
         'profile_photo_path',
+        'gravatar_email',
     ];
 
     /**
@@ -67,4 +68,9 @@ class User extends Authenticatable implements MustVerifyEmail {
             ->generateSlugsFrom('name')
             ->saveSlugsTo('slug');
     }
+
+    public function receivesBroadcastNotificationsOn(): string {
+        return "App.Models.User.$this->id";
+    }
+
 }

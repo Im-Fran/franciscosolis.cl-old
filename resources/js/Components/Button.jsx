@@ -1,5 +1,3 @@
-import React from 'react';
-
 export default function Button({ type = 'submit', color = 100, className = '', processing, children, onClick }) {
     const buttonClasses = (color === 200 ? (' bg-brand-200 hover:border-brand-200 hover:text-brand-200 ') : (color === 300 ? (' bg-brand-300 hover:border-brand-300 hover:text-brand-300 ') : (color === 400 ? (' bg-brand-400 hover:border-brand-400 hover:text-brand-400 ') : (color === 500 ? (' bg-brand-500 hover:border-brand-500 hover:text-brand-500 ') : (' bg-brand-100 hover:border-brand-100 hover:text-brand-100 ')))));
     return (

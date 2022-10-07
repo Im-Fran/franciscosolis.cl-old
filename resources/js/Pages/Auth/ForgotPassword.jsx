@@ -1,10 +1,10 @@
 import { useForm } from '@inertiajs/inertia-react';
 
-import App from '@/Layouts/App';
-import Button from '@/Components/Button';
-import Label from '@/Components/Forms/Label';
-import Input from '@/Components/Forms/Input';
-import InputError from '@/Components/Forms/InputError';
+import App from '@/js/Layouts/App';
+import Button from '@/js/Components/Button';
+import Label from '@/js/Components/Forms/Label';
+import Input from '@/js/Components/Forms/Input';
+import InputError from '@/js/Components/Forms/InputError';
 
 export default function ForgotPassword({ status }) {
     const { data, setData, post, processing, errors } = useForm({
@@ -22,7 +22,7 @@ export default function ForgotPassword({ status }) {
     };
 
     return (
-        <App title="Forgot Password" vertical="center" horizontal="center">
+        <App title="Forgot Password" vertical="center" horizontal="center" meta={[{ property: 'og:title', content: 'Auth > Forgot Password | FranciscoSolis' }]}>
             <form className="flex flex-col items-center justify-center shadow-xl border border-brand-500 dark:border-none dark:bg-[#303030] rounded-2xl w-5/6 md:w-1/2 h-[28rem] py-5" onSubmit={submit}>
                 <h1 className="text-2xl font-black mb-10">Password Reset</h1>
 

@@ -17398,6 +17398,52 @@
      
 }
 
+    namespace Stevebauman\Location\Facades { 
+            /**
+     * 
+     *
+     * @see \Stevebauman\Location\Location
+     */ 
+        class Location {
+                    /**
+         * Set the current driver to use.
+         *
+         * @param \Stevebauman\Location\Drivers\Driver $driver
+         * @static 
+         */ 
+        public static function setDriver($driver)
+        {
+                        /** @var \Stevebauman\Location\Location $instance */
+                        return $instance->setDriver($driver);
+        }
+                    /**
+         * Set the default location driver to use.
+         *
+         * @throws DriverDoesNotExistException
+         * @static 
+         */ 
+        public static function setDefaultDriver()
+        {
+                        /** @var \Stevebauman\Location\Location $instance */
+                        return $instance->setDefaultDriver();
+        }
+                    /**
+         * Attempt to retrieve the location of the user.
+         *
+         * @param string|null $ip
+         * @return \Stevebauman\Location\Position|bool 
+         * @static 
+         */ 
+        public static function get($ip = null)
+        {
+                        /** @var \Stevebauman\Location\Location $instance */
+                        return $instance->get($ip);
+        }
+         
+    }
+     
+}
+
     namespace Illuminate\Http { 
             /**
      * 
@@ -21318,6 +21364,7 @@ namespace  {
             class Vite extends \Illuminate\Support\Facades\Vite {}
             class Image extends \Intervention\Image\Facades\Image {}
             class Flare extends \Spatie\LaravelIgnition\Facades\Flare {}
+            class Location extends \Stevebauman\Location\Facades\Location {}
      
 }
 

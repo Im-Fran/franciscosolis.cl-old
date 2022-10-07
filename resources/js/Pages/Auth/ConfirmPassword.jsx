@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 import { useForm } from '@inertiajs/inertia-react';
 
-import App from '@/Layouts/App';
-import Button from '@/Components/Button';
-import Input from '@/Components/Forms/Input';
-import InputError from '@/Components/Forms/InputError';
-import Label from '@/Components/Forms/Label';
+import App from '@/js/Layouts/App';
+import Button from '@/js/Components/Button';
+import Input from '@/js/Components/Forms/Input';
+import InputError from '@/js/Components/Forms/InputError';
+import Label from '@/js/Components/Forms/Label';
 
 export default function ConfirmPassword() {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -29,7 +29,7 @@ export default function ConfirmPassword() {
     };
 
     return (
-        <App title="Confirm Password" vertical="center" horizontal="center">
+        <App title="Confirm Password" vertical="center" horizontal="center" meta={[{ property: 'og:title', content: 'Confirm Password | FranciscoSolis' }]}>
             <form className="flex flex-col items-center justify-center shadow-xl border border-brand-500 dark:border-none dark:bg-[#303030] rounded-2xl w-5/6 md:w-1/2 h-[28rem] py-5" onSubmit={submit}>
                 <div className="mb-4 text-sm">
                     This is a secure area of the application. Please confirm your password before continuing.

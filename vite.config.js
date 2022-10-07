@@ -10,8 +10,7 @@ export default defineConfig({
     },
     resolve: {
         alias: {
-            '~': resolve(__dirname, 'resources'),
-            '@': resolve(__dirname, 'resources/js'),
+            '@': resolve(__dirname, 'resources/'),
             '$': resolve(__dirname, 'resources/images'),
         },
     },
@@ -22,4 +21,38 @@ export default defineConfig({
         }),
         react(),
     ],
+    build: {
+        input: {
+            app: 'resources/js/app.jsx',
+        },
+        rollupOptions: {
+            output: {
+                manualChunks: {
+                    'fsolis/react': ['react'],
+                    'fsolis/react-dom': ['react-dom'],
+                    'fsolis/http-requests': [
+                        'axios',
+                        '@inertiajs/inertia',
+                        '@inertiajs/inertia-react',
+                        '@inertiajs/progress'
+                    ],
+                    'fsolis/ui': [
+                        'autoprefixer',
+                        'tailwindcss',
+                        '@tailwindcss/forms',
+                        '@headlessui/react',
+                        'react-click-away-listener',
+                        'react-hot-toast',
+                    ],
+                    'fsolis/utils': [
+                        'lodash',
+                    ],
+                    'fsolis/websocket': [
+                        'socket.io-client',
+                        'laravel-echo',
+                    ],
+                },
+            },
+        },
+    },
 });

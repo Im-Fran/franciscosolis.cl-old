@@ -1,18 +1,18 @@
 import { useState } from 'react';
 import { useForm, usePage } from "@inertiajs/inertia-react";
 import { Inertia } from '@inertiajs/inertia';
+import { handleError } from '@/js/Utils/Utils'
 import toast from 'react-hot-toast';
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import AccountLayout from "@/Layouts/AccountLayout";
-import Label from "@/Components/Forms/Label";
-import Input from "@/Components/Forms/Input";
-import InputError from "@/Components/Forms/InputError";
-import Button from '~/js/Components/Button';
+import AccountLayout from "@/js/Layouts/AccountLayout";
+import Label from "@/js/Components/Forms/Label";
+import Input from "@/js/Components/Forms/Input";
+import InputError from "@/js/Components/Forms/InputError";
+import Button from '@/js/Components/Button';
 
 export default function Settings() {
     const meta = [
-        { property: 'og:title', content: 'Account Settings > FranciscoSolis' },
+        { property: 'og:title', content: 'Account > Settings | FranciscoSolis' },
     ];
 
     const { auth } = usePage().props;
@@ -20,6 +20,7 @@ export default function Settings() {
     const { data, setData, errors, patch, clearErrors, setError } = useForm({
         name: auth.user.name,
         email: auth.user.email,
+        gravatar_email: auth.user.gravatar_email,
     });
 
     const submit = (e) => {
@@ -30,8 +31,8 @@ export default function Settings() {
             onSuccess: () => {
                 toast.success('Settings updated successfully.')
             },
-            onError: () => {
-                toast.error('There was an error updating your settings.')
+            onError: (err) => {
+                handleError(err, 'There was an error updating your settings.')
             },
         });
     }
@@ -81,21 +82,19 @@ export default function Settings() {
         setProfilePhotoState('Uploading');
         let file = e.target.files[0];
         if (!file.type.startsWith('image/')) {
-            toast.error('The file you uploaded is not an image! Please try again. ', {
+            toast.error('The file you uploaded is not an image! Please try again.', {
                 duration: 5000,
             });
             console.log('Trying to upload a non-image file: ' + file.type);
         } else {
             Inertia.post(route('account.settings.profilephoto'), {
                 profile_photo: file,
+                gravatar: null,
             }, {
                 preserveScroll: true,
                 forceFormData: true,
                 onError: (error) => {
-                    toast.error('There was an error uploading your profile photo. Please try again. ', {
-                        duration: 5000,
-                    });
-                    console.log(error);
+                    handleError(error, 'There was an error uploading your profile photo. Please try again.')
                 },
                 onSuccess: () => {
                     toast.success('Profile photo updated successfully!', {
@@ -111,24 +110,55 @@ export default function Settings() {
     };
 
     const clearProfilePhoto = () => {
-        Inertia.post(route('account.settings.profilephoto.delete'), {
-            _method: 'delete', // We use this to show the toasts, if we use `Inertia.delete` for some reason it won't show the toasts.
-        }, {
-            preserveScroll: true,
-            forceFormData: true,
-            onError: (error) => {
-                toast.error('There was an error uploading your profile photo. Please try again. ', {
-                    duration: 5000,
-                });
-                console.log(error);
-            },
-            onSuccess: () => {
-                setProfilePhotoState('Edit');
-                toast.success('Profile photo cleared successfully!', {
-                    duration: 5000,
-                });
-            },
-        })
+        if(auth.user.profile_photo_path === null){
+            toast.error('You do not have a profile photo to clear!', {
+                duration: 5000,
+            });
+        } else {
+            Inertia.post(route('account.settings.profilephoto.delete'), {
+                _method: 'delete', // We use this to show the toasts, if we use `Inertia.delete` for some reason it won't show the toasts.
+            }, {
+                preserveScroll: true,
+                forceFormData: true,
+                onError: (error) => {
+                    handleError(error, 'There was an error uploading your profile photo. Please try again.')
+                },
+                onSuccess: () => {
+                    setProfilePhotoState('Edit');
+                    toast.success('Profile photo cleared successfully!', {
+                        duration: 5000,
+                    });
+                },
+            })
+        }
+    }
+
+    const enableGravatar = () => {
+        if(auth.user.profile_photo_path === 'gravatar') {
+            toast.error('You already have a gravatar set as your profile photo.', {
+                duration: 5000,
+            })
+        } else {
+            Inertia.post(route('account.settings.profilephoto'), {
+                gravatar: true,
+                profile_photo: null,
+            }, {
+                preserveScroll: true,
+                forceFormData: true,
+                onError: (error) => {
+                    handleError(error, 'There was an error while setting the gravatar config. Please try again later.')
+                },
+                onSuccess: () => {
+                    toast.success('Now using gravatar as image!', {
+                        duration: 5000,
+                    });
+                },
+                onFinish: () => {
+                    setProfilePhotoState('Edit');
+                    e.target.value = ''
+                },
+            })
+        }
     }
 
 
@@ -150,6 +180,7 @@ export default function Settings() {
                         <div className="flex flex-col ml-10">
                             <div><Button type="button" onClick={onClickEditProfilePhoto} className="!text-sm">Select New Profile Photo</Button></div>
                             <div><Button type="button" onClick={clearProfilePhoto} color={200} className="!text-sm mt-3">Clear Profile Photo</Button></div>
+                            <div><Button type="button" onClick={enableGravatar} color={300} className="!text-sm mt-3">Use Gravatar</Button></div>
                             <input onChange={handleProfilePhotoUpload} id="select-profilephoto" name="profilephoto" type="file" hidden/>
                         </div>
                     </div>
@@ -192,6 +223,24 @@ export default function Settings() {
                             />
 
                             <InputError message={errors.email} className="mt-2" />
+                        </div>
+
+                        {/* Gravatar Email */}
+                        <div className="flex flex-col">
+                            <Label forInput="gravatar_email" value="Gravatar Email"/>
+
+                            <Input
+                                type="email"
+                                name="gravatar_email"
+                                placeholder="gravatar.fran@franciscosolis.cl"
+                                className="mt-1 w-full"
+                                autoComplete="email"
+                                handleChange={onHandleChange}
+                                value={data.gravatar_email}
+                                required
+                            />
+
+                            <InputError message={errors.gravatar_email} className="mt-2" />
                         </div>
                     </div>
 

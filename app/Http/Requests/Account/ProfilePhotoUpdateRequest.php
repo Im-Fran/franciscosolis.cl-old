@@ -23,7 +23,8 @@ class ProfilePhotoUpdateRequest extends FormRequest {
      */
     public function rules() {
         return [
-            'profile_photo' => ['required_if:gravatar,null', 'image'],
+            'profile_photo' => ['required_if:gravatar,null', 'image', 'nullable'],
+            'gravatar' => ['required_if:profile_photo,null', 'boolean', 'nullable'],
         ];
     }
 }

@@ -24,7 +24,7 @@ class Sidebar extends ReactComponent {
                         {links ? links.props.children : null}
                     </ul>
                 </div>
-                <div className="w-full col-span-4 md:ml-5">
+                <div className="w-full col-span-5 md:ml-5">
                     {content ? content.props.children : null}
                 </div>
             </div>

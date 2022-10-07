@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 import { Link, useForm } from '@inertiajs/inertia-react';
 
-import App from '@/Layouts/App';
-import Button from '@/Components/Button';
-import Input from '@/Components/Forms/Input';
-import Label from '@/Components/Forms/Label';
-import InputError from '@/Components/Forms/InputError';
+import App from '@/js/Layouts/App';
+import Button from '@/js/Components/Button';
+import Input from '@/js/Components/Forms/Input';
+import Label from '@/js/Components/Forms/Label';
+import InputError from '@/js/Components/Forms/InputError';
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -32,7 +32,7 @@ export default function Register() {
     };
 
     return (
-        <App title="Register" horizontal="center" vertical="center">
+        <App title="Register" horizontal="center" vertical="center" meta={[{ property: 'og:title', content: 'Auth > Register | FranciscoSolis' }]}>
             <form className="flex flex-col items-center justify-center shadow-xl border border-brand-500 dark:border-none dark:bg-[#303030] rounded-2xl w-5/6 md:w-1/2 h-[36rem]" onSubmit={submit}>
                 <div className="mb-10 font-black text-3xl">Register</div>
 

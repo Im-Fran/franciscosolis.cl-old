@@ -15,3 +15,24 @@ yarn-error.log
 /.idea
 _ide_helper_models.php
 _ide_helper.php
+
+### websocket ###
+laravel-echo-server.json
+
+### yarn ###
+# https://yarnpkg.com/getting-started/qa#which-files-should-be-gitignored
+
+.yarn/*
+.yarn/install-state.gz
+.yarn/unplugged
+!.yarn/cache
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+!yarn.lock
+!.yarnrc.yml
+
+# Yarn Integrity file
+.yarn-integrity

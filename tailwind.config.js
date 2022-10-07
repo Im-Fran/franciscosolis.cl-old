@@ -27,6 +27,43 @@ module.exports = {
                     700: '#E1E5F2', // Light Gray
                 }
             },
+            animation: {
+                ring: 'ring 1.5s infinite',
+            },
+            keyframes: {
+                ring: {
+                    '10%': {
+                        transform: 'rotate(10deg)',
+                    },
+                    '20%': {
+                        transform: 'rotate(-10deg)',
+                    },
+                    '30%': {
+                        transform: 'rotate(15deg)',
+                    },
+                    '40%': {
+                        transform: 'rotate(-15deg)',
+                    },
+                    '50%': {
+                        transform: 'rotate(18deg)',
+                    },
+                    '60%': {
+                        transform: 'rotate(-18deg)',
+                    },
+                    '70%': {
+                        transform: 'rotate(12deg)',
+                    },
+                    '80%': {
+                        transform: 'rotate(-12deg)',
+                    },
+                    '90%': {
+                        transform: 'rotate(2deg)',
+                    },
+                    '100%': {
+                        transform: 'rotate(-2deg)',
+                    },
+                },
+            },
         },
     },
 
