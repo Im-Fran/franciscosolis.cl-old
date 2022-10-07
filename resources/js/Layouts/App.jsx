@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
-import { Head, usePage } from '@inertiajs/inertia-react';
+import { Head, Link, usePage } from '@inertiajs/inertia-react';
 import toast, { Toaster } from 'react-hot-toast';
 import ReactTooltip from 'react-tooltip';
+import {BellIcon} from '@heroicons/react/24/outline';
 
 import Header from '@/js/Shared/Header';
 import Foot from '@/js/Shared/Foot';
@@ -21,6 +22,28 @@ export default function App({ children, title, meta = [], vertical = "top", hori
             }
         })
     }, [flash]);
+
+    if(auth.check && auth.user){
+        useEffect(() => {
+            if(window.Echo) {
+                const channel = window.Echo.private(`App.Models.User.${auth.user.id}`).notification((notification) => {
+                    console.log(notification);
+                    toast(notification.action ? (
+                        <div className="flex flex-row justify-between w-full">
+                            <span>{notification.message}</span>
+                            <div className="border-l border-brand-500 pr-2 ml-3"/>
+                            <Link href={notification.action.url} className="text-blue-500">{notification.action.display}</Link>
+                        </div>
+                    ) : notification.message, {
+                        duration: 5000,
+                        icon: (<BellIcon className="w-6 h-6 animate-ring"/>),
+                    })
+                })
+
+                return () => (channel && channel.unsubscribe());
+            }
+        });
+    }
 
     const metaItems = meta.map((item, index) => {
         return <meta key={`meta-${index}`} head-key={`meta-${index}`} {...item} />

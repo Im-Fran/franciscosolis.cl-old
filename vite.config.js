@@ -47,6 +47,10 @@ export default defineConfig({
                     'fsolis/utils': [
                         'lodash',
                     ],
+                    'fsolis/websocket': [
+                        'socket.io-client',
+                        'laravel-echo',
+                    ],
                 },
             },
         },

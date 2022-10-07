@@ -68,4 +68,9 @@ class User extends Authenticatable implements MustVerifyEmail {
             ->generateSlugsFrom('name')
             ->saveSlugsTo('slug');
     }
+
+    public function receivesBroadcastNotificationsOn(): string {
+        return "App.Models.User.$this->id";
+    }
+
 }

@@ -3,12 +3,14 @@
 namespace App\Notifications\Account;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class LoginNotification extends Notification
-{
+class LoginNotification extends Notification implements ShouldBroadcast {
+
     use Queueable;
 
     private string $ip, $device, $location;
@@ -32,7 +34,7 @@ class LoginNotification extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail', 'database'];
+        return ['mail', 'database', 'broadcast'];
     }
 
     /**
@@ -65,4 +67,21 @@ class LoginNotification extends Notification
             'location' => $this->location,
         ];
     }
+
+    /**
+     * Get the broadcastable representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return \Illuminate\Notifications\Messages\BroadcastMessage
+     */
+    public function toBroadcast($notifiable) {
+        return (new BroadcastMessage([
+            'message' => 'New Login Activity',
+            'action' => [
+                'display' => 'View',
+                'url' => route('account.notifications'),
+            ],
+        ]));
+    }
+
 }
