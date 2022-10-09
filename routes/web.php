@@ -32,6 +32,15 @@ Route::prefix('/account')->middleware(['auth', 'verified'])->group(function() {
             Route::delete('/', [AccountSettings\ImagesController::class, 'clearProfilePhoto'])->name('account.settings.profilephoto.delete');
         });
     });
+	
+	/* Security */
+	Route::prefix('/security')->group(function(){
+		/* Access */
+		Route::prefix('/access')->group(function(){
+			Route::get('/', [Account\Security\AccessController::class, 'index'])->name('account.security.access');
+			Route::patch('/password', [Account\Security\AccessController::class, 'updatePassword'])->middleware(['password.confirm'])->name('account.security.access.password');
+		});
+	});
 
     /* Notifications */
     Route::prefix('/notifications')->group(function(){

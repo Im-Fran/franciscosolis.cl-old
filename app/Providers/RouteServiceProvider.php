@@ -2,11 +2,13 @@
 
 namespace App\Providers;
 
+use App\Models\User;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -24,9 +26,9 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
-    {
+    public function boot() {
         $this->configureRateLimiting();
+        $this->configureAliases();
 
         $this->routes(function () {
             Route::middleware('api')
@@ -43,10 +45,21 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    protected function configureRateLimiting()
-    {
+    protected function configureRateLimiting() {
         RateLimiter::for('api', function (Request $request) {
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
         });
     }
+	
+	/**
+	 * Configure the module aliases to be used in the application.
+	 *
+	 * @return void
+	 */
+	protected function configureAliases() {
+		Route::bind('user', function($value){
+			$user = User::whereSlug($value)->first();
+			return $user != null ? $user : abort(404);
+		});
+	}
 }

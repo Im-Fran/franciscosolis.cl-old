@@ -1,4 +1,13 @@
-import { UserIcon, Bars4Icon, Cog6ToothIcon, KeyIcon, QueueListIcon, BellIcon, LockClosedIcon } from '@heroicons/react/24/outline';
+import {
+    UserIcon,
+    Bars4Icon,
+    Cog6ToothIcon,
+    KeyIcon,
+    QueueListIcon,
+    BellIcon,
+    LockClosedIcon,
+    ComputerDesktopIcon
+} from '@heroicons/react/24/outline';
 
 import App from "@/js/Layouts/App";
 import Sidebar from "@/js/Components/Sidebar/Sidebar";
@@ -17,7 +26,8 @@ export default function AccountLayout({ children, title, meta, className }) {
                     <div className="my-5"/>
 
                     <SidebarTitle title="SECURITY" icon={<LockClosedIcon className="w-6 h-6"/>}/>
-                    <SidebarLink title="Login & Sessions" icon={<KeyIcon className="w-6 h-6"/>} href={'#'}/>
+                    <SidebarLink title="Access" icon={<KeyIcon className="w-6 h-6"/>} href={route('account.security.access')}/>
+                    <SidebarLink title="Devices" icon={<ComputerDesktopIcon className="w-6 h-6"/>} href={'#'}/>
 
                     <div className="my-5"/>
 

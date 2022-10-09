@@ -18,6 +18,7 @@ _ide_helper.php
 
 ### websocket ###
 laravel-echo-server.json
+laravel-echo-server.lock
 
 ### yarn ###
 # https://yarnpkg.com/getting-started/qa#which-files-should-be-gitignored

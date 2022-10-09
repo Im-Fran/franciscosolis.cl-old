@@ -57,7 +57,7 @@ export default function Notifications({ notifications, unreadNotifications }) {
             return unreadNotifications.map((notification, index) => (
                 <div key={index} className={"flex flex-row items-center justify-between w-full px-4 py-2 border-b border-gray-200 whitespace-nowrap overflow-scroll " + (index === (unreadNotifications.length-1) ? ' border-none ' : '')}>
                     <div className="flex flex-row justify-start overflow-scroll w-full max-w-screen-md">
-                        <CheckCircleIcon className="w-6 h-6 text-brand-300 cursor-pointer" onClick={() => markAsRead(notification)}/>
+                        <CheckCircleIcon data-tip="Mark As Read" className="w-6 h-6 text-brand-300 cursor-pointer" onClick={() => markAsRead(notification)}/>
                         &nbsp;&nbsp;&nbsp;
                         {notification.type === 'App\\Notifications\\Account\\LoginNotification' && <LoginNotification notification={notification}/>}
                     </div>

@@ -23,27 +23,25 @@ export default function App({ children, title, meta = [], vertical = "top", hori
         })
     }, [flash]);
 
-    if(auth.check && auth.user){
-        useEffect(() => {
-            if(window.Echo) {
-                const channel = window.Echo.private(`App.Models.User.${auth.user.id}`).notification((notification) => {
-                    console.log(notification);
-                    toast(notification.action ? (
-                        <div className="flex flex-row justify-between w-full">
-                            <span>{notification.message}</span>
-                            <div className="border-l border-brand-500 pr-2 ml-3"/>
-                            <Link href={notification.action.url} className="text-blue-500">{notification.action.display}</Link>
-                        </div>
-                    ) : notification.message, {
-                        duration: 5000,
-                        icon: (<BellIcon className="w-6 h-6 animate-ring"/>),
-                    })
+    useEffect(() => {
+        if(window.Echo && auth.check && auth.user) {
+            console.log('Logging in into the private channel')
+            const channel = window.Echo.private(`App.Models.User.${auth.user.id}`).notification((notification) => {
+                toast(notification.action ? (
+                    <div className="flex flex-row justify-between w-full">
+                        <span>{notification.message}</span>
+                        <div className="border-l border-brand-500 pr-2 ml-3"/>
+                        <Link href={notification.action.url} className="text-blue-500">{notification.action.display}</Link>
+                    </div>
+                ) : notification.message, {
+                    duration: 5000,
+                    icon: (<BellIcon className="w-6 h-6 animate-ring"/>),
                 })
+            })
 
-                return () => (channel && channel.unsubscribe());
-            }
-        });
-    }
+            return () => (channel && channel.unsubscribe());
+        }
+    }, [auth, window.Echo]);
 
     const metaItems = meta.map((item, index) => {
         return <meta key={`meta-${index}`} head-key={`meta-${index}`} {...item} />
@@ -62,7 +60,7 @@ export default function App({ children, title, meta = [], vertical = "top", hori
                 <title>{title}</title>
             </Head>
             <div className="transition transform-all duration-200 bg-white dark:bg-[#212121] text-gray-900 dark:text-white">
-                <Header className=""/>
+                <Header/>
                 <Toaster position="top-right" reverseOrder/>
                 <div className={"container mx-auto my-10 min-h-screen flex " + (vertical === "center" ? "items-center" : (vertical === "bottom" ? "items-end" : "items-start")) + " " + (horizontal === "center" ? "justify-center" : (horizontal === "right" ? "justify-end" : "justify-start"))}>
                     {children}

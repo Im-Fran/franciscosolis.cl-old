@@ -1,8 +1,18 @@
-import { Link } from '@inertiajs/inertia-react'
+import {Link} from '@inertiajs/inertia-react'
 import AnimatedLink from "@/js/Components/AnimatedLink";
 import ThemeSwitch from '@/js/Components/ThemeSwitch';
+import {useEffect} from "react";
+import {handleError} from "@/js/Utils/Utils";
 
 export default function Foot(props) {
+    useEffect(() => {
+        const interval = setInterval(() => {
+            axios.get(route('activity-status.set')).catch(err => {
+                handleError(err, 'Failed to set activity status! Please reload the page.<br>If the problem persists, please contact us.');
+            })
+        }, 60000);
+        return () => clearInterval(interval);
+    })
     return (
         <div className="transition transform-all duration-200 bg-brand-100 dark:bg-[#353535] shadow text-white">
             <div className="mx-auto px-6 py-3">
