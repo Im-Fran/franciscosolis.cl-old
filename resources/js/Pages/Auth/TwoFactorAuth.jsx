@@ -32,7 +32,7 @@ export default function ConfirmPassword() {
     const submit = (e) => {
         e.preventDefault();
 
-        post(route('two-factor-auth.confirm'));
+        post(route('2fa'));
     };
 
     return (

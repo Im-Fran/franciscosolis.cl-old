@@ -33,6 +33,11 @@ Route::middleware('guest')->group(function () {
 
     Route::post('reset-password', [NewPasswordController::class, 'store'])
                 ->name('password.update');
+	
+	Route::get('two-factor-auth', [TwoFactorAuthController::class, 'show'])
+		->name('2fa');
+	
+	Route::post('two-factor-auth', [TwoFactorAuthController::class, 'store']);
 });
 
 Route::middleware('auth')->group(function () {
@@ -51,10 +56,6 @@ Route::middleware('auth')->group(function () {
                 ->name('password.confirm');
 
     Route::post('confirm-password', [ConfirmablePasswordController::class, 'store']);
-	
-	Route::get('two-factor-auth', [TwoFactorAuthController::class, 'show'])
-				->name('two-factor-auth');
-	Route::post('two-factor-auth', [TwoFactorAuthController::class, 'store']);
 
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
                 ->name('logout');

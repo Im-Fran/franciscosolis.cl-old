@@ -2,6 +2,8 @@
 
 namespace App\Helpers;
 
+use Illuminate\Support\Str;
+
 class Helpers {
 
 	public static function isMobile() {
@@ -18,4 +20,7 @@ class Helpers {
 		return true;
 	}
 
+	public static function generateRecoveryCode(): string {
+		return Str::random(6) . '.' . Str::random(4) . '.' . Str::random(6) . '.' . Str::random(4);
+	}
 }

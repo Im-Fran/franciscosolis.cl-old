@@ -1,9 +1,10 @@
 import { useRef } from 'react';
 import { Inertia } from "@inertiajs/inertia";
 
-export default function SidebarLink ({ title, icon, href }){
+export default function SidebarLink ({ title, icon, href, activeRoute }){
     const ref = useRef(null);
-    const active = route(route().current()) === href;
+    const currentRoute = route().current();
+    const active = typeof activeRoute === 'string' ? activeRoute === currentRoute : (!!((activeRoute || []).find(it => it === currentRoute)));
     const click = (e) => {
         e.preventDefault();
         if(href && !active) {

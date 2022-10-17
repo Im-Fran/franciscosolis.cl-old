@@ -34,6 +34,7 @@ export default function Settings() {
             onError: (err) => {
                 handleError(err, 'There was an error updating your settings.')
             },
+            only: ['user', 'flash', 'errors'],
         });
     }
 
@@ -105,6 +106,7 @@ export default function Settings() {
                     setProfilePhotoState('Edit');
                     e.target.value = ''
                 },
+                only: ['user', 'flash', 'errors'],
             })
         }
     };
@@ -130,6 +132,7 @@ export default function Settings() {
                         duration: 5000,
                     });
                 },
+                only: ['user', 'flash', 'errors'],
             })
         }
     }
@@ -158,6 +161,7 @@ export default function Settings() {
                 onFinish: () => {
                     setProfilePhotoState('Edit');
                 },
+                only: ['user', 'flash', 'errors'],
             })
         }
     }

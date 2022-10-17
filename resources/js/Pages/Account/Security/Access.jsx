@@ -1,7 +1,8 @@
 import AccountLayout from "@/js/Layouts/AccountLayout";
 
+import { Inertia } from "@inertiajs/inertia";
 import { usePage, useForm } from "@inertiajs/inertia-react";
-import {handleError, fixForms, handleChange, handleImageSize} from "@/js/Utils/Utils";
+import {handleError, fixForms, handleChange } from "@/js/Utils/Utils";
 import toast from 'react-hot-toast';
 import Button from "@/js/Components/Button";
 import Label from "@/js/Components/Forms/Label";
@@ -14,6 +15,7 @@ export default function Access({ sessions }) {
     ];
 
     const { auth } = usePage().props;
+    const { two_factor_enabled } = auth.user;
 
     const { data, setData, errors, patch, setError, clearErrors } = useForm(fixForms({
         password: '',
@@ -99,8 +101,12 @@ export default function Access({ sessions }) {
                     <h2 className="text-xl">Two Factor Authentication</h2>
                     <hr className="w-1/4 border-0 border-t-2 border-gray-500 mb-10"/>
 
-                    <div className="flex">
-                        <Button type="button" color={300}>Enable 2FA</Button>
+                    <div className="flex gap-6">
+                        <Button onClick={() => Inertia.visit(route('account.security.access.two-factor-auth.setup'))} type="button" color={300}>
+                            {two_factor_enabled ? 'Manage' : 'Enable'} 2FA
+                        </Button>
+                        {two_factor_enabled && <Button onClick={() => Inertia.post(route('account.security.access.two-factor-auth.delete'), { _method: 'delete' })}
+                                 type="button" color={200}>Disable 2FA</Button>}
                     </div>
                 </div>
             </div>

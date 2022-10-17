@@ -41,7 +41,7 @@ class LoginNotification extends Notification implements ShouldBroadcast {
      * Get the mail representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
+     * @return MailMessage
      */
     public function toMail($notifiable)
     {
@@ -72,9 +72,9 @@ class LoginNotification extends Notification implements ShouldBroadcast {
      * Get the broadcastable representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\BroadcastMessage
+     * @return BroadcastMessage
      */
-    public function toBroadcast($notifiable) {
+    public function toBroadcast(mixed $notifiable): BroadcastMessage {
         return (new BroadcastMessage([
             'message' => 'New Login Activity',
             'action' => [

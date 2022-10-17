@@ -20,19 +20,19 @@ export default function AccountLayout({ children, title, meta, className }) {
             <Sidebar className="mx-5">
                 <Sidebar.Links>
                     <SidebarTitle title="ACCOUNT" icon={<UserIcon className="w-6 h-6"/>}/>
-                    <SidebarLink title="Overview" icon={<Bars4Icon className="w-6 h-6"/>} href={route('account')} active/>
-                    <SidebarLink title="Settings" icon={<Cog6ToothIcon className="w-6 h-6"/>} href={route('account.settings')}/>
+                    <SidebarLink title="Overview" icon={<Bars4Icon className="w-6 h-6"/>} href={route('account')} activeRoute="account"/>
+                    <SidebarLink title="Settings" icon={<Cog6ToothIcon className="w-6 h-6"/>} href={route('account.settings')} activeRoute="account.settings"/>
 
                     <div className="my-5"/>
 
                     <SidebarTitle title="SECURITY" icon={<LockClosedIcon className="w-6 h-6"/>}/>
-                    <SidebarLink title="Access" icon={<KeyIcon className="w-6 h-6"/>} href={route('account.security.access')}/>
+                    <SidebarLink title="Access" icon={<KeyIcon className="w-6 h-6"/>} href={route('account.security.access')} activeRoute={['account.security.access', 'account.security.access.two-factor-auth.setup']}/>
                     <SidebarLink title="Devices" icon={<ComputerDesktopIcon className="w-6 h-6"/>} href={'#'}/>
 
                     <div className="my-5"/>
 
                     <SidebarTitle title="OTHERS" icon={<QueueListIcon className="w-6 h-6"/>}/>
-                    <SidebarLink title="Notifications" icon={<BellIcon className="w-6 h-6"/>} href={route('account.notifications')}/>
+                    <SidebarLink title="Notifications" icon={<BellIcon className="w-6 h-6"/>} href={route('account.notifications')} activeRoute="account.notifications"/>
                 </Sidebar.Links>
 
                 <Sidebar.Content>

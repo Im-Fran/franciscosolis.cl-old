@@ -50,6 +50,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["postcss", "npm:8.4.17"],\
             ["react", "npm:18.2.0"],\
             ["react-click-away-listener", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:2.2.2"],\
+            ["react-clipboard.js", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:2.0.16"],\
             ["react-dom", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:18.2.0"],\
             ["react-hot-toast", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:2.4.0"],\
             ["react-tooltip", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:4.2.21"],\
@@ -786,6 +787,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["@types/clipboard", [\
+        ["npm:2.0.1", {\
+          "packageLocation": "./.yarn/cache/@types-clipboard-npm-2.0.1-d8f88366fe-4ef5af19ac.zip/node_modules/@types/clipboard/",\
+          "packageDependencies": [\
+            ["@types/clipboard", "npm:2.0.1"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["@vitejs/plugin-react", [\
         ["npm:2.1.0", {\
           "packageLocation": "./.yarn/cache/@vitejs-plugin-react-npm-2.1.0-9f62275bdb-cd13ad549f.zip/node_modules/@vitejs/plugin-react/",\
@@ -1183,6 +1193,18 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["clipboard", [\
+        ["npm:2.0.11", {\
+          "packageLocation": "./.yarn/cache/clipboard-npm-2.0.11-45358b5ae8-413055a603.zip/node_modules/clipboard/",\
+          "packageDependencies": [\
+            ["clipboard", "npm:2.0.11"],\
+            ["good-listener", "npm:1.2.2"],\
+            ["select", "npm:1.1.2"],\
+            ["tiny-emitter", "npm:2.1.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["color-convert", [\
         ["npm:1.9.3", {\
           "packageLocation": "./.yarn/cache/color-convert-npm-1.9.3-1fe690075e-fd7a64a17c.zip/node_modules/color-convert/",\
@@ -1320,6 +1342,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/delayed-stream-npm-1.0.0-c5a4c4cc02-46fe6e83e2.zip/node_modules/delayed-stream/",\
           "packageDependencies": [\
             ["delayed-stream", "npm:1.0.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["delegate", [\
+        ["npm:3.2.0", {\
+          "packageLocation": "./.yarn/cache/delegate-npm-3.2.0-d3f849ea99-d943058fe0.zip/node_modules/delegate/",\
+          "packageDependencies": [\
+            ["delegate", "npm:3.2.0"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -1902,6 +1933,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packagePeers": [\
             "@types/csstype",\
             "csstype"\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["good-listener", [\
+        ["npm:1.2.2", {\
+          "packageLocation": "./.yarn/cache/good-listener-npm-1.2.2-e7865da849-f39fb82c4e.zip/node_modules/good-listener/",\
+          "packageDependencies": [\
+            ["good-listener", "npm:1.2.2"],\
+            ["delegate", "npm:3.2.0"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -2895,6 +2936,35 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["react-clipboard.js", [\
+        ["npm:2.0.16", {\
+          "packageLocation": "./.yarn/cache/react-clipboard.js-npm-2.0.16-89b88e3d64-e5100a7118.zip/node_modules/react-clipboard.js/",\
+          "packageDependencies": [\
+            ["react-clipboard.js", "npm:2.0.16"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:2.0.16", {\
+          "packageLocation": "./.yarn/__virtual__/react-clipboard.js-virtual-35b65d6943/0/cache/react-clipboard.js-npm-2.0.16-89b88e3d64-e5100a7118.zip/node_modules/react-clipboard.js/",\
+          "packageDependencies": [\
+            ["react-clipboard.js", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:2.0.16"],\
+            ["@types/clipboard", "npm:2.0.1"],\
+            ["@types/react", null],\
+            ["@types/react-dom", null],\
+            ["clipboard", "npm:2.0.11"],\
+            ["prop-types", "npm:15.8.1"],\
+            ["react", "npm:18.2.0"],\
+            ["react-dom", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:18.2.0"]\
+          ],\
+          "packagePeers": [\
+            "@types/react-dom",\
+            "@types/react",\
+            "react-dom",\
+            "react"\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["react-dom", [\
         ["npm:18.2.0", {\
           "packageLocation": "./.yarn/cache/react-dom-npm-18.2.0-dd675bca1c-7d323310be.zip/node_modules/react-dom/",\
@@ -3096,6 +3166,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["postcss", "npm:8.4.17"],\
             ["react", "npm:18.2.0"],\
             ["react-click-away-listener", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:2.2.2"],\
+            ["react-clipboard.js", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:2.0.16"],\
             ["react-dom", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:18.2.0"],\
             ["react-hot-toast", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:2.4.0"],\
             ["react-tooltip", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:4.2.21"],\
@@ -3147,6 +3218,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["scheduler", "npm:0.23.0"],\
             ["loose-envify", "npm:1.4.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["select", [\
+        ["npm:1.1.2", {\
+          "packageLocation": "./.yarn/cache/select-npm-1.1.2-13cd366fa2-4346151e94.zip/node_modules/select/",\
+          "packageDependencies": [\
+            ["select", "npm:1.1.2"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -3387,6 +3467,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["minizlib", "npm:2.1.2"],\
             ["mkdirp", "npm:1.0.4"],\
             ["yallist", "npm:4.0.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["tiny-emitter", [\
+        ["npm:2.1.0", {\
+          "packageLocation": "./.yarn/cache/tiny-emitter-npm-2.1.0-2a4d94f487-fbcfb51457.zip/node_modules/tiny-emitter/",\
+          "packageDependencies": [\
+            ["tiny-emitter", "npm:2.1.0"]\
           ],\
           "linkType": "HARD"\
         }]\
