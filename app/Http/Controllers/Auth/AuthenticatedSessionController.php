@@ -2,49 +2,19 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Contracts\TwoFactorAuthenticationProvider;
+use App\Helpers\Helpers;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Models\User;
-use App\Notifications\Account\LoginNotification;
 use App\Providers\RouteServiceProvider;
-use DeviceDetector\DeviceDetector;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 use Inertia\Response;
-use Stevebauman\Location\Facades\Location;
+use function inertia;
 
 class AuthenticatedSessionController extends Controller {
-	
-	private function authenticate(Request $request){
-		$request->authenticate();
-		
-		$request->session()->regenerate();
-		
-		$ip = $request->ip();
-		$location = Location::get($ip);
-		if($location == null) {
-			$location = 'Unknown Location';
-		} else {
-			$location = $location->cityName . ', ' . $location->regionName . ', ' . $location->countryName;
-		}
-		$device = $request->header('User-Agent') ?? 'Unknown Device';
-		if($device != 'Unknown Device') {
-			$deviceDetector = new DeviceDetector($device);
-			$deviceDetector->parse();
-			if($deviceDetector->isBot()) {
-				$device = 'Bot';
-			} else {
-				$browserClient = $deviceDetector->getClient('name') . ' (' . $deviceDetector->getClient('version') . ')';
-				$deviceClient = $deviceDetector->getOs('name');
-				$device = $browserClient . ' on ' . $deviceClient;
-			}
-		}
-		$request->user()->notify(new LoginNotification($ip, $device, $location));
-	}
 	
     /**
      * Display the login view.
@@ -52,7 +22,7 @@ class AuthenticatedSessionController extends Controller {
      * @return Response
      */
     public function create() {
-        return Inertia::render('Auth/Login', [
+        return inertia('Auth/Login', [
             'canResetPassword' => Route::has('password.request'),
             'status' => session('status'),
         ]);
@@ -70,9 +40,10 @@ class AuthenticatedSessionController extends Controller {
 		// Check that the user requires 2FA
 	    if($user->two_factor_secret){
 			session()->put('auth.user.id', $user->id);
+			session()->put('auth.user.remember', $request->boolean('remember'));
 		    return redirect()->route('2fa');
 	    } else {
-		    $this->authenticate($request);
+		    Helpers::authenticate($request);
 		    return redirect()->intended(RouteServiceProvider::HOME);
 	    }
     }

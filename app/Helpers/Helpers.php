@@ -2,9 +2,41 @@
 
 namespace App\Helpers;
 
+use App\Notifications\Account\LoginNotification;
+use DeviceDetector\DeviceDetector;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Stevebauman\Location\Facades\Location;
 
 class Helpers {
+	
+	public static function authenticate(Request $request){
+		Auth::loginUsingId(session()->get('auth.user.id'), session()->get('auth.user.remember'));
+		
+		$request->session()->regenerate();
+		
+		$ip = $request->ip();
+		$location = Location::get($ip);
+		if($location == null) {
+			$location = 'Unknown Location';
+		} else {
+			$location = $location->cityName . ', ' . $location->regionName . ', ' . $location->countryName;
+		}
+		$device = $request->header('User-Agent') ?? 'Unknown Device';
+		if($device != 'Unknown Device') {
+			$deviceDetector = new DeviceDetector($device);
+			$deviceDetector->parse();
+			if($deviceDetector->isBot()) {
+				$device = 'Bot';
+			} else {
+				$browserClient = $deviceDetector->getClient('name') . ' (' . $deviceDetector->getClient('version') . ')';
+				$deviceClient = $deviceDetector->getOs('name');
+				$device = $browserClient . ' on ' . $deviceClient;
+			}
+		}
+		$request->user()->notify(new LoginNotification($ip, $device, $location));
+	}
 
 	public static function isMobile() {
 		if (array_key_exists('HTTP_USER_AGENT', $_SERVER)) {

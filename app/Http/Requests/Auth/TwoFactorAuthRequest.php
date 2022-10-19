@@ -22,7 +22,15 @@ class TwoFactorAuthRequest extends FormRequest {
      */
     public function rules() {
         return [
-            'one_time_password' => ['numeric', 'required', 'min:6', 'max:6']
+            'one_time_password' => ['numeric', 'required', 'digits:6']
         ];
     }
+	
+	public function messages() {
+		return [
+			'one_time_password.required' => 'Please enter your 2FA code.',
+			'one_time_password.integer' => 'Please enter a valid 2FA code.',
+			'one_time_password.size' => 'The 2FA must be 6 digits long.'
+		];
+	}
 }
