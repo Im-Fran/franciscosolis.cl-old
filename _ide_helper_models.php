@@ -25,10 +25,6 @@ namespace App\Models{
  * @property string $slug
  * @property string|null $profile_photo_path
  * @property string|null $gravatar_email
- * @property \Illuminate\Support\Carbon|null $last_activity_at
- * @property string|null $two_factor_secret
- * @property string|null $two_factor_recovery_codes
- * @property \Illuminate\Support\Carbon|null $two_factor_verified_at
  * @property-read string $profile_photo_url
  * @property-read mixed $two_factor_enabled
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
@@ -50,15 +46,11 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|User whereEmailVerifiedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereGravatarEmail($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereLastActivityAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User wherePassword($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereProfilePhotoPath($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereRememberToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereSlug($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereTwoFactorRecoveryCodes($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereTwoFactorSecret($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereTwoFactorVerifiedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
  */
 	class User extends \Eloquent implements \Illuminate\Contracts\Auth\MustVerifyEmail {}

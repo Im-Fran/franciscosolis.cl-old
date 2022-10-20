@@ -11,9 +11,18 @@ class NotificationsController extends Controller {
     /* Shows the notifications page */
     public function index(Request $request) {
         $user = $request->user();
+
         return inertia('Account/Notifications', [
-            'notifications' => fn() => $user->readNotifications()->paginate(),
-            'unreadNotifications' => fn() => $user->unreadNotifications()->get(),
+            'notifications' => fn() => $user->readNotifications()->paginate(
+                $request->input('notifications_per_page', 10) ?? 10,
+                ['*'],
+                'notifications_page',
+            ),
+            'unreadNotifications' => fn() => $user->unreadNotifications()->paginate(
+                $request->input('unread_notifications_per_page', 10) ?? 10,
+                ['*'],
+                'unread_notifications_page',
+            ),
         ]);
     }
 

@@ -15,7 +15,7 @@ use Inertia\Response;
 use function inertia;
 
 class AuthenticatedSessionController extends Controller {
-	
+
     /**
      * Display the login view.
      *
@@ -36,11 +36,12 @@ class AuthenticatedSessionController extends Controller {
      */
     public function store(LoginRequest $request) {
 		$user = User::whereEmail($request->email)->first();
-		
-		// Check that the user requires 2FA
+
+        session()->put('auth.user.id', $user->id);
+        session()->put('auth.user.remember', $request->boolean('remember'));
+
+        // Check that the user requires 2FA
 	    if($user->two_factor_secret){
-			session()->put('auth.user.id', $user->id);
-			session()->put('auth.user.remember', $request->boolean('remember'));
 		    return redirect()->route('2fa');
 	    } else {
 		    Helpers::authenticate($request);

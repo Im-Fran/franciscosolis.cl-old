@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use App\Models\User;
 use App\Notifications\Account\LoginNotification;
 use DeviceDetector\DeviceDetector;
 use Illuminate\Http\Request;
@@ -10,12 +11,11 @@ use Illuminate\Support\Str;
 use Stevebauman\Location\Facades\Location;
 
 class Helpers {
-	
+
 	public static function authenticate(Request $request){
 		Auth::loginUsingId(session()->get('auth.user.id'), session()->get('auth.user.remember'));
-		
+
 		$request->session()->regenerate();
-		
 		$ip = $request->ip();
 		$location = Location::get($ip);
 		if($location == null) {
@@ -35,7 +35,8 @@ class Helpers {
 				$device = $browserClient . ' on ' . $deviceClient;
 			}
 		}
-		$request->user()->notify(new LoginNotification($ip, $device, $location));
+
+		Auth::user()->notify(new LoginNotification($ip, $device, $location));
 	}
 
 	public static function isMobile() {
