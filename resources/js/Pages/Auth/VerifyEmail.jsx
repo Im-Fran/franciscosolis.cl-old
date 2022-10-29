@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Link, useForm } from '@inertiajs/inertia-react';
 
 import App from '@/js/Layouts/App';
@@ -11,6 +12,17 @@ export default function VerifyEmail({ status }) {
 
         post(route('verification.send'));
     };
+
+    useEffect(() => {
+        if(window.Echo) {
+            const channel = window.Echo.private('App.User.' + window.user.id)
+                .listen('Verified', (e) => {
+                    window.location = route('account');
+                });
+
+            return () => (channel && channel.unsubscribe())
+        }
+    });
 
     return (
         <App title="Email Verification" vertical="center" horizontal="center" meta={[{ property: 'og:title', content: 'Auth > Verify Email | FranciscoSolis' }]}>
