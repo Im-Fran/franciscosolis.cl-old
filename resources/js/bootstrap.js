@@ -10,7 +10,7 @@ window.axios.defaults.withCredentials = import.meta.env.VITE_APP_ENV === 'produc
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 let token = document.head.querySelector('meta[name="csrf-token"]');
 if (token) {
-    window.axios.defaults.headers.common['X-CSRF-TOKEN'] = document.head.querySelector('meta[name="csrf-token"]').content;
+    window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
 } else {
     console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
@@ -23,6 +23,12 @@ try {
         window.Echo = new Echo({
             broadcaster: 'socket.io',
             host: host,
+            authEndpoint: window.location.hostname + '/broadcasting/auth',
+            auth: {
+                headers: {
+                    'XSRF-TOKEN': token ? token.content : null,
+                },
+            },
         })
     }).catch(err => {
         console.error('WebSocket is down! If you think this is a mistake, please contact the administrator.', err);

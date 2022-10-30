@@ -55,3 +55,5 @@ Route::prefix('/account')->middleware(['auth', '2fa', 'verified'])->group(functi
 });
 
 require __DIR__.'/auth.php';
+
+Broadcast::routes();
