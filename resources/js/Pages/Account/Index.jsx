@@ -1,8 +1,6 @@
-import { useRef } from 'react';
-
 import { BellIcon } from '@heroicons/react/24/outline';
 import AccountLayout from "@/js/Layouts/AccountLayout";
-import LoginNotification from "@/js/Components/Notifications/LoginNotification";
+import NotificationRenderer from '@/js/Components/Notifications/NotificationRenderer'
 import RelativeTime from "@/js/Components/RelativeTime";
 
 export default function Index({ notifications, notificationsCount }) {
@@ -11,7 +9,7 @@ export default function Index({ notifications, notificationsCount }) {
     ];
 
     const renderNotifications = () => {
-        if(notifications.length == 0) {
+        if(notifications.length === 0) {
             return (
                 <div className="text-center text-lg">
                     <span>All catched up 🥳</span>
@@ -21,7 +19,7 @@ export default function Index({ notifications, notificationsCount }) {
             return notifications.map((notification, index) => (
                 <div key={index} className={"flex flex-row items-center justify-between w-full px-4 py-2 border-b border-gray-200 whitespace-nowrap overflow-scroll " + (index === (notifications.length-1) ? ' border-none ' : '')}>
                     <div className="flex justify-start overflow-scroll w-full max-w-[14rem]">
-                        {notification.type === 'App\\Notifications\\Account\\LoginNotification' && <LoginNotification notification={notification} short/>}
+                        <NotificationRenderer short={true} notification={notification}/>
                     </div>
 
                     <RelativeTime date={notification.created_at} className="text-xs text-gray-400"/>
@@ -48,7 +46,7 @@ export default function Index({ notifications, notificationsCount }) {
                     </div>
 
                     <div onClick={() => openNotifications()} className="transition-all duration-300 flex justify-center items-center rounded-b-lg bg-gray-300 dark:bg-[#3c3c3c] dark:hover:bg-[#2c2c2c] bg-opacity-60 dark:bg-opacity-100 hover:bg-opacity-100 py-2 cursor-pointer">
-                    {notificationsCount > 0 ? <>Show other {notificationsCount} notifications.</> : <>View All Notifications</> }
+                        {notificationsCount > 0 ? <>Show other {notificationsCount} notifications.</> : <>View All Notifications</> }
                     </div>
                 </div>
             </div>

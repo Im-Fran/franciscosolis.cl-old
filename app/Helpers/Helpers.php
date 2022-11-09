@@ -8,17 +8,26 @@ use DeviceDetector\DeviceDetector;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Session;
 use Stevebauman\Location\Facades\Location;
 
 class Helpers {
-
-	public static function authenticate(Request $request){
-		Auth::loginUsingId(session()->get('auth.user.id'), session()->get('auth.user.remember'));
+	
+	public static function repeat($times, $callback): void {
+		if($callback){
+			for($i = 0; $i < $times; $i++) {
+				$callback($i);
+			}
+		}
+	}
+	
+	public static function authenticate(Request $request): void {
+		Auth::loginUsingId(Session::get('auth.user.id'), Session::get('auth.user.remember'));
 
 		$request->session()->regenerate();
 		$ip = $request->ip();
-		$location = Location::get($ip);
-		if($location == null) {
+		$location = Location::get();
+		if(!$location) {
 			$location = 'Unknown Location';
 		} else {
 			$location = $location->cityName . ', ' . $location->regionName . ', ' . $location->countryName;
@@ -36,7 +45,7 @@ class Helpers {
 			}
 		}
 
-		Auth::user()->notify(new LoginNotification($ip, $device, $location));
+		Auth::user()->notify(new LoginNotification(($location ? $location->getClientIP() : $ip), $device, $location));
 	}
 
 	public static function isMobile() {

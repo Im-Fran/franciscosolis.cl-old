@@ -3,8 +3,8 @@ import toast from "react-hot-toast";
 
 import { CheckCircleIcon, TrashIcon, BellIcon, ClockIcon } from '@heroicons/react/24/outline';
 import AccountLayout from "@/js/Layouts/AccountLayout";
-import LoginNotification from "@/js/Components/Notifications/LoginNotification";
 import RelativeTime from "@/js/Components/RelativeTime";
+import NotificationRenderer from "@/js/Components/Notifications/NotificationRenderer";
 
 export default function Notifications({ notifications, unreadNotifications }) {
 
@@ -47,7 +47,7 @@ export default function Notifications({ notifications, unreadNotifications }) {
     };
 
     const renderUnreadNotifications = () => {
-        if(unreadNotifications.length == 0) {
+        if(unreadNotifications.length === 0) {
             return (
                 <div className="text-center text-lg">
                     <span>All catched up 🥳</span>
@@ -59,7 +59,7 @@ export default function Notifications({ notifications, unreadNotifications }) {
                     <div className="flex flex-row justify-start overflow-scroll w-full max-w-screen-md">
                         <CheckCircleIcon data-tip="Mark As Read" className="w-6 h-6 text-brand-300 cursor-pointer" onClick={() => markAsRead(notification)}/>
                         &nbsp;&nbsp;&nbsp;
-                        {notification.type === 'App\\Notifications\\Account\\LoginNotification' && <LoginNotification notification={notification}/>}
+                        <NotificationRenderer short={false} notification={notification}/>
                     </div>
 
                     <RelativeTime date={notification.created_at} className="text-xs text-gray-400"/>
@@ -74,7 +74,7 @@ export default function Notifications({ notifications, unreadNotifications }) {
                 <div className="flex flex-row justify-start overflow-scroll w-full max-w-screen-md">
                     <TrashIcon data-tip="Delete Notification" onClick={() => deleteNotification(notification)} className="w-6 h-6 text-brand-200 cursor-pointer"/>
                     &nbsp;&nbsp;&nbsp;
-                    {notification.type === 'App\\Notifications\\Account\\LoginNotification' && <LoginNotification notification={notification}/>}
+                    <NotificationRenderer short={false} notification={notification}/>
                 </div>
                 <RelativeTime date={notification.created_at} className="text-xs text-gray-400"/>
             </div>
