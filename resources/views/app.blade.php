@@ -6,7 +6,6 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <!-- WebSocket -->
         <script>window.websocket_port = "{{ config('services.websocket.port') }}"</script>
-        <script src="//{{ request()->getHost() }}:{{config('services.websocket.port')}}/socket.io/socket.io.js"></script>
 
         <title inertia>{{ config('app.name', 'Laravel') }}</title>
 

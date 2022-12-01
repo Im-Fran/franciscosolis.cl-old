@@ -39,7 +39,7 @@ export default function Header() {
 
     /* Login/Register or Account Link */
     const authenticated = (
-        auth.user ? <div className="flex flex-row justify-between items-center gap-2">
+        auth && auth.user ? <div className="flex flex-row justify-between items-center gap-2">
             <div className="flex items-center">{greeting},&nbsp;<Link href={/*route('profile', { user: auth.user.slug })*/ '#'} className="flex items-center hover:text-red-500 transition-all duration-200">{auth.user.name}</Link>!</div>
             <span onClick={toggleMenu} className="flex items-center cursor-pointer"><img className="h-8 w-8 border border-white rounded-full object-cover" src={handleImageSize(auth.user.profile_photo_url, 32)} alt="Avatar" loading="lazy" /></span>
         </div> : <></>

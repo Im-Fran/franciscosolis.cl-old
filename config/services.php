@@ -32,7 +32,7 @@ return [
     ],
 
     'websocket' => [
-        'port' => env('WEBSOCKET_PORT', 6001),
+        'port' => env('SOKETI_PORT', 6001),
     ],
 
 ];

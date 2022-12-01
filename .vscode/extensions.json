@@ -5,6 +5,7 @@
         "dsznajder.es7-react-js-snippets",
         "ecmel.vscode-html-css",
         "visualstudioexptteam.vscodeintellicode",
+        "visualstudioexptteam.intellicode-api-usage-examples",
         "zignd.html-css-class-completion",
         "xabikos.javascriptsnippets",
         "onecentlin.laravel-extension-pack",
@@ -14,6 +15,10 @@
         "phiter.phpstorm-snippets",
         "mrmlnc.vscode-scss",
         "bradlc.vscode-tailwindcss",
-        "gamunu.vscode-yarn"
+        "gamunu.vscode-yarn",
+        "wix.vscode-import-cost",
+        "chrmarti.regex",
+        "mtxr.sqltools",
+        "mtxr.sqltools-driver-pg"
     ]
 }

@@ -33,9 +33,9 @@ class Kernel extends HttpKernel {
 
     protected $middlewarePriority = [
 		StartSession::class,
-		ShareErrorsFromSession::class,
 		Authenticate::class,
 		AuthenticateSession::class,
+		ShareErrorsFromSession::class,
 		SubstituteBindings::class,
 		Authorize::class,
 	];
@@ -57,6 +57,9 @@ class Kernel extends HttpKernel {
         TrustHosts::class,
         HandleCors::class,
         ShareErrorsFromSession::class,
+        EncryptCookies::class,
+        AddQueuedCookiesToResponse::class,
+        HandleInertiaRequests::class,
     ];
 
     /**
@@ -66,11 +69,8 @@ class Kernel extends HttpKernel {
      */
     protected $middlewareGroups = [
         'web' => [
-            EncryptCookies::class,
-            AddQueuedCookiesToResponse::class,
-            VerifyCsrfToken::class,
             SubstituteBindings::class,
-            HandleInertiaRequests::class,
+            VerifyCsrfToken::class,
         ],
 
         'api' => [

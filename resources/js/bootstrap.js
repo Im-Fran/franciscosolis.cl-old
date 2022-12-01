@@ -16,21 +16,21 @@ if (token) {
 }
 
 /* Load WebSocket */
-import Echo from 'laravel-echo'
+import Echo from 'laravel-echo';
+import Pusher from 'pusher-js';
+window.pusher = Pusher;
+
 try {
-    let host = window.location.origin + ':' + window.websocket_port;
-    axios.get(host).then(() => {
-        window.Echo = new Echo({
-            broadcaster: 'socket.io',
-            host: host,
-            authEndpoint: window.location.hostname + '/broadcasting/auth',
-            auth: {
-                headers: {
-                    'XSRF-TOKEN': token ? token.content : null,
-                },
-            },
-        })
-    }).catch(err => {
-        console.error('WebSocket is down! If you think this is a mistake, please contact the administrator.', err);
-    })
+    window.Echo = new Echo({
+        broadcaster: 'pusher',
+        authEndpoint: '/broadcasting/auth',
+        key: import.meta.env.VITE_PUSHER_APP_KEY,
+        wsHost: import.meta.env.VITE_PUSHER_HOST,
+        wsPort: import.meta.env.VITE_PUSHER_PORT,
+        wssPort: import.meta.env.VITE_PUSHER_PORT,
+        forceTLS: import.meta.env.VITE_PUSHER_SCHEME === 'https',
+        disableStats: true,
+        enabledTransports: ['ws', 'wss'],
+        encrypted: true,
+    });
 }catch(e){}

@@ -1,18 +1,23 @@
-import {Link} from '@inertiajs/inertia-react'
+import { Link, usePage } from '@inertiajs/inertia-react'
+import { useEffect } from "react";
+import { handleError } from "@/js/Utils/Utils";
+
 import AnimatedLink from "@/js/Components/AnimatedLink";
 import ThemeSwitch from '@/js/Components/ThemeSwitch';
-import {useEffect} from "react";
-import {handleError} from "@/js/Utils/Utils";
 
 export default function Foot(props) {
+    const { auth } = usePage().props
+
     useEffect(() => {
-        const interval = setInterval(() => {
-            axios.get(route('activity-status.set')).catch(err => {
-                handleError(err, 'Failed to set activity status! Please reload the page.<br>If the problem persists, please contact us.');
-            })
-        }, 60000);
-        return () => clearInterval(interval);
-    })
+        if(auth && auth.check && auth.user) {
+            const interval = setInterval(() => {
+                axios.get(route('activity-status.set')).catch(err => {
+                    handleError(err, 'Failed to set activity status! Please reload the page.<br>If the problem persists, please contact us.');
+                })
+            }, 60000);
+            return () => clearInterval(interval);
+        }
+    }, [auth])
     return (
         <div className="transition transform-all duration-200 bg-brand-100 dark:bg-[#353535] shadow text-white">
             <div className="mx-auto px-6 py-3">

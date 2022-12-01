@@ -1,5 +1,3 @@
-import { useRef } from 'react';
-
 import { BellIcon } from '@heroicons/react/24/outline';
 import AccountLayout from "@/js/Layouts/AccountLayout";
 import LoginNotification from "@/js/Components/Notifications/LoginNotification";

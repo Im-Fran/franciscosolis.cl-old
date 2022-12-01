@@ -11,7 +11,7 @@ import { createRoot } from 'react-dom/client';
 import { createInertiaApp } from '@inertiajs/inertia-react';
 import { InertiaProgress } from '@inertiajs/progress';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
-import App from '@/js/Layouts/App'
+import PersistentLayout from '@/js/Layouts/PersistentLayout'
 
 dayjs.extend(relativeTime);
 dayjs.extend(isToday);
@@ -21,7 +21,7 @@ createInertiaApp({
     title: (title) => `${title} | FranciscoSolis`,
     resolve: (name) => {
         const page = resolvePageComponent(`./Pages/${name}.jsx`, import.meta.glob(['./Pages/**/*.jsx', '../images/**']))
-        page.layout = page.layout || App
+        page.layout = PersistentLayout
         return page
     },
     setup({ el, App, props }) {

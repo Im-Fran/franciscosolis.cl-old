@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"path": "../"
+		}
+	],
+	"settings": {
+        "intelephense.environment.phpVersion": "8.1.9",
+        "intelephense.environment.documentRoot": "public/index.php"
+    }
+}

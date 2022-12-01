@@ -81,13 +81,13 @@ class User extends Authenticatable implements MustVerifyEmail {
     }
 
     public function receivesBroadcastNotificationsOn(): string {
-        return "App.Models.User.$this->id";
+        return "User.$this->id";
     }
-	
+
 	public function getTwoFactorEnabledAttribute() {
 		return !is_null($this->two_factor_secret);
 	}
-	
+
 	/**
 	 * Interact with the user's two-factor secret.
 	 *
@@ -99,7 +99,7 @@ class User extends Authenticatable implements MustVerifyEmail {
 			set: fn ($value) => encrypt($value),
 		);
 	}
-	
+
 	/**
 	 * Interact with the user's two-factor recovery codes.
 	 *
@@ -111,7 +111,7 @@ class User extends Authenticatable implements MustVerifyEmail {
 			set: fn ($value) => encrypt($value),
 		);
 	}
-	
+
 	public function validate2FA($input) {
 		$google2fa = new \PragmaRX\Google2FA\Google2FA();
 		return $google2fa->verifyKey($this->two_factor_secret, $input);

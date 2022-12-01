@@ -1,10 +1,18 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import ThemeLight from '$/theme-light.png';
 import ThemeDark from '$/theme-dark.png';
 
 export default function ThemeSwitch() {
     const [dark, setDark] = useState(localStorage.getItem('theme') === 'dark');
+
+    const updateThemedImages = () => {
+        document.querySelectorAll('img[themed-image]').forEach(it => {
+            if(it.getAttribute('themed-image') !== 'false'){
+                it.src = it.getAttribute(`theme-${dark ? 'dark' : 'light'}`)
+            }
+        })
+    }
 
     const toggleDark = () => {
         let newTheme = !dark ? 'dark' : 'light';
@@ -15,12 +23,10 @@ export default function ThemeSwitch() {
         }
         localStorage.setItem('theme', newTheme)
 
-        document.querySelectorAll('img[themed-image="true"]').forEach(it => {
-            it.src = newTheme === 'dark' ? it.getAttribute('theme-dark') : it.getAttribute('theme-light')
-        })
-
         setDark(!dark);
     };
+
+    useEffect(updateThemedImages, [dark])
 
 
     return (

@@ -6,32 +6,33 @@
         "prod": "vite build"
     },
     "devDependencies": {
-        "@headlessui/react": "^1.7.3",
+        "@headlessui/react": "^1.7.4",
         "@inertiajs/inertia": "^0.11.1",
         "@inertiajs/inertia-react": "^0.8.1",
         "@inertiajs/progress": "^0.2.7",
         "@tailwindcss/forms": "^0.5.3",
-        "@vitejs/plugin-react": "^2.1.0",
-        "autoprefixer": "^10.4.12",
-        "axios": "^0.27.2",
-        "laravel-vite-plugin": "^0.6.1",
+        "@vitejs/plugin-react": "^2.2.0",
+        "autoprefixer": "^10.4.13",
+        "axios": "^1.2.0",
+        "laravel-vite-plugin": "^0.7.1",
         "lodash": "^4.17.21",
-        "postcss": "^8.4.17",
+        "postcss": "^8.4.19",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
-        "tailwindcss": "^3.1.8",
-        "vite": "^3.1.4"
+        "tailwindcss": "^3.2.4",
+        "vite": "^3.2.4"
     },
     "dependencies": {
-        "@heroicons/react": "^2.0.11",
-        "dayjs": "^1.11.5",
-        "laravel-echo": "^1.14.0",
+        "@heroicons/react": "^2.0.13",
+        "dayjs": "^1.11.6",
+        "laravel-echo": "^1.14.2",
         "picocolors": "^1.0.0",
+        "pusher-js": "^7.5.0",
         "react-click-away-listener": "^2.2.2",
         "react-clipboard.js": "^2.0.16",
         "react-hot-toast": "^2.4.0",
-        "react-tooltip": "^4.2.21",
-        "socket.io-client": "^4.5.2"
+        "react-tooltip": "^4.5.1",
+        "socket.io-client": "^4.5.4"
     },
     "packageManager": "yarn@3.2.3"
 }
