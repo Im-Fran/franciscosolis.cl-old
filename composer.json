@@ -14,6 +14,7 @@
         "laravel/tinker": "^2.7",
         "matomo/device-detector": "^6.0",
         "pragmarx/google2fa-laravel": "^2.0",
+        "predis/predis": "^2.0",
         "pusher/pusher-php-server": "^7.2",
         "spatie/image": "^2.2",
         "spatie/laravel-activitylog": "^4.5",

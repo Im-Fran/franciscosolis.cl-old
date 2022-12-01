@@ -1,11 +1,13 @@
 import { useEffect } from "react";
-import { Link, useForm } from '@inertiajs/inertia-react';
+import { Link, useForm, usePage } from '@inertiajs/inertia-react';
+import { Inertia } from "@inertiajs/inertia";
 
 import App from '@/js/Layouts/App';
 import Button from '@/js/Components/Button';
 
 export default function VerifyEmail({ status }) {
     const { post, processing } = useForm();
+    const { auth } =  usePage().props
 
     const submit = (e) => {
         e.preventDefault();
@@ -14,19 +16,20 @@ export default function VerifyEmail({ status }) {
     };
 
     useEffect(() => {
-        if(window.Echo) {
-            const channel = window.Echo.private('App.User.' + window.user.id)
-                .listen('Verified', (e) => {
-                    window.location = route('account');
-                });
+        if(window.Echo && auth.check && auth.user) {
+            const channel = window.Echo.private('App.Models.User.' + auth.user.id).notification((notification) => {
+                if(notification.type === 'App\\Notifications\\Account\\EmailVerifiedNotification') {
+                    Inertia.visit(route('account'))
+                }
+            });
 
             return () => (channel && channel.unsubscribe())
         }
-    });
+    }, [window.Echo, auth.user, auth.check]);
 
     return (
         <App title="Email Verification" vertical="center" horizontal="center" meta={[{ property: 'og:title', content: 'Auth > Verify Email | FranciscoSolis' }]}>
-            <div className="flex flex-col items-center justify-between shadow-xl border border-brand-500 dark:border-none dark:bg-[#303030] rounded-2xl w-5/6 md:w-1/2 h-[20rem] p-10">
+            <div className="flex flex-col items-center justify-between shadow-xl border border-brand-500 dark:border-none dark:bg-[#303030] rounded-2xl w-5/6 md:w-1/2 h-[24rem] p-10">
 
                 <h1 className="text-2xl font-black mb-10">Email Verification</h1>
 
