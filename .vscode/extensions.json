@@ -19,6 +19,7 @@
         "wix.vscode-import-cost",
         "chrmarti.regex",
         "mtxr.sqltools",
-        "mtxr.sqltools-driver-pg"
+        "mtxr.sqltools-driver-pg",
+        "ms-azuretools.vscode-docker"
     ]
 }
