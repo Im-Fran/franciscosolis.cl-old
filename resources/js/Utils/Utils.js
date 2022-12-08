@@ -52,3 +52,8 @@ export function fixForms(data) {
     }
     return result;
 }
+
+// Checks if the current theme is dark mode or not
+export function isDarkMode() {
+    return document.getElementById('app').classList.contains('dark');
+}

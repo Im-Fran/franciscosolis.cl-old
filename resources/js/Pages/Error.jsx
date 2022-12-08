@@ -5,7 +5,7 @@ import ColoredBlack from '$/Colored-Black.svg';
 import ColoredWhite from '$/Colored-White.svg';
 
 import { ArrowLeftIcon } from '@heroicons/react/24/outline';
-import App from '../Layouts/App';
+import App from '@/js/Layouts/App';
 
 export default function Error({ errors, exception, data }){
 

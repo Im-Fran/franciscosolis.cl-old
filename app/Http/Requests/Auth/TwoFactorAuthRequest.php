@@ -2,10 +2,11 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Rules\OneTimePassword;
 use Illuminate\Foundation\Http\FormRequest;
 
 class TwoFactorAuthRequest extends FormRequest {
-	
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -22,10 +23,10 @@ class TwoFactorAuthRequest extends FormRequest {
      */
     public function rules() {
         return [
-            'one_time_password' => ['numeric', 'required', 'digits:6']
+            'one_time_password' => ['string', 'required', new OneTimePassword]
         ];
     }
-	
+
 	public function messages() {
 		return [
 			'one_time_password.required' => 'Please enter your 2FA code.',

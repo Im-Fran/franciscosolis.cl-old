@@ -12,7 +12,7 @@ use Session;
 use Stevebauman\Location\Facades\Location;
 
 class Helpers {
-	
+
 	public static function repeat($times, $callback): void {
 		if($callback){
 			for($i = 0; $i < $times; $i++) {
@@ -20,17 +20,17 @@ class Helpers {
 			}
 		}
 	}
-	
+
 	public static function authenticate(Request $request): void {
 		Auth::loginUsingId(Session::get('auth.user.id'), Session::get('auth.user.remember'));
 
 		$request->session()->regenerate();
-		$ip = $request->ip();
 		$location = Location::get();
-		if(!$location) {
-			$location = 'Unknown Location';
+		$ip = optional($location)->ip ?: $request->ip();
+		if($location) {
+			$locationString = $location->cityName . ', ' . $location->regionName . ', ' . $location->countryName;
 		} else {
-			$location = $location->cityName . ', ' . $location->regionName . ', ' . $location->countryName;
+            $locationString = 'Unknown Location';
 		}
 		$device = $request->header('User-Agent') ?? 'Unknown Device';
 		if($device != 'Unknown Device') {
@@ -45,7 +45,7 @@ class Helpers {
 			}
 		}
 
-		Auth::user()->notify(new LoginNotification(($location ? $location->getClientIP() : $ip), $device, $location));
+		Auth::user()->notify(new LoginNotification($ip, $device, $locationString));
 	}
 
 	public static function isMobile() {

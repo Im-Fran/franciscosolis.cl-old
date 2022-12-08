@@ -71,7 +71,8 @@ class HandleInertiaRequests extends Middleware
                 return $data;
             },
             'utils' => [
-                'global_warning' => 'This is a global warning!'
+                'global_warning' => 'This is a global warning!',
+                'env' => app()->environment(),
             ],
             'ziggy' => function () use ($request) {
                 return array_merge((new Ziggy)->toArray(), [

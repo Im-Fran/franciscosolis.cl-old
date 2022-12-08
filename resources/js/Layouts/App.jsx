@@ -1,7 +1,9 @@
 import { useEffect } from 'react';
 import { Head, usePage } from '@inertiajs/inertia-react';
 import toast, { Toaster } from 'react-hot-toast';
-import ReactTooltip from 'react-tooltip';
+import { Tooltip } from 'react-tooltip';
+import 'react-tooltip/dist/react-tooltip.css'
+
 
 import Header from '@/js/Shared/Header';
 import Foot from '@/js/Shared/Foot';
@@ -44,7 +46,7 @@ export default function App({ children, title, meta = [], vertical = "top", hori
                     <Toaster position="top-right" reverseOrder />
                     <div className={"container mx-auto my-10 min-h-screen flex " + (vertical === "center" ? "items-center" : (vertical === "bottom" ? "items-end" : "items-start")) + " " + (horizontal === "center" ? "justify-center" : (horizontal === "right" ? "justify-end" : "justify-start"))}>
                         {children}
-                        <ReactTooltip backgroundColor="#111827" textColor="#fff" />
+                        <Tooltip backgroundColor="#111827" textColor="#fff" />
                     </div>
                     <Foot />
                 </div>

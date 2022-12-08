@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Contracts\TwoFactorAuthenticationProvider;
 use App\Helpers\Helpers;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\TwoFactorAuthRequest;
@@ -14,7 +13,17 @@ use Psr\Container\NotFoundExceptionInterface;
 
 class TwoFactorAuthController extends Controller {
 
-	public function show() {
+	public function show(Request $request) {
+        if(!session()->has('auth.user.id')) {
+            return redirect()->route('login')->withErrors(['Your session has expired! Please try again.']);
+        }
+
+        $user = User::find(session()->get('auth.user.id'));
+        if(!$user->two_factor_enabled) { // Authenticate if user has no 2fa
+            Helpers::authenticate($request);
+            return redirect()->intended(RouteServiceProvider::HOME);
+        }
+
 		return inertia('Auth/TwoFactorAuth');
 	}
 
@@ -24,9 +33,8 @@ class TwoFactorAuthController extends Controller {
 				return redirect()->route('login')->withErrors(['Your session has expired! Please try again.']);
 			}
 
-			$code = $request->one_time_password;
 			$user = User::find(session()->get('auth.user.id'));
-			if(app(TwoFactorAuthenticationProvider::class)->verify($user->two_factor_secret, $code)) {
+			if($user->validate2FA($request->one_time_password)) {
 				Helpers::authenticate($request);
 				return redirect()->intended(RouteServiceProvider::HOME);
 			} else {

@@ -28,7 +28,7 @@ export default function AccountLayout({ children, title, meta, className }) {
 
                     <SidebarTitle title="SECURITY" icon={<LockClosedIcon className="w-6 h-6"/>}/>
                     <SidebarLink title="Access" icon={<KeyIcon className="w-6 h-6"/>} href={route('account.security.access')} activeRoute={['account.security.access', 'account.security.access.two-factor-auth.setup']}/>
-                    <SidebarLink title="Devices" icon={<ComputerDesktopIcon className="w-6 h-6"/>} href={'#'} disabled/>
+                    <SidebarLink title="Devices" icon={<ComputerDesktopIcon className="w-6 h-6"/>} href={'#'} disabled soon/>
 
                     <div className="my-5"/>
 

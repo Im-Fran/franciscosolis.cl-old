@@ -5,7 +5,7 @@ namespace App\Actions;
 use App\Notifications\Account\TwoFactorAuthenticationDisabled;
 
 class DisableTwoFactorAuth {
-	
+
 	/**
 	 * Enable two-factor authentication for the user.
 	 *
@@ -17,8 +17,9 @@ class DisableTwoFactorAuth {
 			$user->forceFill([
 				'two_factor_secret' => null,
 				'two_factor_recovery_codes' => null,
+                'two_factor_verified_at' => null,
 			])->save();
-			
+
 			$user->notify(new TwoFactorAuthenticationDisabled());
 		}
 	}

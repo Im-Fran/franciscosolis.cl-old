@@ -6,6 +6,18 @@
 	],
 	"settings": {
         "intelephense.environment.phpVersion": "8.1.9",
-        "intelephense.environment.documentRoot": "public/index.php"
+		"intelephense.environment.documentRoot": "public/index.php",
+		"sqltools.connections": [
+			{
+				"previewLimit": 50,
+				"server": "localhost",
+				"port": 5432,
+				"driver": "PostgreSQL",
+				"name": "FranciscoSolis",
+				"database": "franciscosolis",
+				"username": "sail",
+				"password": "password"
+			}
+		]
     }
 }

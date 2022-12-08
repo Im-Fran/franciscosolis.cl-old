@@ -14,10 +14,10 @@ export default function ConfirmPassword() {
     });
 
     const onBlur = () => {
-        if(data.one_time_password.length !== 6) {
+        if(data.one_time_password.length !== 6 && data.one_time_password.length !== 23) {
             setError('one_time_password', 'The 2FA Code must be 6 characters.');
-        } else if (/[0-9]{6}/.test(data.one_time_password) === false) {
-            setError('one_time_password', 'The 2FA Code must only contain numbers.');
+        } else if (/[0-9]{6}|[A-Za-z0-9]{6}\.[A-Za-z0-9]{4}\.[A-Za-z0-9]{6}\.[A-Za-z0-9]{4}/.test(data.one_time_password) === false) {
+            setError('one_time_password', 'Please make sure you\'re using a valid 2FA Code or Backup Code.');
         } else {
             clearErrors('one_time_password');
         }
@@ -48,7 +48,7 @@ export default function ConfirmPassword() {
 
                     <Input
                         type="text"
-                        pattern="[0-9]{6}"
+                        pattern="[0-9]{6}|[A-Za-z0-9]{6}\.[A-Za-z0-9]{4}\.[A-Za-z0-9]{6}\.[A-Za-z0-9]{4}"
                         name="one_time_password"
                         value={data.one_time_password}
                         className="mt-1 block w-full"

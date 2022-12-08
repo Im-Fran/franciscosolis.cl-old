@@ -4,7 +4,7 @@ export default function Label({ forInput, value, className = '', info = null, ch
     return (
         <label htmlFor={forInput} className={`flex flex-row items-center font-medium text-md ` + className}>
             {value ? value : children}
-            {info ? <>&nbsp;<InformationCircleIcon data-tip={info} className="h-4 w-4"/></> : <></>}
+            {info ? <>&nbsp;<InformationCircleIcon data-content={info} className="h-4 w-4"/></> : <></>}
         </label>
     );
 }
