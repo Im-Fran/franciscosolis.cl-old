@@ -7,8 +7,9 @@ import 'react-tooltip/dist/react-tooltip.css'
 
 import Header from '@/js/Shared/Header';
 import Foot from '@/js/Shared/Foot';
+import PersistentLayout from './PersistentLayout';
 
-export default function App({ children, title, meta = [], vertical = "top", horizontal = "left" }) {
+const App = ({ children, title, meta = [], vertical = "top", horizontal = "left" }) => {
     const { flash } = usePage().props;
     useEffect(() => {
         flash.forEach(item => {
@@ -54,3 +55,8 @@ export default function App({ children, title, meta = [], vertical = "top", hori
         </>
     );
 }
+
+App.layout = page => <PersistentLayout children={page}/>
+console.log('Hi from App.jsx', App.layout);
+
+export default App;

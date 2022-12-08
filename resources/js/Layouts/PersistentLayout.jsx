@@ -3,10 +3,8 @@ import { usePage, Link } from '@inertiajs/inertia-react'
 
 import { BellIcon } from '@heroicons/react/24/outline';
 
-
-export default function PersistentLayout(children) {
+export default function PersistentLayout({ children }) {
     const { auth } = usePage().props
-    console.log('Hi from persistent layout!');
     useEffect(() => {
         if (window.Echo && auth.check && auth.user) {
             console.log('Logging in into the personal private channel')
@@ -28,8 +26,8 @@ export default function PersistentLayout(children) {
     }, [auth, window.Echo]);
 
     return (
-        <div data-persistent-layout={1}>
+        <main data-persistent-layout={1}>
             {children}
-        </div>
+        </main>
     )
 }
