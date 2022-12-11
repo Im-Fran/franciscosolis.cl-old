@@ -14,7 +14,7 @@ export default function SidebarLink ({ title, icon, href, activeRoute, disabled 
                     element.scrollIntoView({ behavior: 'smooth' });
                 }
             } else {
-                document.querySelectorAll('.sidebar-link.active')[0].classList.remove('active', 'border-l', 'border-brand-500', 'dark:border-brand-600', 'pl-1');
+                (document.querySelectorAll('.sidebar-link.active') || [])[0]?.classList?.remove('active', 'border-l', 'border-brand-500', 'dark:border-brand-600', 'pl-1');
                 Inertia.visit(href);
                 ref.current.classList.add('active', 'border-l', 'border-brand-500', 'dark:border-brand-600', 'pl-1');
             }

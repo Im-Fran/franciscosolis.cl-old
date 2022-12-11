@@ -9,7 +9,7 @@ import Label from "@/js/Components/Forms/Label";
 import Input from "@/js/Components/Forms/Input";
 import InputError from "@/js/Components/Forms/InputError";
 
-export default function Access({ sessions }) {
+export default function Access() {
     const meta = [
         { property: 'og:title', content: 'Account > Security > Login & Sessions | FranciscoSolis' },
     ];
