@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Contracts\TwoFactorAuthenticationProvider as TwoFactorAuthContract;
+use Illuminate\Contracts\Cache\Repository;
 use Illuminate\Support\ServiceProvider;
-use Inertia\Inertia;
+use PragmaRX\Google2FA\Google2FA;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,10 +15,15 @@ class AppServiceProvider extends ServiceProvider
      * @return void
      */
     public function register() {
-	    if ($this->app->isLocal()) {
-		    $this->app->register(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
+	    if (app()->isLocal()) {
+		    app()->register(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
 	    }
 
+		// Register the 2FA Auth Provider
+		app()->singleton(TwoFactorAuthContract::class, fn($app) => new TwoFactorAuthProvider(
+			$app->make(Google2FA::class),
+			$app->make(Repository::class),
+		));
     }
 
     /**

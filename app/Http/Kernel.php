@@ -5,6 +5,7 @@ namespace App\Http;
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\EncryptCookies;
 use App\Http\Middleware\HandleInertiaRequests;
+use App\Http\Middleware\LogoutDestroyedSession;
 use App\Http\Middleware\PreventRequestsDuringMaintenance;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Middleware\TrimStrings;
@@ -27,14 +28,15 @@ use Illuminate\Routing\Middleware\ValidateSignature;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use PragmaRX\Google2FALaravel\Middleware;
 
 class Kernel extends HttpKernel {
 
     protected $middlewarePriority = [
 		StartSession::class,
-		ShareErrorsFromSession::class,
 		Authenticate::class,
 		AuthenticateSession::class,
+		ShareErrorsFromSession::class,
 		SubstituteBindings::class,
 		Authorize::class,
 	];
@@ -56,6 +58,9 @@ class Kernel extends HttpKernel {
         TrustHosts::class,
         HandleCors::class,
         ShareErrorsFromSession::class,
+        EncryptCookies::class,
+        AddQueuedCookiesToResponse::class,
+        HandleInertiaRequests::class,
     ];
 
     /**
@@ -65,11 +70,9 @@ class Kernel extends HttpKernel {
      */
     protected $middlewareGroups = [
         'web' => [
-            EncryptCookies::class,
-            AddQueuedCookiesToResponse::class,
-            VerifyCsrfToken::class,
             SubstituteBindings::class,
-            HandleInertiaRequests::class,
+            VerifyCsrfToken::class,
+            LogoutDestroyedSession::class,
         ],
 
         'api' => [
@@ -97,5 +100,6 @@ class Kernel extends HttpKernel {
         'signed' => ValidateSignature::class,
         'throttle' => ThrottleRequests::class,
         'verified' => EnsureEmailIsVerified::class,
+	    '2fa' => Middleware::class,
     ];
 }

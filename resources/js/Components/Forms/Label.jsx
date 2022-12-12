@@ -1,7 +1,10 @@
-export default function Label({ forInput, value, className, children }) {
+import {InformationCircleIcon} from '@heroicons/react/24/outline';
+
+export default function Label({ forInput, value, className = '', info = null, children = (<></>) }) {
     return (
-        <label htmlFor={forInput} className={`block font-medium text-md ` + className}>
+        <label htmlFor={forInput} className={`flex flex-row items-center font-medium text-md ` + className}>
             {value ? value : children}
+            {info ? <>&nbsp;<InformationCircleIcon data-content={info} className="h-4 w-4"/></> : <></>}
         </label>
     );
 }

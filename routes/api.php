@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API as Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +15,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+
+Route::prefix('activity-status')->middleware(['auth:sanctum'])->group(function(){
+	Route::get('/', [Controllers\ActivityController::class, 'setActivity'])
+		->name('activity-status.set');
+	
+	Route::get('/{user}', [Controllers\ActivityController::class, 'getActivity'])
+		->name('activity-status.get');
 });

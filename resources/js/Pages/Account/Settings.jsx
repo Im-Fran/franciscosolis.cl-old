@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import { useForm, usePage } from "@inertiajs/inertia-react";
-import { Inertia } from '@inertiajs/inertia';
-import { handleError } from '@/js/Utils/Utils'
+import {useState} from 'react';
+import {useForm, usePage} from "@inertiajs/inertia-react";
+import {Inertia} from '@inertiajs/inertia';
+import {handleError, fixForms, handleImageSize} from '@/js/Utils/Utils'
 import toast from 'react-hot-toast';
 
 import AccountLayout from "@/js/Layouts/AccountLayout";
@@ -17,11 +17,11 @@ export default function Settings() {
 
     const { auth } = usePage().props;
 
-    const { data, setData, errors, patch, clearErrors, setError } = useForm({
+    const { data, setData, errors, patch, clearErrors, setError } = useForm(fixForms({
         name: auth.user.name,
         email: auth.user.email,
         gravatar_email: auth.user.gravatar_email,
-    });
+    }));
 
     const submit = (e) => {
         e.preventDefault();
@@ -34,6 +34,7 @@ export default function Settings() {
             onError: (err) => {
                 handleError(err, 'There was an error updating your settings.')
             },
+            only: ['user', 'flash', 'errors'],
         });
     }
 
@@ -54,7 +55,7 @@ export default function Settings() {
         } else if(name.length > 255){
             setError('name', 'Name cannot be longer than 255 characters.');
         } else {
-            clearErrors();
+            clearErrors('name');
         }
     };
 
@@ -105,12 +106,14 @@ export default function Settings() {
                     setProfilePhotoState('Edit');
                     e.target.value = ''
                 },
+                only: ['user', 'flash', 'errors'],
             })
         }
     };
 
     const clearProfilePhoto = () => {
-        if(auth.user.profile_photo_path === null){
+        const { profile_photo_path } = auth.user;
+        if(profile_photo_path === null){
             toast.error('You do not have a profile photo to clear!', {
                 duration: 5000,
             });
@@ -129,12 +132,14 @@ export default function Settings() {
                         duration: 5000,
                     });
                 },
+                only: ['user', 'flash', 'errors'],
             })
         }
     }
 
     const enableGravatar = () => {
-        if(auth.user.profile_photo_path === 'gravatar') {
+        const {profile_photo_path} = auth.user;
+        if(profile_photo_path === 'gravatar') {
             toast.error('You already have a gravatar set as your profile photo.', {
                 duration: 5000,
             })
@@ -155,8 +160,8 @@ export default function Settings() {
                 },
                 onFinish: () => {
                     setProfilePhotoState('Edit');
-                    e.target.value = ''
                 },
+                only: ['user', 'flash', 'errors'],
             })
         }
     }
@@ -172,7 +177,7 @@ export default function Settings() {
                     {/* Profile Photo */}
                     <div className="flex mb-5">
                         <button type="button" onClick={() => onClickEditProfilePhoto()} onMouseEnter={onProfilePhotoMouseEnter} onMouseLeave={onProfilePhotoMouseLeave} className="block flex-grow-0 flex-shrink-0 relative w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden bg-none box-border cursor-pointer">
-                            <img id="profilePhotoImage" className="w-24 h-24 md:w-32 md:h-32 object-cover rounded-full" src={auth.user.profile_photo_url} alt="Profile Photo Image"/>
+                            <img id="profilePhotoImage" className="w-24 h-24 md:w-32 md:h-32 object-cover object-center rounded-full" src={handleImageSize(auth.user.profile_photo_url, 128)} alt="Profile Photo Image"/>
                             <div id="profilePhotoEdit" className={"absolute text-center text-xs md:text-base bg-gray-500 bg-opacity-50 transition-all ease-in-out duration-200 left-0 right-0 bottom-0 " + (profilePhotoState === 'Edit' ? 'h-0' : 'h-1/4')}>
                                 {profilePhotoState}
                             </div>
@@ -227,7 +232,7 @@ export default function Settings() {
 
                         {/* Gravatar Email */}
                         <div className="flex flex-col">
-                            <Label forInput="gravatar_email" value="Gravatar Email"/>
+                            <Label forInput="gravatar_email" value="Gravatar Email" info="If this is empty, your email will be used."/>
 
                             <Input
                                 type="email"
@@ -237,7 +242,6 @@ export default function Settings() {
                                 autoComplete="email"
                                 handleChange={onHandleChange}
                                 value={data.gravatar_email}
-                                required
                             />
 
                             <InputError message={errors.gravatar_email} className="mt-2" />
@@ -245,7 +249,7 @@ export default function Settings() {
                     </div>
 
                     {/* Save button */}
-                    <Button type="submit" color={100} className="!text-sm">Save</Button>
+                    <Button color={100} className="!text-sm">Save</Button>
                 </form>
             </div>
         </AccountLayout>

@@ -2,27 +2,27 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Helpers\Helpers;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
-use App\Notifications\Account\LoginNotification;
+use App\Models\User;
 use App\Providers\RouteServiceProvider;
-use DeviceDetector\DeviceDetector;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
-use Stevebauman\Location\Facades\Location;
+use Inertia\Response;
+use function inertia;
 
-class AuthenticatedSessionController extends Controller
-{
+class AuthenticatedSessionController extends Controller {
+
     /**
      * Display the login view.
      *
-     * @return \Inertia\Response
+     * @return Response
      */
-    public function create()
-    {
-        return Inertia::render('Auth/Login', [
+    public function create() {
+        return inertia('Auth/Login', [
             'canResetPassword' => Route::has('password.request'),
             'status' => session('status'),
         ]);
@@ -31,46 +31,31 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      *
-     * @param  \App\Http\Requests\Auth\LoginRequest  $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @param LoginRequest $request
+     * @return RedirectResponse
      */
     public function store(LoginRequest $request) {
-        $request->authenticate();
+		$user = User::whereEmail($request->email)->first();
 
-        $request->session()->regenerate();
+        session()->put('auth.user.id', $user->id);
+        session()->put('auth.user.remember', $request->boolean('remember'));
 
-        $ip = $request->ip();
-        $location = Location::get($ip);
-        if($location == null) {
-            $location = 'Unknown Location';
-        } else {
-            $location = $location->cityName . ', ' . $location->regionName . ', ' . $location->countryName;
-        }
-        $device = $request->header('User-Agent') ?? 'Unknown Device';
-        if($device != 'Unknown Device') {
-            $deviceDetector = new DeviceDetector($device);
-            $deviceDetector->parse();
-            if($deviceDetector->isBot()) {
-                $device = 'Bot';
-            } else {
-                $browserClient = $deviceDetector->getClient('name') . ' (' . $deviceDetector->getClient('version') . ')';
-                $deviceClient = $deviceDetector->getOs('name');
-                $device = $browserClient . ' on ' . $deviceClient;
-            }
-        }
-        $request->user()->notify(new LoginNotification($ip, $device, $location));
-
-        return redirect()->intended(RouteServiceProvider::HOME);
+        // Check that the user requires 2FA
+	    if($user->two_factor_secret){
+		    return redirect()->route('2fa');
+	    } else {
+		    Helpers::authenticate($request);
+		    return redirect()->intended(RouteServiceProvider::HOME);
+	    }
     }
 
     /**
      * Destroy an authenticated session.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @param Request $request
+     * @return RedirectResponse
      */
-    public function destroy(Request $request)
-    {
+    public function destroy(Request $request) {
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();

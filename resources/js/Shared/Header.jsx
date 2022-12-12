@@ -2,11 +2,12 @@ import ClickAwayListener from 'react-click-away-listener';
 import { useState } from 'react';
 import { Link, usePage } from '@inertiajs/inertia-react';
 
-import { Bars4Icon, Bars3CenterLeftIcon, ArrowRightOnRectangleIcon, ArrowLeftOnRectangleIcon, PencilSquareIcon, HomeIcon, ExclamationTriangleIcon, XMarkIcon, Cog6ToothIcon } from '@heroicons/react/24/outline'
+import { Bars4Icon, Bars3CenterLeftIcon, ArrowRightOnRectangleIcon, ArrowLeftOnRectangleIcon, PencilSquareIcon, HomeIcon, ExclamationTriangleIcon, XMarkIcon, Cog6ToothIcon, EnvelopeIcon, KeyIcon } from '@heroicons/react/24/outline'
 import LogoWhite from '$/LogoWhite.png';
 
 import AnimatedLink from '@/js/Components/AnimatedLink';
 import AccountDropdownItem from '@/js/Components/Header/AccountDropdownItem';
+import {handleImageSize} from "@/js/Utils/Utils";
 
 export default function Header() {
     /* Account Dropdown State */
@@ -38,9 +39,9 @@ export default function Header() {
 
     /* Login/Register or Account Link */
     const authenticated = (
-        auth.user ? <div className="flex flex-row justify-between items-center gap-2">
+        auth && auth.user ? <div className="flex flex-row justify-between items-center gap-2">
             <div className="flex items-center">{greeting},&nbsp;<Link href={/*route('profile', { user: auth.user.slug })*/ '#'} className="flex items-center hover:text-red-500 transition-all duration-200">{auth.user.name}</Link>!</div>
-            <span onClick={toggleMenu} className="flex items-center cursor-pointer"><img className="h-8 w-8 border border-white rounded-full object-cover" src={auth.user.profile_photo_url} alt="Avatar" loading="lazy" /></span>
+            <span onClick={toggleMenu} className="flex items-center cursor-pointer"><img className="h-8 w-8 border border-white rounded-full object-cover" src={handleImageSize(auth.user.profile_photo_url, 32)} alt="Avatar" loading="lazy" /></span>
         </div> : <></>
     );
     const guest = (
@@ -88,7 +89,7 @@ export default function Header() {
                                 {(isOpen && auth.user) && <ClickAwayListener onClickAway={hideMenu}>
                                     <div className="relative inline-block mt-5">
                                         <div className="absolute right-0 z-20 w-56 py-2 mt-2 overflow-hidden bg-white rounded-md shadow-xl dark:bg-[#232323]">
-                                            <AccountDropdownItem href={/*route('profile', { user: auth.user.slug })*/ '#'} className="w-full flex items-center py-3 px-1 -mt-2 text-sm text-gray-600 transition-colors duration-300 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-[#303030] dark:hover:text-white">
+                                            <AccountDropdownItem href={/*route('profile', { user: auth.user.slug })*/ '#'} className="w-full flex items-center py-3 px-1 -mt-2 text-sm text-gray-600 transition-colors duration-300 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-[#303030] dark:hover:text-white cursor-pointer">
                                                 <img className="flex-shrink-0 object-cover mx-1 rounded-full w-9 h-9" src={auth.user.profile_photo_url} alt="Avatar"/>
                                                 <div className="mx-1 text-left">
                                                     <h1 className="text-sm font-semibold text-gray-700 dark:text-gray-200">{auth.user.name}</h1>
@@ -97,13 +98,17 @@ export default function Header() {
                                             </AccountDropdownItem>
 
                                             <hr className="border-gray-200 dark:border-gray-700"/>
-
                                             <AccountDropdownItem href={route('account')} method="GET" icon={<Bars3CenterLeftIcon className="w-6 h-6"/>} display="Account Overview"/>
                                             <AccountDropdownItem href={route('account.settings')} method="GET" icon={<Cog6ToothIcon className="w-6 h-6"/>} display="Account Settings"/>
+                                            <AccountDropdownItem href={route('account.security.access')} method="GET" icon={<KeyIcon className="w-6 h-6"/>} display="Account Access"/>
+
+                                            {utils.env === 'local' && <>
+                                                <hr className="border-gray-200 dark:border-gray-700"/>
+                                                <AccountDropdownItem href={'http://franciscosolis.test:8025/'} icon={<EnvelopeIcon className="w-6 h-6"/>} display="Mailhog Dashboard" inertia={false}/>
+                                            </>}
 
                                             <hr className="border-gray-200 dark:border-gray-700 mt-5"/>
                                             <AccountDropdownItem href={route('logout')} method="POST" icon={<ArrowLeftOnRectangleIcon className="w-6 h-6"/>} display="Logout"/>
-
                                         </div>
                                     </div>
                                 </ClickAwayListener>}

@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [Controllers\MainController::class, 'home'])->name('home');
 
-Route::prefix('/account')->middleware(['auth', 'verified'])->group(function() {
+Route::prefix('/account')->middleware(['auth', '2fa', 'verified'])->group(function() {
     Route::get('/', [Account\AccountController::class, 'index'])->name('account');
 
     /* Settings */
@@ -33,6 +33,24 @@ Route::prefix('/account')->middleware(['auth', 'verified'])->group(function() {
         });
     });
 
+	/* Security */
+	Route::prefix('/security')->group(function(){
+		/* Access */
+		Route::prefix('/access')->group(function(){
+			Route::get('/', [Account\Security\AccessController::class, 'index'])->name('account.security.access');
+			Route::patch('/password', [Account\Security\AccessController::class, 'updatePassword'])->middleware(['password.confirm'])->name('account.security.access.password');
+
+			Route::get('/two-factor-auth', [Account\Security\AccessController::class, 'twoFactorSetup'])->name('account.security.access.two-factor-auth.setup');
+			Route::post('/two-factor-auth', [Account\Security\AccessController::class, 'validateTwoFactor'])->name('account.security.access.two-factor-auth.validate');
+            Route::patch('/two-factor-auth/secret', [Account\Security\AccessController::class, 'regenerateTwoFactorSecret'])->name('account.security.access.two-factor-auth.secret.regenerate')->middleware(['password.confirm']);;
+            Route::patch('/two-factor-auth/codes', [Account\Security\AccessController::class, 'regenerateRecoveryCodes'])->name('account.security.access.two-factor-auth.recovery-codes.regenerate')->middleware(['password.confirm']);;
+			Route::delete('/two-factor-auth', [Account\Security\AccessController::class, 'disableTwoFactor'])->name('account.security.access.two-factor-auth.delete')->middleware(['password.confirm']);;
+
+            Route::get('/devices', [Account\Security\DevicesController::class, 'index'])->name('account.security.access.devices');
+            Route::delete('/devices', [Account\Security\DevicesController::class, 'destroy'])->name('account.security.access.devices.delete')->middleware(['password.confirm']);
+		});
+	});
+
     /* Notifications */
     Route::prefix('/notifications')->group(function(){
         Route::get('/', [Account\NotificationsController::class, 'index'])->name('account.notifications');
@@ -42,3 +60,5 @@ Route::prefix('/account')->middleware(['auth', 'verified'])->group(function() {
 });
 
 require __DIR__.'/auth.php';
+
+Broadcast::routes();

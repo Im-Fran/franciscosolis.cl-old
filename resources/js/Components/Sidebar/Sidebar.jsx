@@ -21,11 +21,11 @@ class Sidebar extends ReactComponent {
             <div className={"md:grid md:grid-cols-6 md:gap-3 w-full " + className}>
                 <div className="w-full col-span-1">
                     <ul className="list-disc list-inside">
-                        {links ? links.props.children : null}
+                        {links ? links.props.children : <></>}
                     </ul>
                 </div>
                 <div className="w-full col-span-5 md:ml-5">
-                    {content ? content.props.children : null}
+                    {content ? content.props.children : <></>}
                 </div>
             </div>
         );
