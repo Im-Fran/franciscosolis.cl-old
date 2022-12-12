@@ -6,10 +6,6 @@ import TwoFactorAuthenticationDisabled from "@/js/Components/Notifications/TwoFa
 
 export default function NotificationRenderer({ notification, short }) {
 
-    useEffect(() => {
-        // console.log('Rendering notification...', notification)
-    }, [notification]);
-
     switch (notification.type) {
         case 'App\\Notifications\\Account\\LoginNotification':
             return <><LoginNotification notification={notification} short={short}/></>
