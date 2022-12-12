@@ -17,13 +17,13 @@ export const handleImageSize = (url, size) => {
 }
 
 // Handles the onChange event for the input types
-export function handleChange(setData, event) {
+export const handleChange = (setData, event) => {
     const { name, value, type } = event.target;
     setData(name, (type === "checkbox" ? event.target.checked : (type === "number" ? parseFloat(value) : value)) || '')
 }
 
 // Avoids the duplication of the error messages sent from the backend
-export function handleError(error, message){
+export const handleError = (error, message) => {
     const { errors, flash } = usePage().props;
     if(Number.parseInt(errors.length) === 0 || flash.find(it => !!it.error).length === 0) {
         toast.error(message, {
@@ -39,7 +39,7 @@ export function handleError(error, message){
 // The data object is a key-value pair of the form data
 // This method will fix the null values to empty strings
 // And will fix it recursively
-export function fixForms(data) {
+export const fixForms = (data) => {
     const result = {};
     for (const [key, value] of Object.entries(data)) {
         if (value === null) {
@@ -54,6 +54,13 @@ export function fixForms(data) {
 }
 
 // Checks if the current theme is dark mode or not
-export function isDarkMode() {
+export const isDarkMode = () => {
     return document.getElementById('app').classList.contains('dark');
+}
+
+export const uuidv4 = () => {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+        return v.toString(16);
+    });
 }

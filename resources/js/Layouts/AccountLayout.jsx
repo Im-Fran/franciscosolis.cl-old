@@ -28,13 +28,13 @@ export default function AccountLayout({ children, title, meta, className }) {
 
                     <SidebarTitle title="SECURITY" icon={<LockClosedIcon className="w-6 h-6"/>}/>
                     <SidebarLink title="Access" icon={<KeyIcon className="w-6 h-6"/>} href={route('account.security.access')} activeRoute={['account.security.access', 'account.security.access.two-factor-auth.setup']}/>
-                    <SidebarLink title="Devices" icon={<ComputerDesktopIcon className="w-6 h-6"/>} href={'#'} disabled soon/>
+                    <SidebarLink title="Devices" icon={<ComputerDesktopIcon className="w-6 h-6"/>} href={route('account.security.access.devices')} activeRoute="account.security.access.devices"/>
 
                     <div className="my-5"/>
 
                     <SidebarTitle title="OTHERS" icon={<QueueListIcon className="w-6 h-6"/>}/>
-                    <SidebarLink title="Integrations" icon={<LinkIcon className="w-6 h-6"/>} href={'#'} disabled beta/>
                     <SidebarLink title="Notifications" icon={<BellIcon className="w-6 h-6"/>} href={route('account.notifications')} activeRoute="account.notifications"/>
+                    <SidebarLink title="Integrations" icon={<LinkIcon className="w-6 h-6"/>} href={'#'} disabled soon/>
                 </Sidebar.Links>
 
                 <Sidebar.Content>

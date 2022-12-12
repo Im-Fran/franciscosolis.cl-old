@@ -5,6 +5,7 @@ import { CheckCircleIcon, TrashIcon, BellIcon, ClockIcon } from '@heroicons/reac
 import AccountLayout from "@/js/Layouts/AccountLayout";
 import RelativeTime from "@/js/Components/RelativeTime";
 import NotificationRenderer from "@/js/Components/Notifications/NotificationRenderer";
+import Pagination from "@/js/Components/Pagination";
 
 export default function Notifications({ notifications, unreadNotifications }) {
 
@@ -57,7 +58,7 @@ export default function Notifications({ notifications, unreadNotifications }) {
             return unreadNotifications.data.map((notification, index) => (
                 <div key={index.toString()} className={"flex flex-row items-center justify-between w-full px-4 py-2 border-b border-gray-200 whitespace-nowrap overflow-scroll " + (index === (unreadNotifications.length-1) ? ' border-none ' : '')}>
                     <div className="flex flex-row justify-start overflow-scroll w-full max-w-screen-md">
-                        <div class="block w-6 h-6">
+                        <div className="block w-6 h-6">
                             <CheckCircleIcon data-content="Mark As Read" className="w-6 h-6 text-brand-300 cursor-pointer" onClick={() => markAsRead(notification)}/>
                         </div>
                         &nbsp;&nbsp;&nbsp;
@@ -74,7 +75,7 @@ export default function Notifications({ notifications, unreadNotifications }) {
         return notifications.data.map((notification, index) => (
             <div key={index} className={"flex flex-row items-center justify-between w-full px-4 py-2 border-b border-gray-200 whitespace-nowrap overflow-scroll " + (index === (notification.total-1) ? ' border-none ' : '')}>
                 <div className="flex flex-row justify-start overflow-scroll w-full max-w-screen-md">
-                    <div class="block">
+                    <div className="block">
                         <TrashIcon data-content="Delete Notification" onClick={() => deleteNotification(notification)} className="w-6 h-6 text-brand-200 cursor-pointer"/>
                     </div>
                     &nbsp;&nbsp;&nbsp;
@@ -97,6 +98,7 @@ export default function Notifications({ notifications, unreadNotifications }) {
                     <div className="flex flex-col items-center w-full py-2">
                         {renderUnreadNotifications()}
                     </div>
+                    <Pagination data={unreadNotifications} target="account.notifications"/>
                 </div>
                 <div className="col-span-3 bg-gray-50 dark:bg-brand-500 border border-brand-500 border-solid border-opacity-10 dark:border-none shadow-md rounded-lg w-full py-2 transition-all">
                     <div className="flex flex-col items-center w-full text-4xl">

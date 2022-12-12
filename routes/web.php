@@ -42,11 +42,12 @@ Route::prefix('/account')->middleware(['auth', '2fa', 'verified'])->group(functi
 
 			Route::get('/two-factor-auth', [Account\Security\AccessController::class, 'twoFactorSetup'])->name('account.security.access.two-factor-auth.setup');
 			Route::post('/two-factor-auth', [Account\Security\AccessController::class, 'validateTwoFactor'])->name('account.security.access.two-factor-auth.validate');
-            Route::patch('/two-factor-auth/secret', [Account\Security\AccessController::class, 'regenerateTwoFactorSecret'])->name('account.security.access.two-factor-auth.secret.regenerate');
-            Route::patch('/two-factor-auth/codes', [Account\Security\AccessController::class, 'regenerateRecoveryCodes'])->name('account.security.access.two-factor-auth.recovery-codes.regenerate');
-			Route::delete('/two-factor-auth', [Account\Security\AccessController::class, 'disableTwoFactor'])->name('account.security.access.two-factor-auth.delete');
+            Route::patch('/two-factor-auth/secret', [Account\Security\AccessController::class, 'regenerateTwoFactorSecret'])->name('account.security.access.two-factor-auth.secret.regenerate')->middleware(['password.confirm']);;
+            Route::patch('/two-factor-auth/codes', [Account\Security\AccessController::class, 'regenerateRecoveryCodes'])->name('account.security.access.two-factor-auth.recovery-codes.regenerate')->middleware(['password.confirm']);;
+			Route::delete('/two-factor-auth', [Account\Security\AccessController::class, 'disableTwoFactor'])->name('account.security.access.two-factor-auth.delete')->middleware(['password.confirm']);;
 
             Route::get('/devices', [Account\Security\DevicesController::class, 'index'])->name('account.security.access.devices');
+            Route::delete('/devices', [Account\Security\DevicesController::class, 'destroy'])->name('account.security.access.devices.delete')->middleware(['password.confirm']);
 		});
 	});
 

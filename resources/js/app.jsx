@@ -1,10 +1,10 @@
-import './bootstrap';
+import '@/js/bootstrap';
 import '@/css/app.css';
 
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import isToday from 'dayjs/plugin/isToday';
-import isFuture from './Utils/dayjs/isFuture';
+import isFuture from '@/js/Utils/dayjs/isFuture';
 
 import { createRoot } from 'react-dom/client';
 

@@ -1,8 +1,6 @@
-export default function Pagination({ data, page_name }) {
+import { useRef } from 'react'
+import { Link } from '@inertiajs/inertia-react'
 
+export default function Pagination({ data, target, query = {}, only = null }) {
 
-    return (
-        <div>
-        </div>
-    );
 }

@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use App\Models\IpLocation;
 use App\Models\User;
 use App\Notifications\Account\LoginNotification;
 use DeviceDetector\DeviceDetector;
@@ -21,18 +22,8 @@ class Helpers {
 		}
 	}
 
-	public static function authenticate(Request $request): void {
-		Auth::loginUsingId(Session::get('auth.user.id'), Session::get('auth.user.remember'));
-
-		$request->session()->regenerate();
-		$location = Location::get();
-		$ip = optional($location)->ip ?: $request->ip();
-		if($location) {
-			$locationString = $location->cityName . ', ' . $location->regionName . ', ' . $location->countryName;
-		} else {
-            $locationString = 'Unknown Location';
-		}
-		$device = $request->header('User-Agent') ?? 'Unknown Device';
+    public static function getDeviceString(?string $header = null): string {
+        $device = $header ?: (request()->header('User-Agent') ?: 'Unknown Device');
 		if($device != 'Unknown Device') {
 			$deviceDetector = new DeviceDetector($device);
 			$deviceDetector->parse();
@@ -45,8 +36,55 @@ class Helpers {
 			}
 		}
 
-		Auth::user()->notify(new LoginNotification($ip, $device, $locationString));
+        return $device;
+    }
+
+	public static function authenticate(Request $request): void {
+		Auth::loginUsingId(Session::get('auth.user.id'), Session::get('auth.user.remember'));
+        $request->session()->regenerate();
+
+        $location = self::locationFromIP();
+
+		Auth::user()->notify(new LoginNotification($location->ip_address, self::getDeviceString(), $location->location_string));
 	}
+
+    private static function storeLocationFromIP(string $ip): ?IpLocation {
+        $loc = Location::get($ip);
+        if(!$loc)
+            return null;
+
+        $loc = $loc->toArray();
+        unset($loc['ip'], $loc['latitude'], $loc['longitude'], $loc['zipCode'], $loc['postalCode'], $loc['metroCode']);
+        IpLocation::firstOrCreate(['id' => sha1($ip)], ['ip_address' => $ip])->update(['ip_address' => $ip,'location_data' => $loc]);
+        return IpLocation::whereId(sha1($ip))->first();
+    }
+
+    public static function locationFromIP(?string $ip = null): ?IpLocation {
+        $ip = $ip ?: (config('location.testing.enabled') ? config('location.testing.ip') : request()->ip());
+
+        if(!IpLocation::whereId(sha1($ip))->exists()) {
+            $loc = self::storeLocationFromIP($ip);
+            return $loc;
+        }
+
+        $location = IpLocation::whereId(sha1($ip))->first();
+        if ($location->location_data)
+            return $location;
+
+        if ($location->updated_at->diffInHours(now()) < 2)
+            return null;
+
+
+        return self::storeLocationFromIP($ip);
+    }
+
+    public static function locationStringFromIPLocation(?IpLocation $location = null): string {
+        return $location && $location->location_data ? ($location->city_name . ', ' . $location->region_name . ', ' . $location->country_name) : 'Unknown Location';
+    }
+
+    public static function locationStringFromIP(?string $ip = null): string {
+        return self::locationStringFromIPLocation(self::locationFromIP($ip));
+    }
 
 	public static function isMobile() {
 		if (array_key_exists('HTTP_USER_AGENT', $_SERVER)) {
