@@ -98,7 +98,7 @@ export default function Notifications({ notifications, unreadNotifications }) {
                     <div className="flex flex-col items-center w-full py-2">
                         {renderUnreadNotifications()}
                     </div>
-                    <Pagination data={unreadNotifications} target="account.notifications"/>
+                    <Pagination data={unreadNotifications} only={['unreadNotifications']} target="account.notifications"/>
                 </div>
                 <div className="col-span-3 bg-gray-50 dark:bg-brand-500 border border-brand-500 border-solid border-opacity-10 dark:border-none shadow-md rounded-lg w-full py-2 transition-all">
                     <div className="flex flex-col items-center w-full text-4xl">
@@ -109,6 +109,7 @@ export default function Notifications({ notifications, unreadNotifications }) {
                     <div className="flex flex-col items-center w-full py-2">
                         {renderNotifications()}
                     </div>
+                    <Pagination data={notifications} only={['notifications']} target="account.notifications"/>
                 </div>
             </div>
         </AccountLayout>
