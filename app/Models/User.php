@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Contracts\TwoFactorAuthenticationProvider;
 use App\Helpers\Helpers;
+use App\Helpers\UserSettings;
 use App\Traits\HasProfilePhoto;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -17,6 +18,7 @@ use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
 class User extends Authenticatable implements MustVerifyEmail {
+
     use HasFactory,
         HasSlug,
         HasApiTokens,
@@ -39,7 +41,8 @@ class User extends Authenticatable implements MustVerifyEmail {
 	    'last_activity_at',
 	    'two_factor_secret',
 	    'two_factor_recovery_codes',
-	    'two_factor_verified_at'
+	    'two_factor_verified_at',
+        'settings',
     ];
 
     /**
@@ -50,6 +53,7 @@ class User extends Authenticatable implements MustVerifyEmail {
     protected $appends = [
         'profile_photo_url',
 	    'two_factor_enabled',
+        'is_online',
     ];
 
     /**
@@ -74,7 +78,27 @@ class User extends Authenticatable implements MustVerifyEmail {
         'email_verified_at' => 'datetime',
 	    'last_activity_at' => 'datetime',
 	    'two_factor_verified_at' => 'datetime',
+        'settings' => 'array',
     ];
+
+    protected static function  booted(){
+        // Ensure that the user has a settings attribute and it's has all the keys.
+        static::creating(function (User $user) {
+            $user->settings = array_merge(UserSettings::$defaultSettings, $user->settings);
+        });
+
+        static::updating(function (User $user) {
+            $user->settings = array_merge(UserSettings::$defaultSettings, $user->settings);
+        });
+
+        static::saving(function (User $user) {
+            $user->settings = array_merge(UserSettings::$defaultSettings, $user->settings);
+        });
+
+        static::retrieved(function (User $user) {
+            $user->settings = array_merge(UserSettings::$defaultSettings, $user->settings);
+        });
+    }
 
     public function getSlugOptions(): SlugOptions {
         return SlugOptions::create()
@@ -137,4 +161,28 @@ class User extends Authenticatable implements MustVerifyEmail {
 
         return false;
 	}
+
+    /* Check if the user is online (in the last 5 minutes) */
+    public function getIsOnlineAttribute(): bool {
+        return $this->last_activity_at->diffInMinutes(now()) < 5;
+    }
+
+    /* Updates the given settings */
+    public function updateSettings(array $settings) {
+        foreach($settings as $key => $value) {
+            if(UserSettings::$defaultSettings[$key]) {
+                $this->settings[$key] = $value ?: UserSettings::$defaultSettings[$key];
+            }
+        }
+        $this->save();
+    }
+
+
+    /* Updates the given setting */
+    public function updateSetting($key, $value = null) {
+        if(UserSettings::$defaultSettings[$key]) {
+            $this->settings[$key] = $value ?: UserSettings::$defaultSettings[$key];
+            $this->save();
+        }
+    }
 }

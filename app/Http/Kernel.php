@@ -11,6 +11,7 @@ use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Middleware\TrimStrings;
 use App\Http\Middleware\TrustHosts;
 use App\Http\Middleware\TrustProxies;
+use App\Http\Middleware\UpdateActivityMiddleware;
 use App\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Http\Middleware\HandleCors;
 use Illuminate\Auth\Middleware\AuthenticateWithBasicAuth;
@@ -73,6 +74,7 @@ class Kernel extends HttpKernel {
             SubstituteBindings::class,
             VerifyCsrfToken::class,
             LogoutDestroyedSession::class,
+            UpdateActivityMiddleware::class,
         ],
 
         'api' => [

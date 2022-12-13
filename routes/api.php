@@ -17,9 +17,6 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::prefix('activity-status')->middleware(['auth:sanctum'])->group(function(){
-	Route::get('/', [Controllers\ActivityController::class, 'setActivity'])
-		->name('activity-status.set');
-	
 	Route::get('/{user}', [Controllers\ActivityController::class, 'getActivity'])
 		->name('activity-status.get');
 });

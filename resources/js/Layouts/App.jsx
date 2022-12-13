@@ -1,13 +1,11 @@
 import { useEffect } from 'react';
 import { Head, usePage } from '@inertiajs/inertia-react';
 import toast, { Toaster } from 'react-hot-toast';
-import { Tooltip } from 'react-tooltip';
-import 'react-tooltip/dist/react-tooltip.css'
-
+import ReactTooltip from 'react-tooltip';
 
 import Header from '@/js/Shared/Header';
 import Foot from '@/js/Shared/Foot';
-import PersistentLayout from './PersistentLayout';
+import PersistentLayout from '@/js/Layouts/PersistentLayout';
 
 const App = ({ children, title, meta = [], vertical = "top", horizontal = "left" }) => {
     const { flash } = usePage().props;
@@ -47,7 +45,7 @@ const App = ({ children, title, meta = [], vertical = "top", horizontal = "left"
                     <Toaster position="top-right" reverseOrder />
                     <div className={"container mx-auto my-10 min-h-screen flex " + (vertical === "center" ? "items-center" : (vertical === "bottom" ? "items-end" : "items-start")) + " " + (horizontal === "center" ? "justify-center" : (horizontal === "right" ? "justify-end" : "justify-start"))}>
                         {children}
-                        <Tooltip backgroundColor="#111827" textColor="#fff" />
+                        <ReactTooltip backgroundColor="#111827" textColor="#fff" />
                     </div>
                     <Foot />
                 </div>

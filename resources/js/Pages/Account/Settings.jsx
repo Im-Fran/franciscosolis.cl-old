@@ -1,14 +1,17 @@
 import {useState} from 'react';
 import {useForm, usePage} from "@inertiajs/inertia-react";
 import {Inertia} from '@inertiajs/inertia';
-import {handleError, fixForms, handleImageSize} from '@/js/Utils/Utils'
+import {handleError, fixForms, handleImageSize, handleChange} from '@/js/Utils/Utils'
 import toast from 'react-hot-toast';
 
+import { Cog6ToothIcon, ShieldCheckIcon } from '@heroicons/react/24/outline';
 import AccountLayout from "@/js/Layouts/AccountLayout";
 import Label from "@/js/Components/Forms/Label";
 import Input from "@/js/Components/Forms/Input";
 import InputError from "@/js/Components/Forms/InputError";
 import Button from '@/js/Components/Button';
+import Checkbox from '@/js/Components/Forms/Checkbox';
+import UserProfilePicture from '@/js/Components/UserProfilePicture';
 
 export default function Settings() {
     const meta = [
@@ -17,11 +20,34 @@ export default function Settings() {
 
     const { auth } = usePage().props;
 
-    const { data, setData, errors, patch, clearErrors, setError } = useForm(fixForms({
+    const { data, setData, errors, patch, clearErrors, setError } = useForm(`EditUserSettings:${auth.user.id}`, fixForms({
         name: auth.user.name,
         email: auth.user.email,
         gravatar_email: auth.user.gravatar_email,
     }));
+
+    const privacyForm = useForm(`EditUserPrivacy:${auth.user.id}`,fixForms({
+        'activity.public': auth.user.settings['activity.public'],
+    }));
+
+    const submitPrivacy = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        privacyForm.transform((form) => ({
+            ...form,
+            'activity.public': form['activity.public'] ? true : false,
+        }));
+        privacyForm.post(route('account.settings.privacy.update'), {
+            preserveScroll: true,
+            onSuccess: () => {
+                toast.success('Settings updated successfully.')
+            },
+            onError: (err) => {
+                handleError(err, 'There was an error updating your settings.')
+            },
+            only: ['auth', 'flash', 'errors'],
+        });
+    }
 
     const submit = (e) => {
         e.preventDefault();
@@ -34,13 +60,9 @@ export default function Settings() {
             onError: (err) => {
                 handleError(err, 'There was an error updating your settings.')
             },
-            only: ['user', 'flash', 'errors'],
+            only: ['auth', 'flash', 'errors'],
         });
     }
-
-    const onHandleChange = (event) => {
-        setData(event.target.name, event.target.type === 'checkbox' ? event.target.checked : event.target.value);
-    };
 
     const onBlurName = (e) => {
         const name = e.target.value || '';
@@ -106,7 +128,7 @@ export default function Settings() {
                     setProfilePhotoState('Edit');
                     e.target.value = ''
                 },
-                only: ['user', 'flash', 'errors'],
+                only: ['auth', 'flash', 'errors'],
             })
         }
     };
@@ -132,7 +154,7 @@ export default function Settings() {
                         duration: 5000,
                     });
                 },
-                only: ['user', 'flash', 'errors'],
+                only: ['auth', 'flash', 'errors'],
             })
         }
     }
@@ -161,7 +183,7 @@ export default function Settings() {
                 onFinish: () => {
                     setProfilePhotoState('Edit');
                 },
-                only: ['user', 'flash', 'errors'],
+                only: ['auth', 'flash', 'errors'],
             })
         }
     }
@@ -171,13 +193,13 @@ export default function Settings() {
         <AccountLayout title="Settings" meta={meta}>
             <div className="flex flex-col w-full items-start">
                 <form onSubmit={submit} className="mb-5 w-full">
-                    <h2 className="text-xl">Profile Settings</h2>
+                    <h2 className="flex text-xl"><Cog6ToothIcon className="w-6 h-6"/>&nbsp; Profile Settings</h2>
                     <hr className="w-1/4 border-0 border-t-2 border-gray-500 mb-10"/>
 
                     {/* Profile Photo */}
                     <div className="flex mb-5">
                         <button type="button" onClick={() => onClickEditProfilePhoto()} onMouseEnter={onProfilePhotoMouseEnter} onMouseLeave={onProfilePhotoMouseLeave} className="block flex-grow-0 flex-shrink-0 relative w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden bg-none box-border cursor-pointer">
-                            <img id="profilePhotoImage" className="w-24 h-24 md:w-32 md:h-32 object-cover object-center rounded-full" src={handleImageSize(auth.user.profile_photo_url, 128)} alt="Profile Photo Image"/>
+                            <UserProfilePicture showStatus={false} user={auth.user} id="profilePhotoImage" sizeClass="w-24 h-24 md:w-32 md:h-32" size={128}/>
                             <div id="profilePhotoEdit" className={"absolute text-center text-xs md:text-base bg-gray-500 bg-opacity-50 transition-all ease-in-out duration-200 left-0 right-0 bottom-0 " + (profilePhotoState === 'Edit' ? 'h-0' : 'h-1/4')}>
                                 {profilePhotoState}
                             </div>
@@ -203,7 +225,7 @@ export default function Settings() {
                                 className="mt-1 w-full"
                                 autoComplete="username"
                                 pattern="([a-zA-Z]+[a-zA-Z0-9_\. ][a-zA-Z0-9]+){4,255}"
-                                handleChange={onHandleChange}
+                                handleChange={(e) => handleChange(setData, e)}
                                 handleBlur={onBlurName}
                                 value={data.name}
                                 required
@@ -222,7 +244,7 @@ export default function Settings() {
                                 placeholder="fran@franciscosolis.cl"
                                 className="mt-1 w-full"
                                 autoComplete="email"
-                                handleChange={onHandleChange}
+                                handleChange={(e) => handleChange(setData, e)}
                                 value={data.email}
                                 required
                             />
@@ -240,12 +262,27 @@ export default function Settings() {
                                 placeholder="gravatar.fran@franciscosolis.cl"
                                 className="mt-1 w-full"
                                 autoComplete="email"
-                                handleChange={onHandleChange}
+                                handleChange={(e) => handleChange(setData, e)}
                                 value={data.gravatar_email}
                             />
 
                             <InputError message={errors.gravatar_email} className="mt-2" />
                         </div>
+                    </div>
+
+                    {/* Save button */}
+                    <Button color={100} className="!text-sm">Save</Button>
+                </form>
+
+                <div className="my-10"/>
+
+                <form onSubmit={submitPrivacy} className="mb-5 w-full">
+                    <h2 className="flex text-xl"><ShieldCheckIcon className="w-6 h-6"/>&nbsp;Privacy Settings</h2>
+                    <hr className="w-1/4 border-0 border-t-2 border-gray-500 mb-10"/>
+
+                    {/* Activity Public */}
+                    <div className="mt-4">
+                        <Checkbox center={false} name="activity.public" value={privacyForm.data['activity.public']} handleChange={(e) => handleChange(privacyForm.setData, e)} label="Activity Public" info="If enabled everyone will be able to see if you're online or not." />
                     </div>
 
                     {/* Save button */}

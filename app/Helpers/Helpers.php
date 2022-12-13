@@ -49,14 +49,17 @@ class Helpers {
 	}
 
     private static function storeLocationFromIP(string $ip): ?IpLocation {
+        $ipLocation = IpLocation::firstOrCreate(['id' => sha1($ip)], ['ip_address' => $ip]);
         $loc = Location::get($ip);
         if(!$loc)
-            return null;
+            return $ipLocation;
 
         $loc = $loc->toArray();
         unset($loc['ip'], $loc['latitude'], $loc['longitude'], $loc['zipCode'], $loc['postalCode'], $loc['metroCode']);
-        IpLocation::firstOrCreate(['id' => sha1($ip)], ['ip_address' => $ip])->update(['ip_address' => $ip,'location_data' => $loc]);
-        return IpLocation::whereId(sha1($ip))->first();
+        $ipLocation->update([
+            'location_data' => $loc,
+        ]);
+        return $ipLocation;
     }
 
     public static function locationFromIP(?string $ip = null): ?IpLocation {
@@ -71,7 +74,7 @@ class Helpers {
         if ($location->location_data)
             return $location;
 
-        if ($location->updated_at->diffInHours(now()) < 2)
+        if ($location->updated_at->diffInMinutes(now()) < 15)
             return null;
 
 

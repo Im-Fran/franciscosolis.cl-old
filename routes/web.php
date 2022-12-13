@@ -31,6 +31,9 @@ Route::prefix('/account')->middleware(['auth', '2fa', 'verified'])->group(functi
             Route::post('/', [AccountSettings\ImagesController::class, 'uploadProfilePhoto'])->name('account.settings.profilephoto');
             Route::delete('/', [AccountSettings\ImagesController::class, 'clearProfilePhoto'])->name('account.settings.profilephoto.delete');
         });
+
+         /* Privacy */
+         Route::post('/privacy', [AccountSettings\PrivacyController::class, 'update'])->name('account.settings.privacy.update');
     });
 
 	/* Security */

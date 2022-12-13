@@ -146,8 +146,8 @@ export default function TwoFactorSetup({ secret, qr_url, recovery_codes }) {
                     {secret === 'hidden' && recovery_codes && <>
                         <h2 className="flex items-center text-2xl">
                             Backup Codes&nbsp;
-                            <InformationCircleIcon className="h-5 w-5" data-content="These are codes that you'll be able to use in case you lose your access to the 2FA codes."/>&nbsp;
-                            {hasUsedCodes && <ExclamationTriangleIcon className="h-5 w-5 fill-orange-400" data-content="You have used some of the backup codes! Please regenerate them ASAP."/>}
+                            <InformationCircleIcon className="h-5 w-5" data-tip="These are codes that you'll be able to use in case you lose your access to the 2FA codes."/>&nbsp;
+                            {hasUsedCodes && <ExclamationTriangleIcon className="h-5 w-5 fill-orange-400" data-tip="You have used some of the backup codes! Please regenerate them ASAP."/>}
                         </h2>
                         <hr className="w-1/4 border-0 border-t-2 border-gray-500 mb-5"/>
                         <div className="flex flex-col mb-10">
@@ -157,7 +157,7 @@ export default function TwoFactorSetup({ secret, qr_url, recovery_codes }) {
                                     {recovery_codes.slice(0, 4).filter(it => it !== 'USED').map((code, index) => (
                                         <div key={index} className="flex items-center">
                                             <span className="mr-2">•</span>
-                                            <span className="text-sm cursor-pointer" data-clipboard={code} data-content="Click to copy">{code}</span>
+                                            <span className="text-sm cursor-pointer" data-clipboard={code} data-tip="Click to copy">{code}</span>
                                         </div>
                                     ))}
                                 </div>
@@ -165,7 +165,7 @@ export default function TwoFactorSetup({ secret, qr_url, recovery_codes }) {
                                     {recovery_codes.slice(4, 8).filter(it => it !== 'USED').map((code, index) => (
                                         <div key={index} className="flex items-center">
                                             <span className="mr-2">•</span>
-                                            <span className="text-sm cursor-pointer" data-clipboard={code} data-content="Click to copy">{code}</span>
+                                            <span className="text-sm cursor-pointer" data-clipboard={code} data-tip="Click to copy">{code}</span>
                                         </div>
                                     ))}
                                 </div>
@@ -183,7 +183,7 @@ export default function TwoFactorSetup({ secret, qr_url, recovery_codes }) {
                         </div>
                     </>}
 
-                    <h2 className="flex items-center text-xl">2FA {secret !== 'hidden' ? 'Setup' : 'Test'}&nbsp;<InformationCircleIcon className="h-5 w-5" data-content={secret === 'hidden' ? 'Here you\'ll be able to test your 2FA codes!' : 'Setup your 2FA and test the code!'}/></h2>
+                    <h2 className="flex items-center text-xl">2FA {secret !== 'hidden' ? 'Setup' : 'Test'}&nbsp;<InformationCircleIcon className="h-5 w-5" data-tip={secret === 'hidden' ? 'Here you\'ll be able to test your 2FA codes!' : 'Setup your 2FA and test the code!'}/></h2>
                     <hr className="w-1/4 border-0 border-t-2 border-gray-500 mb-5"/>
 
                     {secret !== 'hidden' && <div className="flex flex-col mb-10">

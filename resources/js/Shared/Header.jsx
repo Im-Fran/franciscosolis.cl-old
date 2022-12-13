@@ -7,7 +7,7 @@ import LogoWhite from '$/LogoWhite.png';
 
 import AnimatedLink from '@/js/Components/AnimatedLink';
 import AccountDropdownItem from '@/js/Components/Header/AccountDropdownItem';
-import {handleImageSize} from "@/js/Utils/Utils";
+import UserProfilePicture from '@/js/Components/UserProfilePicture';
 
 export default function Header() {
     /* Account Dropdown State */
@@ -41,7 +41,9 @@ export default function Header() {
     const authenticated = (
         auth && auth.user ? <div className="flex flex-row justify-between items-center gap-2">
             <div className="flex items-center">{greeting},&nbsp;<Link href={/*route('profile', { user: auth.user.slug })*/ '#'} className="flex items-center hover:text-red-500 transition-all duration-200">{auth.user.name}</Link>!</div>
-            <span onClick={toggleMenu} className="flex items-center cursor-pointer"><img className="h-8 w-8 border border-white rounded-full object-cover" src={handleImageSize(auth.user.profile_photo_url, 32)} alt="Avatar" loading="lazy" /></span>
+            <span onClick={toggleMenu} className="flex items-center cursor-pointer">
+                <UserProfilePicture user={auth.user}/>
+            </span>
         </div> : <></>
     );
     const guest = (
