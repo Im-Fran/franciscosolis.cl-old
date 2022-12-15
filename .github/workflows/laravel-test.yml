@@ -44,4 +44,5 @@ jobs:
         QUQUEUE_CONNECTION: sync
         SESSION_DRIVER: array
         TELESCOPE_ENABLED: false
+        BROADCAST_DRIVER: log
       run: vendor/bin/phpunit
