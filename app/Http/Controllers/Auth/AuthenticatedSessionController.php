@@ -36,6 +36,7 @@ class AuthenticatedSessionController extends Controller {
      */
     public function store(LoginRequest $request) {
 		$user = User::whereEmail($request->email)->first();
+        $request->authenticate(); // Just make sure is not rate limited and that the credentials are valid
 
         session()->put('auth.user.id', $user->id);
         session()->put('auth.user.remember', $request->boolean('remember'));
