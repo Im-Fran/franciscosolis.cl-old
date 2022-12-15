@@ -44,4 +44,4 @@ jobs:
         QUQUEUE_CONNECTION: sync
         SESSION_DRIVER: array
         TELESCOPE_ENABLED: false
-      run: vendor/bin/sail test
+      run: vendor/bin/phpunit
