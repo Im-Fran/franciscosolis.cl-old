@@ -22,8 +22,7 @@ class RouteServiceProvider extends ServiceProvider {
     /**
      * Define your route model bindings, pattern filters, and other route configuration.
      */
-    public function boot()
-    {
+    public function boot() {
         $this->configureRateLimiting();
         $this->configureAliases();
 
@@ -40,8 +39,7 @@ class RouteServiceProvider extends ServiceProvider {
     /**
      * Configure the rate limiters for the application.
      */
-    protected function configureRateLimiting()
-    {
+    protected function configureRateLimiting() {
         RateLimiter::for('api', function(Request $request) {
             $id = optional($request->user())->id ?: $request->ip();
 
@@ -52,8 +50,7 @@ class RouteServiceProvider extends ServiceProvider {
     /**
      * Configure the module aliases to be used in the application.
      */
-    protected function configureAliases()
-    {
+    protected function configureAliases() {
         Route::bind('user', function($value) {
             $user = User::whereSlug($value)->first();
 

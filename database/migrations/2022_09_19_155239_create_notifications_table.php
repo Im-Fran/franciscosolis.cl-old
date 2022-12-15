@@ -8,8 +8,7 @@ return new class() extends Migration {
     /**
      * Run the migrations.
      */
-    public function up()
-    {
+    public function up() {
         Schema::create('notifications', function(Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('type');
@@ -23,8 +22,7 @@ return new class() extends Migration {
     /**
      * Reverse the migrations.
      */
-    public function down()
-    {
+    public function down() {
         Schema::dropIfExists('notifications');
     }
 };

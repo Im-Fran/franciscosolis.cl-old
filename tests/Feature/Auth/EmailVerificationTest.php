@@ -16,8 +16,7 @@ use Tests\TestCase;
 class EmailVerificationTest extends TestCase {
     use RefreshDatabase;
 
-    public function test_email_verification_screen_can_be_rendered()
-    {
+    public function test_email_verification_screen_can_be_rendered() {
         $user = User::factory()->create([
             'email_verified_at' => null,
         ]);
@@ -27,8 +26,7 @@ class EmailVerificationTest extends TestCase {
         $response->assertStatus(200);
     }
 
-    public function test_email_can_be_verified()
-    {
+    public function test_email_can_be_verified() {
         $user = User::factory()->create([
             'email_verified_at' => null,
         ]);
@@ -48,8 +46,7 @@ class EmailVerificationTest extends TestCase {
         $response->assertRedirect(RouteServiceProvider::HOME.'?verified=1');
     }
 
-    public function test_email_is_not_verified_with_invalid_hash()
-    {
+    public function test_email_is_not_verified_with_invalid_hash() {
         $user = User::factory()->create([
             'email_verified_at' => null,
         ]);

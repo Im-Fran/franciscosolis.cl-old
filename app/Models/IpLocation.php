@@ -31,51 +31,42 @@ class IpLocation extends Model {
         'location_string',
     ];
 
-    public function ipAddress(): Attribute
-    {
+    public function ipAddress(): Attribute {
         return new Attribute(
             get: fn($value) => decrypt($value),
             set: fn($value) => encrypt($value)
         );
     }
 
-    public function getCountryNameAttribute(): string
-    {
+    public function getCountryNameAttribute(): string {
         return $this->location_data['countryName'] ?? '';
     }
 
-    public function getCountryCodeAttribute(): string
-    {
+    public function getCountryCodeAttribute(): string {
         return $this->location_data['countryCode'] ?? '';
     }
 
-    public function getRegionNameAttribute(): string
-    {
+    public function getRegionNameAttribute(): string {
         return $this->location_data['regionName'] ?? '';
     }
 
-    public function getRegionCodeAttribute(): string
-    {
+    public function getRegionCodeAttribute(): string {
         return $this->location_data['regionCode'] ?? '';
     }
 
-    public function getCityNameAttribute(): string
-    {
+    public function getCityNameAttribute(): string {
         return $this->location_data['cityName'] ?? '';
     }
 
-    public function getAreaCodeAttribute(): string
-    {
+    public function getAreaCodeAttribute(): string {
         return $this->location_data['areaCode'] ?? '';
     }
 
-    public function getTimeZoneAttribute(): string
-    {
+    public function getTimeZoneAttribute(): string {
         return $this->location_data['timeZone'] ?? '';
     }
 
-    public function getLocationStringAttribute(): string
-    {
+    public function getLocationStringAttribute(): string {
         return Helpers::locationStringFromIPLocation($this);
     }
 }

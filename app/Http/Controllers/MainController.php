@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 class MainController extends Controller {
-    public function home()
-    {
+    public function home() {
         return inertia('Index');
     }
 }

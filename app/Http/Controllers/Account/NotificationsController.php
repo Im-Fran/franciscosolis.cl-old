@@ -7,8 +7,7 @@ use Illuminate\Http\Request;
 
 class NotificationsController extends Controller {
     /* Shows the notifications page */
-    public function index(Request $request)
-    {
+    public function index(Request $request) {
         $user = $request->user();
 
         return inertia('Account/Notifications', [
@@ -26,16 +25,14 @@ class NotificationsController extends Controller {
     }
 
     /* Mark the given notification as read */
-    public function markAsRead($notification)
-    {
+    public function markAsRead($notification) {
         \Auth::user()->notifications()->find($notification)->markAsRead();
 
         return redirect()->back();
     }
 
     /* Delete the given notification */
-    public function delete($notification)
-    {
+    public function delete($notification) {
         \Auth::user()->notifications()->find($notification)->delete();
 
         return redirect()->back();

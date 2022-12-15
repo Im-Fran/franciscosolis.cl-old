@@ -8,8 +8,7 @@ return new class() extends Migration {
     /**
      * Run the migrations.
      */
-    public function up()
-    {
+    public function up() {
         Schema::table('users', function(Blueprint $table) {
             $table->string('slug');
         });
@@ -18,8 +17,7 @@ return new class() extends Migration {
     /**
      * Reverse the migrations.
      */
-    public function down()
-    {
+    public function down() {
         Schema::table('users', function(Blueprint $table) {
             $table->dropColumn('slug');
         });

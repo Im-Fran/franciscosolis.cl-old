@@ -22,8 +22,7 @@ class EnableTwoFactorAuth {
      *
      * @param TwoFactorAuthProvider $provider
      */
-    public function __construct(TwoFactorAuthProvider $provider)
-    {
+    public function __construct(TwoFactorAuthProvider $provider) {
         $this->provider = $provider;
     }
 
@@ -36,8 +35,7 @@ class EnableTwoFactorAuth {
      * @throws InvalidCharactersException
      * @throws SecretKeyTooShortException
      */
-    public function __invoke(mixed $user): void
-    {
+    public function __invoke(mixed $user): void {
         $user->update([
             'two_factor_secret' => $this->provider->generateSecretKey(),
             'two_factor_recovery_codes' => Collection::times(8, function() {

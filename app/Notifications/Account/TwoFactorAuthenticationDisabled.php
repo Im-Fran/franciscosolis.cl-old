@@ -14,9 +14,7 @@ class TwoFactorAuthenticationDisabled extends Notification implements ShouldBroa
     /**
      * Create a new notification instance.
      */
-    public function __construct()
-    {
-
+    public function __construct() {
     }
 
     /**
@@ -26,8 +24,7 @@ class TwoFactorAuthenticationDisabled extends Notification implements ShouldBroa
      *
      * @return array
      */
-    public function via(mixed $notifiable): array
-    {
+    public function via(mixed $notifiable): array {
         return ['mail', 'database', 'broadcast'];
     }
 
@@ -38,8 +35,7 @@ class TwoFactorAuthenticationDisabled extends Notification implements ShouldBroa
      *
      * @return MailMessage
      */
-    public function toMail(mixed $notifiable): MailMessage
-    {
+    public function toMail(mixed $notifiable): MailMessage {
         return (new MailMessage())
             ->subject('2FA Disabled!')
             ->line('2FA has been disabled in your account! We recommend you to keep it enabled for extra security.')
@@ -54,8 +50,7 @@ class TwoFactorAuthenticationDisabled extends Notification implements ShouldBroa
      *
      * @return array
      */
-    public function toArray(mixed $notifiable): array
-    {
+    public function toArray(mixed $notifiable): array {
         return [];
     }
 
@@ -66,8 +61,7 @@ class TwoFactorAuthenticationDisabled extends Notification implements ShouldBroa
      *
      * @return BroadcastMessage
      */
-    public function toBroadcast(mixed $notifiable): BroadcastMessage
-    {
+    public function toBroadcast(mixed $notifiable): BroadcastMessage {
         return (new BroadcastMessage([
             'message' => '2FA Disabled',
             'action' => [

@@ -7,8 +7,7 @@ use App\Models\User;
 
 class ActivityController extends Controller {
     /* Gets the online activity for the given user. */
-    public function getActivity(User $user)
-    {
+    public function getActivity(User $user) {
         return response()->json([
             'status' => 'success',
             'message' => 'Activity status for user '.$user->name,

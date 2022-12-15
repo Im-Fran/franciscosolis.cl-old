@@ -9,8 +9,7 @@ class CreatePermissionTables extends Migration {
     /**
      * Run the migrations.
      */
-    public function up()
-    {
+    public function up() {
         $tableNames = config('permission.table_names');
         $columnNames = config('permission.column_names');
         $teams = config('permission.teams');
@@ -126,8 +125,7 @@ class CreatePermissionTables extends Migration {
     /**
      * Reverse the migrations.
      */
-    public function down()
-    {
+    public function down() {
         $tableNames = config('permission.table_names');
 
         if (empty($tableNames)) {

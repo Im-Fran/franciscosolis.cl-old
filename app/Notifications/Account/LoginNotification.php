@@ -24,8 +24,7 @@ class LoginNotification extends Notification implements ShouldBroadcast {
      * @param mixed $device
      * @param mixed $location
      */
-    public function __construct($ip, $device = 'Unknown Device', $location = 'Unknown Location')
-    {
+    public function __construct($ip, $device = 'Unknown Device', $location = 'Unknown Location') {
         $this->ip = $ip;
         $this->device = $device;
         $this->location = $location;
@@ -38,8 +37,7 @@ class LoginNotification extends Notification implements ShouldBroadcast {
      *
      * @return array
      */
-    public function via($notifiable)
-    {
+    public function via($notifiable) {
         return ['mail', 'database', 'broadcast'];
     }
 
@@ -50,8 +48,7 @@ class LoginNotification extends Notification implements ShouldBroadcast {
      *
      * @return MailMessage
      */
-    public function toMail($notifiable)
-    {
+    public function toMail($notifiable) {
         return (new MailMessage())
             ->subject('New Login Activity')
             ->markdown('mail.account.login', [
@@ -68,8 +65,7 @@ class LoginNotification extends Notification implements ShouldBroadcast {
      *
      * @return array
      */
-    public function toArray($notifiable)
-    {
+    public function toArray($notifiable) {
         return [
             'ip' => $this->ip,
             'device' => $this->device,
@@ -84,8 +80,7 @@ class LoginNotification extends Notification implements ShouldBroadcast {
      *
      * @return BroadcastMessage
      */
-    public function toBroadcast(mixed $notifiable): BroadcastMessage
-    {
+    public function toBroadcast(mixed $notifiable): BroadcastMessage {
         return (new BroadcastMessage([
             'message' => 'New Login Activity',
             'action' => [

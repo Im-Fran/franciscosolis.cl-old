@@ -8,8 +8,7 @@ use Illuminate\Http\Request;
 
 class ImagesController extends Controller {
     /* Update the profile photo for the current user */
-    public function uploadProfilePhoto(ProfilePhotoUpdateRequest $request)
-    {
+    public function uploadProfilePhoto(ProfilePhotoUpdateRequest $request) {
         $user = $request->user();
         $photo = $request->gravatar ? 'gravatar' : $request->profile_photo;
         if ($photo === 'gravatar' && $user->profile_photo_path === 'gravatar') {
@@ -21,8 +20,7 @@ class ImagesController extends Controller {
     }
 
     /* Clears the profile photo for the current user */
-    public function clearProfilePhoto(Request $request)
-    {
+    public function clearProfilePhoto(Request $request) {
         $user = $request->user();
         $user->deleteProfilePhoto();
 

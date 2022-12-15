@@ -24,8 +24,7 @@
         "blank_line_between_import_groups": false,
         "braces": {
             "allow_single_line_closure": false,
-            "position_after_functions_and_oop_constructs": "same",
-            "position_after_anonymous_constructs": "same"
+            "position_after_functions_and_oop_constructs": "same"
         },
         "cast_spaces": true,
         "class_attributes_separation": true,
@@ -45,7 +44,8 @@
             "anonymous_classes_opening_brace": "same_line",
             "anonymous_functions_opening_brace": "same_line",
             "classes_opening_brace": "same_line",
-            "control_structures_opening_brace": "same_line"
+            "control_structures_opening_brace": "same_line",
+            "functions_opening_brace": "same_line"
         },
         "declare_equal_normalize": {
             "space": "single"

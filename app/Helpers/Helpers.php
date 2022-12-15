@@ -12,8 +12,7 @@ use Session;
 use Stevebauman\Location\Facades\Location;
 
 class Helpers {
-    public static function repeat($times, $callback): void
-    {
+    public static function repeat($times, $callback): void {
         if ($callback) {
             for ($i = 0; $i < $times; ++$i) {
                 $callback($i);
@@ -21,8 +20,7 @@ class Helpers {
         }
     }
 
-    public static function getDeviceString(?string $header = null): string
-    {
+    public static function getDeviceString(?string $header = null): string {
         $device = $header ?: (request()->header('User-Agent') ?: 'Unknown Device');
         if ($device != 'Unknown Device') {
             $deviceDetector = new DeviceDetector($device);
@@ -39,8 +37,7 @@ class Helpers {
         return $device;
     }
 
-    public static function authenticate(Request $request): void
-    {
+    public static function authenticate(Request $request): void {
         Auth::loginUsingId(Session::get('auth.user.id'), Session::get('auth.user.remember'));
         $request->session()->regenerate();
 
@@ -49,8 +46,7 @@ class Helpers {
         Auth::user()->notify(new LoginNotification($location->ip_address, self::getDeviceString(), $location->location_string));
     }
 
-    private static function storeLocationFromIP(string $ip): ?IpLocation
-    {
+    private static function storeLocationFromIP(string $ip): ?IpLocation {
         $ipLocation = IpLocation::firstOrCreate(['id' => sha1($ip)], ['ip_address' => $ip]);
         $loc = Location::get($ip);
         if (!$loc) {
@@ -66,8 +62,7 @@ class Helpers {
         return $ipLocation;
     }
 
-    public static function locationFromIP(?string $ip = null): ?IpLocation
-    {
+    public static function locationFromIP(?string $ip = null): ?IpLocation {
         $ip = $ip ?: (config('location.testing.enabled') ? config('location.testing.ip') : request()->ip());
 
         if (!IpLocation::whereId(sha1($ip))->exists()) {
@@ -86,18 +81,15 @@ class Helpers {
         return self::storeLocationFromIP($ip);
     }
 
-    public static function locationStringFromIPLocation(?IpLocation $location = null): string
-    {
+    public static function locationStringFromIPLocation(?IpLocation $location = null): string {
         return $location && $location->location_data ? ($location->city_name.', '.$location->region_name.', '.$location->country_name) : 'Unknown Location';
     }
 
-    public static function locationStringFromIP(?string $ip = null): string
-    {
+    public static function locationStringFromIP(?string $ip = null): string {
         return self::locationStringFromIPLocation(self::locationFromIP($ip));
     }
 
-    public static function isMobile()
-    {
+    public static function isMobile() {
         if (array_key_exists('HTTP_USER_AGENT', $_SERVER)) {
             $useragent = $_SERVER['HTTP_USER_AGENT'];
 
@@ -107,8 +99,7 @@ class Helpers {
         return true;
     }
 
-    public static function generateRecoveryCode(): string
-    {
+    public static function generateRecoveryCode(): string {
         return Str::random(6).'.'.Str::random(4).'.'.Str::random(6).'.'.Str::random(4);
     }
 }

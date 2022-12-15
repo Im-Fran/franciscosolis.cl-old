@@ -11,8 +11,7 @@ class ProfilePhotoUpdateRequest extends FormRequest {
      *
      * @return bool
      */
-    public function authorize()
-    {
+    public function authorize() {
         return Auth::check();
     }
 
@@ -21,8 +20,7 @@ class ProfilePhotoUpdateRequest extends FormRequest {
      *
      * @return array<string, mixed>
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             'profile_photo' => ['required_if:gravatar,null', 'image', 'nullable'],
             'gravatar' => ['required_if:profile_photo,null', 'boolean', 'nullable'],

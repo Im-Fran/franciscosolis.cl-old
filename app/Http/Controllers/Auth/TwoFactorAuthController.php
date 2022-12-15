@@ -12,8 +12,7 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
 class TwoFactorAuthController extends Controller {
-    public function show(Request $request)
-    {
+    public function show(Request $request) {
         if (!session()->has('auth.user.id')) {
             return redirect()->route('login')->withErrors(['Your session has expired! Please try again.']);
         }
@@ -28,8 +27,7 @@ class TwoFactorAuthController extends Controller {
         return inertia('Auth/TwoFactorAuth');
     }
 
-    public function store(TwoFactorAuthRequest $request)
-    {
+    public function store(TwoFactorAuthRequest $request) {
         try {
             if (!session()->has('auth.user.id')) {
                 return redirect()->route('login')->withErrors(['Your session has expired! Please try again.']);

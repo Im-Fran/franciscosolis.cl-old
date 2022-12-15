@@ -10,8 +10,7 @@ class DisableTwoFactorAuth {
      *
      * @param mixed $user
      */
-    public function __invoke(mixed $user): void
-    {
+    public function __invoke(mixed $user): void {
         if (!is_null($user->two_factor_secret) || !is_null($user->two_factor_recovery)) {
             $user->forceFill([
                 'two_factor_secret' => null,

@@ -31,8 +31,7 @@ class TwoFactorAuthProvider {
      * @param Google2FA       $engine
      * @param null|Repository $cache
      */
-    public function __construct(Google2FA $engine, ?Repository $cache = null)
-    {
+    public function __construct(Google2FA $engine, ?Repository $cache = null) {
         $this->engine = $engine;
         $this->cache = $cache;
 
@@ -49,8 +48,7 @@ class TwoFactorAuthProvider {
      *
      * @return string
      */
-    public function generateSecretKey(): string
-    {
+    public function generateSecretKey(): string {
         return $this->engine->generateSecretKey();
     }
 
@@ -62,8 +60,7 @@ class TwoFactorAuthProvider {
      *
      * @return string
      */
-    public function qrCodeUrl(string $email, string $secret): string
-    {
+    public function qrCodeUrl(string $email, string $secret): string {
         return $this->engine->getQRCodeUrl(config('app.name'), $email, $secret);
     }
 
@@ -80,8 +77,7 @@ class TwoFactorAuthProvider {
      *
      * @return bool
      */
-    public function verify(string $secret, string $code): bool
-    {
+    public function verify(string $secret, string $code): bool {
         $this->engine->setWindow(1); // A code lasts 60 seconds
 
         $timestamp = $this->engine->verifyKeyNewer(

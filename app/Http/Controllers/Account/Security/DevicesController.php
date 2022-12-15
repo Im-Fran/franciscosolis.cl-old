@@ -11,8 +11,7 @@ use Illuminate\Http\Request;
 use Jenssegers\Agent\Agent;
 
 class DevicesController extends Controller {
-    public function index(Request $request)
-    {
+    public function index(Request $request) {
         $user = $request->user();
 
         return inertia('Account/Security/Devices', [
@@ -41,8 +40,7 @@ class DevicesController extends Controller {
         ]);
     }
 
-    public function destroy(Request $request)
-    {
+    public function destroy(Request $request) {
         $user = $request->user();
         $sessionId = $request->session_id;
 
@@ -77,8 +75,7 @@ class DevicesController extends Controller {
         return back()->with('error', 'Device not found.');
     }
 
-    protected function getType($agent)
-    {
+    protected function getType($agent) {
         if ($agent->isDesktop()) {
             return 'Desktop';
         } elseif ($agent->isTablet()) {
@@ -90,8 +87,7 @@ class DevicesController extends Controller {
         return 'Phone';
     }
 
-    protected function createAgent($session)
-    {
+    protected function createAgent($session) {
         return tap(new Agent(), fn($agent) => $agent->setUserAgent($session->user_agent));
     }
 }

@@ -19,14 +19,12 @@ use PragmaRX\Google2FA\Exceptions\SecretKeyTooShortException;
 
 class AccessController extends Controller {
     /* Shows the access dashboard */
-    public function index(): Response|ResponseFactory
-    {
+    public function index(): Response|ResponseFactory {
         return inertia('Account/Security/Access');
     }
 
     /* Updates the current password to the given one */
-    public function updatePassword(PasswordUpdateRequest $request): RedirectResponse
-    {
+    public function updatePassword(PasswordUpdateRequest $request): RedirectResponse {
         $request->user()->update([
             'password' => Hash::make($request->password),
         ]);
@@ -41,8 +39,7 @@ class AccessController extends Controller {
      * @throws SecretKeyTooShortException
      * @throws InvalidCharactersException
      */
-    public function twoFactorSetup(Request $request, EnableTwoFactorAuth $enableTwoFactorAuth): Response|ResponseFactory|RedirectResponse
-    {
+    public function twoFactorSetup(Request $request, EnableTwoFactorAuth $enableTwoFactorAuth): Response|ResponseFactory|RedirectResponse {
         $user = $request->user();
         if (!$user->two_factor_enabled && $user->two_factor_secret == null) {
             $enableTwoFactorAuth($user);
@@ -57,8 +54,7 @@ class AccessController extends Controller {
     }
 
     /* Regenerates the 2FA Secret */
-    public function regenerateTwoFactorSecret(Request $request, EnableTwoFactorAuth $enableTwoFactorAuth): RedirectResponse
-    {
+    public function regenerateTwoFactorSecret(Request $request, EnableTwoFactorAuth $enableTwoFactorAuth): RedirectResponse {
         $user = $request->user();
         $enableTwoFactorAuth($user);
 
@@ -66,8 +62,7 @@ class AccessController extends Controller {
     }
 
     /* Disables 2FA */
-    public function disableTwoFactor(Request $request, DisableTwoFactorAuth $disableTwoFactorAuth): RedirectResponse
-    {
+    public function disableTwoFactor(Request $request, DisableTwoFactorAuth $disableTwoFactorAuth): RedirectResponse {
         $user = $request->user();
         $disableTwoFactorAuth($user);
 
@@ -75,8 +70,7 @@ class AccessController extends Controller {
     }
 
     /* Validates the 2FA code */
-    public function validateTwoFactor(Request $request): RedirectResponse
-    {
+    public function validateTwoFactor(Request $request): RedirectResponse {
         $user = $request->user();
 
         if ($user->validate2FA($request->one_time_password)) {
@@ -93,8 +87,7 @@ class AccessController extends Controller {
     }
 
     /* Regenerate Used Codes */
-    public function regenerateRecoveryCodes(Request $request): RedirectResponse
-    {
+    public function regenerateRecoveryCodes(Request $request): RedirectResponse {
         $user = $request->user();
         $collection = collect($user->two_factor_recovery_codes);
         if ($collection->contains('USED') === false) {

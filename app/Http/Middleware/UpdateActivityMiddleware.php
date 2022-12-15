@@ -14,8 +14,7 @@ class UpdateActivityMiddleware {
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response
      */
-    public function handle(Request $request, Closure $next)
-    {
+    public function handle(Request $request, Closure $next) {
         if ($user = $request->user()) {
             $user->update(['last_activity_at' => now()]);
         }

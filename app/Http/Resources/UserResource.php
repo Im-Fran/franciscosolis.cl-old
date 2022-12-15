@@ -12,8 +12,7 @@ class UserResource extends JsonResource {
      *
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
-    public function toArray($request)
-    {
+    public function toArray($request) {
         return [
             'name' => $this->name,
             'profile_photo_url' => $this->profile_photo_url,

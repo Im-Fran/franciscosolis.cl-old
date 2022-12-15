@@ -13,9 +13,7 @@ class EmailVerifiedNotification extends Notification implements ShouldBroadcast 
     /**
      * Create a new notification instance.
      */
-    public function __construct()
-    {
-
+    public function __construct() {
     }
 
     /**
@@ -25,8 +23,7 @@ class EmailVerifiedNotification extends Notification implements ShouldBroadcast 
      *
      * @return array
      */
-    public function via($notifiable)
-    {
+    public function via($notifiable) {
         return ['database', 'broadcast'];
     }
 
@@ -37,15 +34,13 @@ class EmailVerifiedNotification extends Notification implements ShouldBroadcast 
      *
      * @return array
      */
-    public function toArray($notifiable)
-    {
+    public function toArray($notifiable) {
         return [
             'message' => 'Your email has been verified!',
         ];
     }
 
-    public function toBroadcast()
-    {
+    public function toBroadcast() {
         return (new BroadcastMessage([
             'message' => 'Your email has been verified!',
         ]));

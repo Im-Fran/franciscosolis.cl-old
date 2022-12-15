@@ -50,8 +50,7 @@ class Handler extends ExceptionHandler {
     /**
      * Register the exception handling callbacks for the application.
      */
-    public function register()
-    {
+    public function register() {
         $this->renderable(function(HttpExceptionInterface $e, Request $request) {
             $code = $e->getStatusCode();
             if ($code === 419) {

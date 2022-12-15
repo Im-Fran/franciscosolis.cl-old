@@ -15,8 +15,7 @@ class LoginRequest extends FormRequest {
      *
      * @return bool
      */
-    public function authorize()
-    {
+    public function authorize() {
         return true;
     }
 
@@ -25,8 +24,7 @@ class LoginRequest extends FormRequest {
      *
      * @return array
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             'email' => ['required', 'string', 'email'],
             'password' => ['required', 'string'],
@@ -38,8 +36,7 @@ class LoginRequest extends FormRequest {
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function authenticate()
-    {
+    public function authenticate() {
         $this->ensureIsNotRateLimited();
 
         if (!Auth::validate($this->only('email', 'password'))) {
@@ -56,8 +53,7 @@ class LoginRequest extends FormRequest {
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function ensureIsNotRateLimited()
-    {
+    public function ensureIsNotRateLimited() {
         if (!RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
             return;
         }
@@ -74,8 +70,7 @@ class LoginRequest extends FormRequest {
      *
      * @return string
      */
-    public function throttleKey()
-    {
+    public function throttleKey() {
         return Str::transliterate(Str::lower($this->input('email')).'|'.$this->ip());
     }
 }

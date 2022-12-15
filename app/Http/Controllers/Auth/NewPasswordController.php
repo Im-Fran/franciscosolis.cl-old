@@ -20,8 +20,7 @@ class NewPasswordController extends Controller {
      *
      * @return \Inertia\Response
      */
-    public function create(Request $request)
-    {
+    public function create(Request $request) {
         return Inertia::render('Auth/ResetPassword', [
             'email' => $request->email,
             'token' => $request->route('token'),
@@ -37,8 +36,7 @@ class NewPasswordController extends Controller {
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         $request->validate([
             'token' => 'required',
             'email' => 'required|email',

@@ -11,8 +11,7 @@ class PasswordUpdateRequest extends FormRequest {
      *
      * @return bool
      */
-    public function authorize()
-    {
+    public function authorize() {
         return true;
     }
 
@@ -21,8 +20,7 @@ class PasswordUpdateRequest extends FormRequest {
      *
      * @return array<string, mixed>
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ];

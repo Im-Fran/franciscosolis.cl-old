@@ -10,8 +10,7 @@ trait HasProfilePhoto {
      *
      * @param \Illuminate\Http\UploadedFile|string $photo
      */
-    public function updateProfilePhoto($photo)
-    {
+    public function updateProfilePhoto($photo) {
         tap($this->profile_photo_path, function($previous) use ($photo) {
             $this->forceFill([
                 'profile_photo_path' => $photo === 'gravatar' ? 'gravatar' : $photo->storePublicly(
@@ -29,8 +28,7 @@ trait HasProfilePhoto {
     /**
      * Deletes the profile photo.
      */
-    public function deleteProfilePhoto()
-    {
+    public function deleteProfilePhoto() {
         if (is_null($this->profile_photo_path)) {
             return;
         }
@@ -47,8 +45,7 @@ trait HasProfilePhoto {
      *
      * @return string
      */
-    public function getProfilePhotoUrlAttribute()
-    {
+    public function getProfilePhotoUrlAttribute() {
         return $this->profile_photo_path ? ($this->profile_photo_path === 'gravatar' ? ('https://www.gravatar.com/avatar/'.md5(strtolower($this->gravatar_email ?? $this->email)).'?s=200') : Storage::disk($this->profilePhotoDisk())->url($this->profile_photo_path)) : $this->defaultProfilePhotoUrl();
     }
 
@@ -57,8 +54,7 @@ trait HasProfilePhoto {
      *
      * @return string
      */
-    protected function defaultProfilePhotoUrl()
-    {
+    protected function defaultProfilePhotoUrl() {
         $name = trim(collect(explode(' ', $this->name))->map(function($segment) {
             return mb_substr($segment, 0, 1);
         })->join(' '));
@@ -71,8 +67,7 @@ trait HasProfilePhoto {
      *
      * @return string
      */
-    protected function profilePhotoDisk()
-    {
+    protected function profilePhotoDisk() {
         return isset($_ENV['VAPOR_ARTIFACT_NAME']) ? 's3' : config('app.profile_photo_disk', 'public');
     }
 }

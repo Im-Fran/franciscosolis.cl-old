@@ -17,8 +17,7 @@ class RedirectIfAuthenticated {
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response
      */
-    public function handle(Request $request, Closure $next, ...$guards)
-    {
+    public function handle(Request $request, Closure $next, ...$guards) {
         $guards = empty($guards) ? [null] : $guards;
 
         foreach ($guards as $guard) {

@@ -17,8 +17,7 @@ class LogoutDestroyedSession {
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response
      */
-    public function handle(Request $request, Closure $next)
-    {
+    public function handle(Request $request, Closure $next) {
         $user = $request->user();
         if (!$user) {
             return $next($request);

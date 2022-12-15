@@ -80,8 +80,7 @@ class User extends Authenticatable implements MustVerifyEmail {
         'settings' => 'array',
     ];
 
-    protected static function booted()
-    {
+    protected static function booted() {
         // Ensure that the user has a settings attribute and it's has all the keys.
         static::creating(function(User $user) {
             $user->settings = array_merge(UserSettings::$defaultSettings, $user->settings ?: []);
@@ -100,20 +99,17 @@ class User extends Authenticatable implements MustVerifyEmail {
         });
     }
 
-    public function getSlugOptions(): SlugOptions
-    {
+    public function getSlugOptions(): SlugOptions {
         return SlugOptions::create()
             ->generateSlugsFrom('name')
             ->saveSlugsTo('slug');
     }
 
-    public function receivesBroadcastNotificationsOn(): string
-    {
+    public function receivesBroadcastNotificationsOn(): string {
         return "User.{$this->id}";
     }
 
-    public function getTwoFactorEnabledAttribute()
-    {
+    public function getTwoFactorEnabledAttribute() {
         return !is_null($this->two_factor_secret) && !is_null($this->two_factor_verified_at);
     }
 
@@ -122,8 +118,7 @@ class User extends Authenticatable implements MustVerifyEmail {
      *
      * @return Attribute
      */
-    protected function twoFactorSecret(): Attribute
-    {
+    protected function twoFactorSecret(): Attribute {
         return new Attribute(
             get: fn($value) => $value != null ? decrypt($value) : null,
             set: fn($value) => $value != null ? encrypt($value) : null,
@@ -135,8 +130,7 @@ class User extends Authenticatable implements MustVerifyEmail {
      *
      * @return null|array|Attribute
      */
-    protected function twoFactorRecoveryCodes(): Attribute
-    {
+    protected function twoFactorRecoveryCodes(): Attribute {
         return new Attribute(
             get: fn($value) => $value != null ? json_decode(decrypt($value)) : null,
             set: fn($value) => $value != null ? encrypt(json_encode($value)) : null,
@@ -148,8 +142,7 @@ class User extends Authenticatable implements MustVerifyEmail {
      *
      * @param string $input
      */
-    public function validate2FA(string $input): bool
-    {
+    public function validate2FA(string $input): bool {
         if (!preg_match('/[0-9]{6}|[A-Za-z0-9]{6}\.[A-Za-z0-9]{4}\.[A-Za-z0-9]{6}\.[A-Za-z0-9]{4}/', $input)) {
             return false;
         }
@@ -171,14 +164,12 @@ class User extends Authenticatable implements MustVerifyEmail {
     }
 
     /* Check if the user is online (in the last 5 minutes) */
-    public function getIsOnlineAttribute(): bool
-    {
+    public function getIsOnlineAttribute(): bool {
         return $this->last_activity_at->diffInMinutes(now()) < 5;
     }
 
     /* Updates the given settings */
-    public function updateSettings(array $settings)
-    {
+    public function updateSettings(array $settings) {
         foreach ($settings as $key => $value) {
             if (UserSettings::$defaultSettings[$key]) {
                 $this->settings[$key] = $value ?: UserSettings::$defaultSettings[$key];
@@ -188,8 +179,7 @@ class User extends Authenticatable implements MustVerifyEmail {
     }
 
     /* Updates the given setting */
-    public function updateSetting($key, $value = null)
-    {
+    public function updateSetting($key, $value = null) {
         if (UserSettings::$defaultSettings[$key]) {
             $this->settings[$key] = $value ?: UserSettings::$defaultSettings[$key];
             $this->save();

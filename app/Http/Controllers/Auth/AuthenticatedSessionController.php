@@ -20,8 +20,7 @@ class AuthenticatedSessionController extends Controller {
      *
      * @return Response
      */
-    public function create()
-    {
+    public function create() {
         return inertia('Auth/Login', [
             'canResetPassword' => Route::has('password.request'),
             'status' => session('status'),
@@ -35,8 +34,7 @@ class AuthenticatedSessionController extends Controller {
      *
      * @return RedirectResponse
      */
-    public function store(LoginRequest $request)
-    {
+    public function store(LoginRequest $request) {
         $user = User::whereEmail($request->email)->first();
         $request->authenticate(); // Just make sure is not rate limited and that the credentials are valid
 
@@ -59,8 +57,7 @@ class AuthenticatedSessionController extends Controller {
      *
      * @return RedirectResponse
      */
-    public function destroy(Request $request)
-    {
+    public function destroy(Request $request) {
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();

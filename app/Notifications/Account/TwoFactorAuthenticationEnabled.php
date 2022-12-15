@@ -14,9 +14,7 @@ class TwoFactorAuthenticationEnabled extends Notification implements ShouldBroad
     /**
      * Create a new notification instance.
      */
-    public function __construct()
-    {
-
+    public function __construct() {
     }
 
     /**
@@ -26,8 +24,7 @@ class TwoFactorAuthenticationEnabled extends Notification implements ShouldBroad
      *
      * @return array
      */
-    public function via(mixed $notifiable): array
-    {
+    public function via(mixed $notifiable): array {
         return ['mail', 'database', 'broadcast'];
     }
 
@@ -38,8 +35,7 @@ class TwoFactorAuthenticationEnabled extends Notification implements ShouldBroad
      *
      * @return MailMessage
      */
-    public function toMail(mixed $notifiable): MailMessage
-    {
+    public function toMail(mixed $notifiable): MailMessage {
         return (new MailMessage())
             ->subject('2FA Enabled!')
             ->line('2FA has been enabled for your account! This will provide an extra layer of protection to your account.')
@@ -54,8 +50,7 @@ class TwoFactorAuthenticationEnabled extends Notification implements ShouldBroad
      *
      * @return array
      */
-    public function toArray(mixed $notifiable): array
-    {
+    public function toArray(mixed $notifiable): array {
         return [];
     }
 
@@ -66,8 +61,7 @@ class TwoFactorAuthenticationEnabled extends Notification implements ShouldBroad
      *
      * @return BroadcastMessage
      */
-    public function toBroadcast(mixed $notifiable): BroadcastMessage
-    {
+    public function toBroadcast(mixed $notifiable): BroadcastMessage {
         return (new BroadcastMessage([
             'message' => '2FA Enabled',
             'action' => [
