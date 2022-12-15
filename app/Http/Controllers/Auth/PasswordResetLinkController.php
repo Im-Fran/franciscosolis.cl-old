@@ -8,8 +8,7 @@ use Illuminate\Support\Facades\Password;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 
-class PasswordResetLinkController extends Controller
-{
+class PasswordResetLinkController extends Controller {
     /**
      * Display the password reset link request view.
      *
@@ -25,10 +24,11 @@ class PasswordResetLinkController extends Controller
     /**
      * Handle an incoming password reset link request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @param \Illuminate\Http\Request $request
      *
      * @throws \Illuminate\Validation\ValidationException
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
@@ -47,8 +47,6 @@ class PasswordResetLinkController extends Controller
             return back()->with('status', __($status));
         }
 
-        throw ValidationException::withMessages([
-            'email' => [trans($status)],
-        ]);
+        throw ValidationException::withMessages(['email' => [trans($status)]]);
     }
 }

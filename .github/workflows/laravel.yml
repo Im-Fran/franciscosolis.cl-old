@@ -35,6 +35,13 @@ jobs:
       run: yarn build
     - name: Execute tests (Unit and Feature tests) via PHPUnit
       env:
+        APP_ENV: testing
+        BCRYPT_ROUNDS: 4
+        CACHE_DRIVER: array
         DB_CONNECTION: sqlite
         DB_DATABASE: database/database.sqlite
-      run: vendor/bin/phpunit
+        MAIL_MAILER: array
+        QUQUEUE_CONNECTION: sync
+        SESSION_DRIVER: array
+        TELESCOPE_ENABLED: false
+      run: vendor/bin/sail test

@@ -8,15 +8,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\ViewErrorBag;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
-class Handler extends ExceptionHandler
-{
+class Handler extends ExceptionHandler {
     /**
      * A list of exception types with their corresponding custom log levels.
      *
      * @var array<class-string<\Throwable>, \Psr\Log\LogLevel::*>
      */
     protected $levels = [
-        //
+
     ];
 
     /**
@@ -25,7 +24,7 @@ class Handler extends ExceptionHandler
      * @var array<int, class-string<\Throwable>>
      */
     protected $dontReport = [
-        //
+
     ];
 
     /**
@@ -50,19 +49,18 @@ class Handler extends ExceptionHandler
 
     /**
      * Register the exception handling callbacks for the application.
-     *
-     * @return void
      */
-    public function register() {
-        $this->renderable(function(HttpExceptionInterface $e, Request $request){
-		    $code = $e->getStatusCode();
-		    if($code === 419) {
+    public function register()
+    {
+        $this->renderable(function(HttpExceptionInterface $e, Request $request) {
+            $code = $e->getStatusCode();
+            if ($code === 419) {
                 return back()->withErrors(['error' => 'Sorry but it looks like your session has expired. Please try again.']);
-            } else if(!app()->isProduction() && in_array($code, array_keys($this->errorMessages))) {
+            } elseif (!app()->isProduction() && in_array($code, array_keys($this->errorMessages))) {
                 $headers = $request->headers;
                 $headers->add($e->getHeaders());
                 $data = [
-                    'errors' => new ViewErrorBag,
+                    'errors' => new ViewErrorBag(),
                     'exception' => $e,
                     'data' => [
                         'host' => gethostname(),
@@ -71,8 +69,9 @@ class Handler extends ExceptionHandler
                         'message' => $e->getMessage() ?: $this->errorMessages[$code],
                     ],
                 ];
+
                 return inertia('Error', $data)->toResponse($request)->setStatusCode($code)->sendHeaders($headers);
             }
-	    });
+        });
     }
 }

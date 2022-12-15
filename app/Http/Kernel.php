@@ -13,7 +13,6 @@ use App\Http\Middleware\TrustHosts;
 use App\Http\Middleware\TrustProxies;
 use App\Http\Middleware\UpdateActivityMiddleware;
 use App\Http\Middleware\VerifyCsrfToken;
-use Illuminate\Http\Middleware\HandleCors;
 use Illuminate\Auth\Middleware\AuthenticateWithBasicAuth;
 use Illuminate\Auth\Middleware\Authorize;
 use Illuminate\Auth\Middleware\EnsureEmailIsVerified;
@@ -22,6 +21,7 @@ use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull;
 use Illuminate\Foundation\Http\Middleware\ValidatePostSize;
+use Illuminate\Http\Middleware\HandleCors;
 use Illuminate\Http\Middleware\SetCacheHeaders;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Routing\Middleware\ThrottleRequests;
@@ -32,15 +32,14 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 use PragmaRX\Google2FALaravel\Middleware;
 
 class Kernel extends HttpKernel {
-
     protected $middlewarePriority = [
-		StartSession::class,
-		Authenticate::class,
-		AuthenticateSession::class,
-		ShareErrorsFromSession::class,
-		SubstituteBindings::class,
-		Authorize::class,
-	];
+        StartSession::class,
+        Authenticate::class,
+        AuthenticateSession::class,
+        ShareErrorsFromSession::class,
+        SubstituteBindings::class,
+        Authorize::class,
+    ];
 
     /**
      * The application's global HTTP middleware stack.
@@ -102,6 +101,6 @@ class Kernel extends HttpKernel {
         'signed' => ValidateSignature::class,
         'throttle' => ThrottleRequests::class,
         'verified' => EnsureEmailIsVerified::class,
-	    '2fa' => Middleware::class,
+        '2fa' => Middleware::class,
     ];
 }

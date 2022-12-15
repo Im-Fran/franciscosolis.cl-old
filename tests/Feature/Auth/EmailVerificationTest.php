@@ -10,8 +10,10 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\URL;
 use Tests\TestCase;
 
-class EmailVerificationTest extends TestCase
-{
+/**
+ * @small
+ */
+class EmailVerificationTest extends TestCase {
     use RefreshDatabase;
 
     public function test_email_verification_screen_can_be_rendered()

@@ -63,9 +63,9 @@ return [
      * One Time Password error message.
      */
     'error_messages' => [
-        'wrong_otp'       => "The '2FA Code' typed was wrong.",
+        'wrong_otp' => "The '2FA Code' typed was wrong.",
         'cannot_be_empty' => '2FA Code cannot be empty.',
-        'unknown'         => 'An unknown error has occurred. Please try again.',
+        'unknown' => 'An unknown error has occurred. Please try again.',
     ],
 
     /*

@@ -7,31 +7,28 @@ use Illuminate\Contracts\Cache\Repository;
 use Illuminate\Support\ServiceProvider;
 use PragmaRX\Google2FA\Google2FA;
 
-class AppServiceProvider extends ServiceProvider
-{
+class AppServiceProvider extends ServiceProvider {
     /**
      * Register any application services.
-     *
-     * @return void
      */
-    public function register() {
-	    if (app()->isLocal()) {
-		    app()->register(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
-	    }
+    public function register()
+    {
+        if (app()->isLocal()) {
+            app()->register(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
+        }
 
-		// Register the 2FA Auth Provider
-		app()->singleton(TwoFactorAuthContract::class, fn($app) => new TwoFactorAuthProvider(
-			$app->make(Google2FA::class),
-			$app->make(Repository::class),
-		));
+        // Register the 2FA Auth Provider
+        app()->singleton(TwoFactorAuthContract::class, fn($app) => new TwoFactorAuthProvider(
+            $app->make(Google2FA::class),
+            $app->make(Repository::class),
+        ));
     }
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot() {
-        //
+    public function boot()
+    {
+
     }
 }
