@@ -98,4 +98,15 @@ class TwoFactorAuthProvider {
 
         return false;
     }
+
+    /**
+     * Gets the current OTP for the given secret.
+     *
+     * @param string $secret
+     *
+     * @return string
+     */
+    public function getCurrentOtp(string $secret): string {
+        return $this->engine->getCurrentOtp($secret);
+    }
 }

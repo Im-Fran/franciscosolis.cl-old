@@ -40,7 +40,7 @@ class TwoFactorAuthController extends Controller {
                 return redirect()->intended(RouteServiceProvider::HOME);
             }
 
-            return redirect()->back()->withErrors(['Invalid 2FA code.']);
+            return redirect()->route('2fa')->withErrors(['one_time_password' => 'Invalid 2FA code.']);
         } catch (\Exception|NotFoundExceptionInterface|ContainerExceptionInterface $e) {
             return redirect()->route('login')->withErrors([$e->getMessage()]);
         }
