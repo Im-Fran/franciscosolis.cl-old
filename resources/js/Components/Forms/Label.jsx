@@ -1,10 +1,12 @@
-import {InformationCircleIcon} from '@heroicons/react/24/outline';
+import {InformationCircleIcon, EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 
-export default function Label({ forInput, value, className = '', info = null, children = (<></>) }) {
+export default function Label({ forInput, value, className = '', info = null, isVisible = false, toggleVisibility = null, children = (<></>) }) {
+
     return (
         <label htmlFor={forInput} className={`flex flex-row items-center font-medium text-md ` + className}>
             {value ? value : children}
-            {info ? <>&nbsp;<InformationCircleIcon data-content={info} className="h-4 w-4"/></> : <></>}
+            {toggleVisibility != null && <>&nbsp;{isVisible ? <EyeIcon className="h-4 w-4 cursor-pointer" onClick={() => toggleVisibility()}/> : <EyeSlashIcon className="h-4 w-4 cursor-pointer" onClick={() => toggleVisibility()}/>}</>}
+            {info ? <>&nbsp;<InformationCircleIcon data-tip={info} className="h-4 w-4"/></> : <></>}
         </label>
     );
 }

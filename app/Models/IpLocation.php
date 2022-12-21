@@ -13,11 +13,11 @@ class IpLocation extends Model {
     protected $fillable = [
         'id',
         'ip_address',
-        'location_data'
+        'location_data',
     ];
 
     protected $casts = [
-        'location_data' => 'array'
+        'location_data' => 'array',
     ];
 
     protected $appends = [
@@ -28,13 +28,13 @@ class IpLocation extends Model {
         'city_name',
         'area_code',
         'time_zone',
-        'location_string'
+        'location_string',
     ];
 
     public function ipAddress(): Attribute {
         return new Attribute(
-			get: fn ($value) => decrypt($value),
-            set: fn ($value) => encrypt($value)
+            get: fn($value) => decrypt($value),
+            set: fn($value) => encrypt($value)
         );
     }
 

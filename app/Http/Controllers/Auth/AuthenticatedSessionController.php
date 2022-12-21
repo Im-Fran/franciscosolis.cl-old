@@ -11,11 +11,10 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use Inertia\Response;
 use function inertia;
+use Inertia\Response;
 
 class AuthenticatedSessionController extends Controller {
-
     /**
      * Display the login view.
      *
@@ -32,27 +31,30 @@ class AuthenticatedSessionController extends Controller {
      * Handle an incoming authentication request.
      *
      * @param LoginRequest $request
+     *
      * @return RedirectResponse
      */
     public function store(LoginRequest $request) {
-		$user = User::whereEmail($request->email)->first();
+        $user = User::whereEmail($request->email)->first();
+        $request->authenticate(); // Just make sure is not rate limited and that the credentials are valid
 
         session()->put('auth.user.id', $user->id);
         session()->put('auth.user.remember', $request->boolean('remember'));
 
         // Check that the user requires 2FA
-	    if($user->two_factor_secret){
-		    return redirect()->route('2fa');
-	    } else {
-		    Helpers::authenticate($request);
-		    return redirect()->intended(RouteServiceProvider::HOME);
-	    }
+        if ($user->two_factor_secret) {
+            return redirect()->route('2fa');
+        }
+        Helpers::authenticate($request);
+
+        return redirect()->intended(RouteServiceProvider::HOME);
     }
 
     /**
      * Destroy an authenticated session.
      *
      * @param Request $request
+     *
      * @return RedirectResponse
      */
     public function destroy(Request $request) {

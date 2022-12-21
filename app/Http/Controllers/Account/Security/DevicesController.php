@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
 use Jenssegers\Agent\Agent;
 
 class DevicesController extends Controller {
-
     public function index(Request $request) {
         $user = $request->user();
 
@@ -19,7 +18,7 @@ class DevicesController extends Controller {
             'sessions' => fn() => collect(
                 DB::connection(config('session.connection'))->table(config('session.table', 'session'))
                     ->where('user_id', $request->user()->id)
-                    ->whereNotIn('id', Cache::rememberForever("logout-$user->id", fn() => collect()))
+                    ->whereNotIn('id', Cache::rememberForever("logout-{$user->id}", fn() => collect()))
                     ->orderByDesc('last_activity')
                     ->get(['id', 'user_agent', 'ip_address', 'last_activity'])
             )->map(function($session) use ($request) {
@@ -45,15 +44,16 @@ class DevicesController extends Controller {
         $user = $request->user();
         $sessionId = $request->session_id;
 
-        if($sessionId === 'all') {
-            $logouts = Cache::rememberForever("logout-$user->id", fn() => collect());
+        if ($sessionId === 'all') {
+            $logouts = Cache::rememberForever("logout-{$user->id}", fn() => collect());
             $ids = DB::connection(config('session.connection'))->table(config('session.table', 'session'))
                 ->where('user_id', $user->id)
                 ->where('id', '!=', $request->session()->getId())
                 ->whereNotIn('id', $logouts->toArray())
                 ->pluck('id');
             $logouts->push(...$ids);
-            Cache::forever("logout-$user->id", $logouts);
+            Cache::forever("logout-{$user->id}", $logouts);
+
             return back()->with('success', 'All other devices have been logged out.');
         }
 
@@ -62,12 +62,13 @@ class DevicesController extends Controller {
             ->where('user_id', $user->id)
             ->first();
 
-        if($session) {
-            $logouts = Cache::rememberForever("logout-$user->id", fn() => collect());
-            if(!$logouts->contains($sessionId)) {
+        if ($session) {
+            $logouts = Cache::rememberForever("logout-{$user->id}", fn() => collect());
+            if (!$logouts->contains($sessionId)) {
                 $logouts->push($sessionId);
-                Cache::forever("logout-$user->id", $logouts);
+                Cache::forever("logout-{$user->id}", $logouts);
             }
+
             return back()->with('success', 'Device has been logged out.');
         }
 
@@ -75,18 +76,18 @@ class DevicesController extends Controller {
     }
 
     protected function getType($agent) {
-        if($agent->isDesktop()) {
+        if ($agent->isDesktop()) {
             return 'Desktop';
-        } elseif($agent->isTablet()) {
+        } elseif ($agent->isTablet()) {
             return 'Tablet';
-        } elseif($agent->isTV()) {
+        } elseif ($agent->isTV()) {
             return 'TV';
-        } else {
-            return 'Phone';
         }
+
+        return 'Phone';
     }
 
     protected function createAgent($session) {
-        return tap(new Agent, fn($agent) => $agent->setUserAgent($session->user_agent));
+        return tap(new Agent(), fn($agent) => $agent->setUserAgent($session->user_agent));
     }
 }

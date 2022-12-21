@@ -12,36 +12,37 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
 class TwoFactorAuthController extends Controller {
-
-	public function show(Request $request) {
-        if(!session()->has('auth.user.id')) {
+    public function show(Request $request) {
+        if (!session()->has('auth.user.id')) {
             return redirect()->route('login')->withErrors(['Your session has expired! Please try again.']);
         }
 
         $user = User::find(session()->get('auth.user.id'));
-        if(!$user->two_factor_enabled) { // Authenticate if user has no 2fa
+        if (!$user->two_factor_enabled) { // Authenticate if user has no 2fa
             Helpers::authenticate($request);
+
             return redirect()->intended(RouteServiceProvider::HOME);
         }
 
-		return inertia('Auth/TwoFactorAuth');
-	}
+        return inertia('Auth/TwoFactorAuth');
+    }
 
-	public function store(TwoFactorAuthRequest $request) {
-		try {
-			if(!session()->has('auth.user.id')) {
-				return redirect()->route('login')->withErrors(['Your session has expired! Please try again.']);
-			}
+    public function store(TwoFactorAuthRequest $request) {
+        try {
+            if (!session()->has('auth.user.id')) {
+                return redirect()->route('login')->withErrors(['Your session has expired! Please try again.']);
+            }
 
-			$user = User::find(session()->get('auth.user.id'));
-			if($user->validate2FA($request->one_time_password)) {
-				Helpers::authenticate($request);
-				return redirect()->intended(RouteServiceProvider::HOME);
-			} else {
-				return redirect()->back()->withErrors(['Invalid 2FA code.']);
-			}
-		}catch(\Exception|NotFoundExceptionInterface|ContainerExceptionInterface $e) {
-			return redirect()->route('login')->withErrors([$e->getMessage()]);
-		}
-	}
+            $user = User::find(session()->get('auth.user.id'));
+            if ($user->validate2FA($request->one_time_password)) {
+                Helpers::authenticate($request);
+
+                return redirect()->intended(RouteServiceProvider::HOME);
+            }
+
+            return redirect()->route('2fa')->withErrors(['one_time_password' => 'Invalid 2FA code.']);
+        } catch (\Exception|NotFoundExceptionInterface|ContainerExceptionInterface $e) {
+            return redirect()->route('login')->withErrors([$e->getMessage()]);
+        }
+    }
 }

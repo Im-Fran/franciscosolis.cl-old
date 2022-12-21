@@ -1,5 +1,6 @@
 import { Inertia } from '@inertiajs/inertia';
 
+import { ComputerDesktopIcon, DevicePhoneMobileIcon } from '@heroicons/react/24/outline';
 import RelativeTime from "@/js/Components/RelativeTime";
 import AccountLayout from "@/js/Layouts/AccountLayout";
 
@@ -42,7 +43,14 @@ export default function Devices({ sessions }) {
                             <tbody>
                                 {sessions.map((session) => (
                                     <tr key={session.id} className="hover:bg-gray-100 dark:hover:bg-neutral-700 border-b border-gray-200 py-10">
-                                        <td className="py-2 px-6">{session.agent.type}&nbsp;({session.agent.platform})</td>
+                                        <td className="py-2 px-6">
+                                            <span className="flex">
+                                                {session.agent.type === 'Desktop' && <ComputerDesktopIcon className="w-6 h-6"/>}
+                                                {session.agent.type === 'Mobile' && <DevicePhoneMobileIcon className="w-6 h-6"/>}
+                                                &nbsp;
+                                                {session.agent.type}&nbsp;({session.agent.platform})
+                                            </span>
+                                        </td>
                                         <td className="py-2 px-6"><RelativeTime date={session.last_active}/></td>
                                         <td className="py-2 px-6">{session.ip_address}</td>
                                         <td className="py-2 px-6">{session.location}</td>

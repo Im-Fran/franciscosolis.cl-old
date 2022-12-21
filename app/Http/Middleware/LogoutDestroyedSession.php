@@ -8,24 +8,24 @@ use Closure;
 use DB;
 use Illuminate\Http\Request;
 
-class LogoutDestroyedSession
-{
+class LogoutDestroyedSession {
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
-     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
+     *
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response
      */
     public function handle(Request $request, Closure $next) {
         $user = $request->user();
-        if(!$user) {
+        if (!$user) {
             return $next($request);
         }
 
-        $logouts = Cache::rememberForever("logout-$user->id", fn() => collect());
+        $logouts = Cache::rememberForever("logout-{$user->id}", fn() => collect());
         $sessionId = $request->session()->getId();
-        if($logouts->contains($sessionId)) {
+        if ($logouts->contains($sessionId)) {
             $request->session()->invalidate();
             $request->session()->regenerateToken();
             $logouts->pull($sessionId);
@@ -33,7 +33,7 @@ class LogoutDestroyedSession
                 ->where('id', $sessionId)
                 ->delete();
             Auth::logoutCurrentDevice();
-            Cache::forever("logout-$user->id", $logouts);
+            Cache::forever("logout-{$user->id}", $logouts);
         }
 
         return $next($request);

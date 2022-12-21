@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useForm } from '@inertiajs/inertia-react';
 
 import App from '@/js/Layouts/App';
@@ -21,12 +21,14 @@ export default function Login({ status, canResetPassword }) {
             reset('password');
         };
     }, []);
+    const [isVisible, setVisible] = useState(false);
 
     const onHandleChange = (event) => {
         setData(event.target.name, event.target.type === 'checkbox' ? event.target.checked : event.target.value);
     };
 
     const submit = (e) => {
+        setVisible(false)
         e.preventDefault();
 
         post(route('login'));
@@ -55,10 +57,10 @@ export default function Login({ status, canResetPassword }) {
                 </div>
 
                 <div className="w-2/3 mt-4">
-                    <Label forInput="password" value="Password" />
+                    <Label forInput="password" value="Password" isVisible={isVisible} toggleVisibility={() => setVisible((prev) => !prev)}/>
 
                     <Input
-                        type="password"
+                        type={isVisible ? 'text' : 'password'}
                         name="password"
                         placeholder="•••••••"
                         value={data.password}

@@ -2,22 +2,20 @@
 
 namespace App\Traits;
 
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
 trait HasProfilePhoto {
-
     /**
      * Updates the profile photo.
      *
      * @param \Illuminate\Http\UploadedFile|string $photo
-     * @return void
      */
-    public function updateProfilePhoto($photo){
-        tap($this->profile_photo_path, function ($previous) use ($photo) {
+    public function updateProfilePhoto($photo) {
+        tap($this->profile_photo_path, function($previous) use ($photo) {
             $this->forceFill([
                 'profile_photo_path' => $photo === 'gravatar' ? 'gravatar' : $photo->storePublicly(
-                    'profile-photos', ['disk' => $this->profilePhotoDisk()]
+                    'profile-photos',
+                    ['disk' => $this->profilePhotoDisk()]
                 ),
             ])->save();
 
@@ -29,10 +27,8 @@ trait HasProfilePhoto {
 
     /**
      * Deletes the profile photo.
-     *
-     * @return void
      */
-    public function deleteProfilePhoto(){
+    public function deleteProfilePhoto() {
         if (is_null($this->profile_photo_path)) {
             return;
         }
@@ -59,7 +55,7 @@ trait HasProfilePhoto {
      * @return string
      */
     protected function defaultProfilePhotoUrl() {
-        $name = trim(collect(explode(' ', $this->name))->map(function ($segment) {
+        $name = trim(collect(explode(' ', $this->name))->map(function($segment) {
             return mb_substr($segment, 0, 1);
         })->join(' '));
 
@@ -74,5 +70,4 @@ trait HasProfilePhoto {
     protected function profilePhotoDisk() {
         return isset($_ENV['VAPOR_ARTIFACT_NAME']) ? 's3' : config('app.profile_photo_disk', 'public');
     }
-
 }

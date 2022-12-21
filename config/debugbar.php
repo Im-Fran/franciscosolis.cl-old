@@ -33,13 +33,13 @@ return [
      |
      */
     'storage' => [
-        'enabled'    => true,
-        'driver'     => 'redis', // redis, file, pdo, socket, custom
-        'path'       => storage_path('debugbar'), // For file driver
+        'enabled' => true,
+        'driver' => 'redis', // redis, file, pdo, socket, custom
+        'path' => storage_path('debugbar'), // For file driver
         'connection' => null,   // Leave null for default connection (Redis/PDO)
-        'provider'   => '', // Instance of StorageInterface for custom driver
-        'hostname'   => '127.0.0.1', // Hostname to use with the "socket" driver
-        'port'       => 2304, // Port to use with the "socket" driver
+        'provider' => '', // Instance of StorageInterface for custom driver
+        'hostname' => '127.0.0.1', // Hostname to use with the "socket" driver
+        'port' => 2304, // Port to use with the "socket" driver
     ],
 
     /*
@@ -149,29 +149,29 @@ return [
      */
 
     'collectors' => [
-        'phpinfo'         => true,  // Php version
-        'messages'        => true,  // Messages
-        'time'            => true,  // Time Datalogger
-        'memory'          => true,  // Memory usage
-        'exceptions'      => true,  // Exception displayer
-        'log'             => true,  // Logs from Monolog (merged in messages if enabled)
-        'db'              => true,  // Show database (PDO) queries and bindings
-        'views'           => true,  // Views with their data
-        'route'           => true,  // Current route information
-        'auth'            => true, // Display Laravel authentication status
-        'gate'            => true,  // Display Laravel Gate checks
-        'session'         => true,  // Display session data
+        'phpinfo' => true,  // Php version
+        'messages' => true,  // Messages
+        'time' => true,  // Time Datalogger
+        'memory' => true,  // Memory usage
+        'exceptions' => true,  // Exception displayer
+        'log' => true,  // Logs from Monolog (merged in messages if enabled)
+        'db' => true,  // Show database (PDO) queries and bindings
+        'views' => true,  // Views with their data
+        'route' => true,  // Current route information
+        'auth' => true, // Display Laravel authentication status
+        'gate' => true,  // Display Laravel Gate checks
+        'session' => true,  // Display session data
         'symfony_request' => true,  // Only one can be enabled..
-        'mail'            => true,  // Catch mail messages
-        'laravel'         => true, // Laravel version and environment
-        'events'          => true, // All events fired
+        'mail' => true,  // Catch mail messages
+        'laravel' => true, // Laravel version and environment
+        'events' => true, // All events fired
         'default_request' => false, // Regular or special Symfony request logger
-        'logs'            => true, // Add the latest log messages
-        'files'           => false, // Show the included files
-        'config'          => false, // Display config settings
-        'cache'           => true, // Display cache events
-        'models'          => true,  // Display models
-        'livewire'        => true,  // Display Livewire (when available)
+        'logs' => true, // Add the latest log messages
+        'files' => false, // Show the included files
+        'config' => false, // Display config settings
+        'cache' => true, // Display cache events
+        'models' => true,  // Display models
+        'livewire' => true,  // Display Livewire (when available)
     ],
 
     /*
@@ -188,24 +188,24 @@ return [
             'show_name' => true,   // Also show the users name/email in the debugbar
         ],
         'db' => [
-            'with_params'       => true,   // Render SQL with the parameters substituted
-            'backtrace'         => true,   // Use a backtrace to find the origin of the query in your files.
+            'with_params' => true,   // Render SQL with the parameters substituted
+            'backtrace' => true,   // Use a backtrace to find the origin of the query in your files.
             'backtrace_exclude_paths' => [],   // Paths to exclude from backtrace. (in addition to defaults)
-            'timeline'          => true,  // Add the queries to the timeline
-            'duration_background'  => true,   // Show shaded background on each query relative to how long it took to execute.
+            'timeline' => true,  // Add the queries to the timeline
+            'duration_background' => true,   // Show shaded background on each query relative to how long it took to execute.
             'explain' => [                 // Show EXPLAIN output on queries
                 'enabled' => false,
                 'types' => ['SELECT'],     // Deprecated setting, is always only SELECT
             ],
-            'hints'             => true,    // Show hints for common mistakes
-            'show_copy'         => true,    // Show copy button next to the query
+            'hints' => true,    // Show hints for common mistakes
+            'show_copy' => true,    // Show copy button next to the query
         ],
         'mail' => [
             'full_log' => false,
         ],
         'views' => [
             'timeline' => false,  // Add the views to the timeline (Experimental)
-            'data' => false,    //Note: Can slow down the application, because the data can be quite large..
+            'data' => false,    // Note: Can slow down the application, because the data can be quite large..
         ],
         'route' => [
             'label' => true,  // show complete route on bar

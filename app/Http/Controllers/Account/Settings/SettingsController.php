@@ -7,7 +7,6 @@ use App\Http\Requests\Account\UpdateProfileRequest;
 use Illuminate\Http\Request;
 
 class SettingsController extends Controller {
-
     /* Show the settings page */
     public function index(Request $request) {
         return inertia('Account/Settings');
@@ -20,5 +19,4 @@ class SettingsController extends Controller {
 
         return back();
     }
-
 }

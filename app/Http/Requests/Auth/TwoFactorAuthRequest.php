@@ -6,7 +6,6 @@ use App\Rules\OneTimePassword;
 use Illuminate\Foundation\Http\FormRequest;
 
 class TwoFactorAuthRequest extends FormRequest {
-
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -23,15 +22,15 @@ class TwoFactorAuthRequest extends FormRequest {
      */
     public function rules() {
         return [
-            'one_time_password' => ['string', 'required', new OneTimePassword]
+            'one_time_password' => ['string', 'required', new OneTimePassword()],
         ];
     }
 
-	public function messages() {
-		return [
-			'one_time_password.required' => 'Please enter your 2FA code.',
-			'one_time_password.integer' => 'Please enter a valid 2FA code.',
-			'one_time_password.size' => 'The 2FA must be 6 digits long.'
-		];
-	}
+    public function messages() {
+        return [
+            'one_time_password.required' => 'Please enter your 2FA code.',
+            'one_time_password.integer' => 'Please enter a valid 2FA code.',
+            'one_time_password.size' => 'The 2FA must be 6 digits long.',
+        ];
+    }
 }

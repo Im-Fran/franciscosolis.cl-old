@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class AccountController extends Controller {
-
     /* Show the account overview page */
     public function index(Request $request) {
         return inertia('Account/Index', [
@@ -14,5 +13,4 @@ class AccountController extends Controller {
             'notificationsCount' => fn() => $request->user()->unreadNotifications()->count() - 5,
         ]);
     }
-
 }
