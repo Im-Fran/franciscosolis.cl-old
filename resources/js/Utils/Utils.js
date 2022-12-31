@@ -64,3 +64,7 @@ export const uuidv4 = () => {
         return v.toString(16);
     });
 }
+
+export const isString = (value) => {
+    return typeof value === 'string' || value instanceof String;
+}

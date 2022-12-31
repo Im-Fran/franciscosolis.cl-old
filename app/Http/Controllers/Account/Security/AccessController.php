@@ -47,9 +47,9 @@ class AccessController extends Controller {
         $qr_url = app(TwoFactorAuthenticationProvider::class)->qrCodeUrl($user->email, $user->two_factor_secret);
 
         return inertia('Account/Security/TwoFactorSetup', [
-            'secret' => fn() => $user->two_factor_enabled ? 'hidden' : $user->two_factor_secret,
-            'qr_url' => fn() => $qr_url,
-            'recovery_codes' => fn() => $user->two_factor_recovery_codes,
+            'secret' => fn () => $user->two_factor_enabled ? 'hidden' : $user->two_factor_secret,
+            'qr_url' => fn () => $qr_url,
+            'recovery_codes' => fn () => $user->two_factor_recovery_codes,
         ]);
     }
 
@@ -93,14 +93,14 @@ class AccessController extends Controller {
         if ($collection->contains('USED') === false) {
             // Regenerate every code if none of them is used
             $user->update([
-                'two_factor_recovery_codes' => $collection->map(fn() => Helpers::generateRecoveryCode()),
+                'two_factor_recovery_codes' => $collection->map(fn () => Helpers::generateRecoveryCode()),
             ]);
 
             return back()->with('success', 'Recovery codes have been regenerated!');
         }
         // Replace all the recovery codes with new ones. The used codes values are 'USED'
         $user->update([
-            'two_factor_recovery_codes' => $collection->map(fn($code) => $code === 'USED' ? Helpers::generateRecoveryCode() : $code),
+            'two_factor_recovery_codes' => $collection->map(fn ($code) => $code === 'USED' ? Helpers::generateRecoveryCode() : $code),
         ]);
 
         return back()->with('success', 'Used recovery codes have been regenerated!');

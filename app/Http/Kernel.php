@@ -102,5 +102,8 @@ class Kernel extends HttpKernel {
         'throttle' => ThrottleRequests::class,
         'verified' => EnsureEmailIsVerified::class,
         '2fa' => Middleware::class,
+        'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
+        'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
+        'role_or_permission' => \Spatie\Permission\Middlewares\RoleOrPermissionMiddleware::class,
     ];
 }

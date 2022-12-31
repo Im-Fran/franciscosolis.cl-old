@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Session;
-use Stevebauman\Location\Facades\Location;
 
 class Helpers {
     public static function repeat($times, $callback): void {
@@ -41,52 +40,9 @@ class Helpers {
         Auth::loginUsingId(Session::get('auth.user.id'), Session::get('auth.user.remember'));
         $request->session()->regenerate();
 
-        $location = self::locationFromIP();
+        $location = IpLocation::get();
 
         Auth::user()->notify(new LoginNotification($location->ip_address, self::getDeviceString(), $location->location_string));
-    }
-
-    private static function storeLocationFromIP(string $ip): ?IpLocation {
-        $ipLocation = IpLocation::firstOrCreate(['id' => sha1($ip)], ['ip_address' => $ip]);
-        $loc = Location::get($ip);
-        if (!$loc) {
-            return $ipLocation;
-        }
-
-        $loc = $loc->toArray();
-        unset($loc['ip'], $loc['latitude'], $loc['longitude'], $loc['zipCode'], $loc['postalCode'], $loc['metroCode']);
-        $ipLocation->update([
-            'location_data' => $loc,
-        ]);
-
-        return $ipLocation;
-    }
-
-    public static function locationFromIP(?string $ip = null): ?IpLocation {
-        $ip = $ip ?: (config('location.testing.enabled') ? config('location.testing.ip') : request()->ip());
-
-        if (!IpLocation::whereId(sha1($ip))->exists()) {
-            return self::storeLocationFromIP($ip);
-        }
-
-        $location = IpLocation::whereId(sha1($ip))->first();
-        if ($location->location_data) {
-            return $location;
-        }
-
-        if ($location->updated_at->diffInMinutes(now()) < 15) {
-            return null;
-        }
-
-        return self::storeLocationFromIP($ip);
-    }
-
-    public static function locationStringFromIPLocation(?IpLocation $location = null): string {
-        return $location && $location->location_data ? ($location->city_name.', '.$location->region_name.', '.$location->country_name) : 'Unknown Location';
-    }
-
-    public static function locationStringFromIP(?string $ip = null): string {
-        return self::locationStringFromIPLocation(self::locationFromIP($ip));
     }
 
     public static function isMobile() {

@@ -12,8 +12,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Spatie\Permission\Traits\HasPermissions;
-use Spatie\Permission\Traits\HasRoles;
+use Silber\Bouncer\Database\HasRolesAndAbilities;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
@@ -22,9 +21,8 @@ class User extends Authenticatable implements MustVerifyEmail {
         HasSlug,
         HasApiTokens,
         Notifiable,
-        HasRoles,
-        HasPermissions,
-        HasProfilePhoto;
+        HasProfilePhoto,
+        HasRolesAndAbilities;
 
     /**
      * The attributes that are mass assignable.
@@ -120,8 +118,8 @@ class User extends Authenticatable implements MustVerifyEmail {
      */
     protected function twoFactorSecret(): Attribute {
         return new Attribute(
-            get: fn($value) => $value != null ? decrypt($value) : null,
-            set: fn($value) => $value != null ? encrypt($value) : null,
+            get: fn ($value) => $value != null ? decrypt($value) : null,
+            set: fn ($value) => $value != null ? encrypt($value) : null,
         );
     }
 
@@ -132,8 +130,8 @@ class User extends Authenticatable implements MustVerifyEmail {
      */
     protected function twoFactorRecoveryCodes(): Attribute {
         return new Attribute(
-            get: fn($value) => $value != null ? json_decode(decrypt($value)) : null,
-            set: fn($value) => $value != null ? encrypt(json_encode($value)) : null,
+            get: fn ($value) => $value != null ? json_decode(decrypt($value)) : null,
+            set: fn ($value) => $value != null ? encrypt(json_encode($value)) : null,
         );
     }
 
@@ -151,10 +149,10 @@ class User extends Authenticatable implements MustVerifyEmail {
             return true;
         }
 
-        if (collect($this->two_factor_recovery_codes)->filter(fn($it) => preg_match('/[0-9]{6}|[A-Za-z0-9]{6}\.[A-Za-z0-9]{4}\.[A-Za-z0-9]{6}\.[A-Za-z0-9]{4}/', $it))->contains($input)) {
+        if (collect($this->two_factor_recovery_codes)->filter(fn ($it) => preg_match('/[0-9]{6}|[A-Za-z0-9]{6}\.[A-Za-z0-9]{4}\.[A-Za-z0-9]{6}\.[A-Za-z0-9]{4}/', $it))->contains($input)) {
             // Replace the used code with a new one
             $this->update([
-                'two_factor_recovery_codes' => collect($this->two_factor_recovery_codes)->map(fn($it) => $it == $input ? Helpers::generateRecoveryCode() : $it),
+                'two_factor_recovery_codes' => collect($this->two_factor_recovery_codes)->map(fn ($it) => $it == $input ? Helpers::generateRecoveryCode() : $it),
             ]);
 
             return true;
@@ -165,7 +163,7 @@ class User extends Authenticatable implements MustVerifyEmail {
 
     /* Check if the user is online (in the last 5 minutes) */
     public function getIsOnlineAttribute(): bool {
-        return $this->last_activity_at->diffInMinutes(now()) < 5;
+        return $this->last_activity_at ? $this->last_activity_at->diffInMinutes(now()) < 5 : false;
     }
 
     /* Updates the given settings */

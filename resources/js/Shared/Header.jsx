@@ -2,7 +2,7 @@ import ClickAwayListener from 'react-click-away-listener';
 import { useState } from 'react';
 import { Link, usePage } from '@inertiajs/inertia-react';
 
-import { Bars4Icon, Bars3CenterLeftIcon, ArrowRightOnRectangleIcon, ArrowLeftOnRectangleIcon, PencilSquareIcon, HomeIcon, ExclamationTriangleIcon, XMarkIcon, Cog6ToothIcon, EnvelopeIcon, KeyIcon } from '@heroicons/react/24/outline'
+import { Bars4Icon, Bars3CenterLeftIcon, ArrowRightOnRectangleIcon, ArrowLeftOnRectangleIcon, PencilSquareIcon, HomeIcon, ExclamationTriangleIcon, XMarkIcon, Cog6ToothIcon, EnvelopeIcon, KeyIcon, UsersIcon } from '@heroicons/react/24/outline'
 import LogoWhite from '$/LogoWhite.png';
 
 import AnimatedLink from '@/js/Components/AnimatedLink';
@@ -92,7 +92,7 @@ export default function Header() {
                                     <div className="relative inline-block mt-5">
                                         <div className="absolute right-0 z-20 w-56 py-2 mt-2 overflow-hidden bg-white rounded-md shadow-xl dark:bg-[#232323]">
                                             <AccountDropdownItem href={/*route('profile', { user: auth.user.slug })*/ '#'} className="w-full flex items-center py-3 px-1 -mt-2 text-sm text-gray-600 transition-colors duration-300 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-[#303030] dark:hover:text-white cursor-pointer">
-                                                <img className="flex-shrink-0 object-cover mx-1 rounded-full w-9 h-9" src={auth.user.profile_photo_url} alt="Avatar"/>
+                                                <UserProfilePicture className="mx-1" imageClassName="flex-shrink-0" user={auth.user} size={128} sizeClass="w-9 h-9"/>
                                                 <div className="mx-1 text-left">
                                                     <h1 className="text-sm font-semibold text-gray-700 dark:text-gray-200">{auth.user.name}</h1>
                                                     <p className="text-sm text-gray-500 dark:text-gray-400">{auth.user.email}</p>
@@ -106,8 +106,11 @@ export default function Header() {
 
                                             {utils.env === 'local' && <>
                                                 <hr className="border-gray-200 dark:border-gray-700"/>
+                                                <AccountDropdownItem href={route('admin.dashboard')} method="GET" icon={<UsersIcon className="w-6 h-6"/>} display="Admin Dashboard"/>
                                                 <AccountDropdownItem href={'http://franciscosolis.test:8025/'} icon={<EnvelopeIcon className="w-6 h-6"/>} display="Mailhog Dashboard" inertia={false}/>
                                             </>}
+
+
 
                                             <hr className="border-gray-200 dark:border-gray-700 mt-5"/>
                                             <AccountDropdownItem href={route('logout')} method="POST" icon={<ArrowLeftOnRectangleIcon className="w-6 h-6"/>} display="Logout"/>

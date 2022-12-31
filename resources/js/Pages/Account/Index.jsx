@@ -18,7 +18,7 @@ export default function Index({ notifications, notificationsCount }) {
         } else {
             return notifications.map((notification, index) => (
                 <div key={index} className={"flex flex-row items-center justify-between w-full px-4 py-2 border-b border-gray-200 whitespace-nowrap overflow-scroll " + (index === (notifications.length-1) ? ' border-none ' : '')}>
-                    <div className="flex justify-start overflow-scroll w-full max-w-[14rem]">
+                    <div className="flex justify-start overflow-scroll w-full max-w-[18rem]">
                         <NotificationRenderer short={true} notification={notification}/>
                     </div>
 
