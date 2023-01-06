@@ -1,4 +1,4 @@
-import { useRef, useState, Component as ReactComponent } from "react";
+import { useRef, useState, useImperativeHandle, forwardRef } from "react";
 
 import { Transition } from "react-transition-group";
 import { XMarkIcon } from '@heroicons/react/24/outline'
@@ -21,16 +21,28 @@ const Icon = () => null;
 const Body = () => null;
 const Footer = () => null;
 
-export default function Modal({ children = null, title = null, show = false, toggleShow = () => {} }) {
+const Modal = ({ children = null, title = null}) => {
+    const ref = useRef(null);
     const nodeRef = useRef(null);
+    const [show, setShow] = useState(false);
     const [hidden, setHidden] = useState(!show);
 
     const icon = children ? children.find(child => child.type === Icon) : null;
     const body = children ? children.find(child => child.type === Body) : null;
     const footer = children ? children.find(child => child.type === Footer) : null;
 
+    const open = () => {
+        setShow(true);
+    }
+
+    const close = () => {
+        setShow(false);
+    }
+
+    useImperativeHandle(ref, () => ({ open, close }));
+
     return (
-        <div className="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div ref={ref} className="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
             <Transition nodeRef={nodeRef} in={show} timeout={1500} onEnter={() => setHidden(false)} onExited={() => setTimeout(() => setHidden(true), 500)}>
                 {state => (
                     <div  hidden={hidden}>
@@ -39,7 +51,7 @@ export default function Modal({ children = null, title = null, show = false, tog
                             <div className={"flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0"}>
                                 <div className="relative transform overflow-hidden rounded-lg bg-white dark:bg-slate-800 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
                                     <div className="absolute flex justify-end w-full text-black dark:text-white pr-2 pt-1">
-                                        <XMarkIcon onClick={toggleShow} className="w-6 h-6 cursor-pointer"/>
+                                        <XMarkIcon onClick={close} className="w-6 h-6 cursor-pointer"/>
                                     </div>
                                     <div className="bg-white dark:bg-slate-800 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                                         <div className="sm:flex sm:items-start">
@@ -71,3 +83,6 @@ export default function Modal({ children = null, title = null, show = false, tog
 Modal.Icon = Icon;
 Modal.Body = Body;
 Modal.Footer = Footer;
+Modal = forwardRef(Modal)
+
+export default Modal;

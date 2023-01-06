@@ -4,7 +4,7 @@ import { useForm } from "@inertiajs/inertia-react";
 import { handleChange } from "@/js/Utils/Utils";
 
 import { PencilIcon, PlusIcon } from '@heroicons/react/24/outline'
-import Modal from "@/js/Components/modals/Modal";
+import Modal from "@/js/Components/Modals/Modal";
 import Pagination from "@/js/Components/Pagination";
 import Column from "@/js/Components/Table/Column";
 import Row from "@/js/Components/Table/Row";
@@ -12,7 +12,7 @@ import RowItem from "@/js/Components/Table/RowItem";
 import Table from "@/js/Components/Table/Table";
 import AdminLayout from "@/js/Layouts/AdminLayout";
 import Button from "@/js/Components/Button";
-import ModalIcon from "@/js/Components/modals/ModalIcon";
+import ModalIcon from "@/js/Components/Modals/ModalIcon";
 import Label from "@/js/Components/Forms/Label";
 import Input from "@/js/Components/Forms/Input";
 import InputError from "@/js/Components/Forms/InputError";
@@ -55,49 +55,7 @@ export default function Index({ permissions }) {
 
     return (
         <AdminLayout title="Admin > Permissions" meta={meta}>
-            <Modal title="Create New Permission" toggleShow={toggleShow} show={show}>
-                <Modal.Icon>
-                    <ModalIcon color="bg-blue-300 dark:bg-gray-600 text-white" icon={<PencilIcon className="w-6 h-6"/>}/>
-                </Modal.Icon>
 
-                <Modal.Body>
-                    <div className="mt-5">
-                        <Label forInput="title" value="Display" />
-
-                        <Input
-                            type="text"
-                            name="title"
-                            value={createForm.data.title}
-                            placeholder="Admin Dashboard"
-                            className="mt-1 block w-full"
-                            isFocused={true}
-                            handleChange={e => handleChange(createForm.setData, e)}
-                        />
-
-                        <InputError message={createForm.errors.title} className="mt-2" />
-                    </div>
-
-                    <div className="mt-5">
-                        <Label forInput="name" value="Permission" />
-
-                        <Input
-                            type="text"
-                            name="name"
-                            value={createForm.data.name}
-                            placeholder="admin.dashboard"
-                            className="mt-1 block w-full"
-                            handleChange={e => handleChange(createForm.setData, e)}
-                        />
-
-                        <InputError message={createForm.errors.name} className="mt-2" />
-                    </div>
-                </Modal.Body>
-
-                <Modal.Footer>
-                    <Button color={400} onClick={createPermission} processing={createForm.processing}>Create</Button>
-                    <Button color={200} onClick={toggleShow}>Cancel</Button>
-                </Modal.Footer>
-            </Modal>
 
             <Table>
                 <Table.Columns>

@@ -1,15 +1,13 @@
 import { useState } from 'react';
 import { Inertia } from '@inertiajs/inertia';
 import { Link } from '@inertiajs/inertia-react'
-import { handleChange } from '@/js/Utils/Utils';
 
 import { ChevronLeftIcon, ChevronDoubleLeftIcon, ChevronRightIcon, ChevronDoubleRightIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
-import Modal from '@/js/Components/modals/Modal';
-import ModalIcon from '@/js/Components/modals/ModalIcon';
+import Modal from '@/js/Components/Modals/Modal';
+import ModalIcon from '@/js/Components/Modals/ModalIcon';
 import Button from '@/js/Components/Button';
 import Label from "@/js/Components/Forms/Label";
 import Input from "@/js/Components/Forms/Input";
-import InputError from "@/js/Components/Forms/InputError";
 export default function Pagination({ children, data, only = null, queryField = null, searchDisplay = null }) {
 
     const first = () => {
