@@ -83,6 +83,5 @@ const Modal = ({ children = null, title = null}) => {
 Modal.Icon = Icon;
 Modal.Body = Body;
 Modal.Footer = Footer;
-Modal = forwardRef(Modal)
 
-export default Modal;
+export default forwardRef(Modal);

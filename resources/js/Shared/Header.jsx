@@ -1,9 +1,9 @@
-import ClickAwayListener from 'react-click-away-listener';
 import { useState } from 'react';
+import ClickAwayListener from 'react-click-away-listener';
 import { Link, usePage } from '@inertiajs/inertia-react';
 
 import { Bars4Icon, Bars3CenterLeftIcon, ArrowRightOnRectangleIcon, ArrowLeftOnRectangleIcon, PencilSquareIcon, HomeIcon, ExclamationTriangleIcon, XMarkIcon, Cog6ToothIcon, EnvelopeIcon, KeyIcon, UsersIcon } from '@heroicons/react/24/outline'
-import LogoWhite from '$/LogoWhite.png';
+import Logo from '$/Logo.svg';
 
 import AnimatedLink from '@/js/Components/AnimatedLink';
 import AccountDropdownItem from '@/js/Components/Header/AccountDropdownItem';
@@ -76,7 +76,8 @@ export default function Header() {
                         <div className="flex justify-between items-center w-full">
                             <div className="flex flex-row justify-between items-center">
                                 <Link href={route('home')} className="text-white text-xl font-bold md:text-2xl flex items-center">
-                                    <img src={LogoWhite} alt="FranciscoSolis" className="h-8 w-8" loading="lazy"/>
+                                    {/* <img src={Logo} alt="FranciscoSolis" className="h-8 w-8 fill-brand-100" loading="lazy"/> */}
+                                    <Logo className="h-8 w-8 fill-brand-100"/>
                                     &nbsp;
                                     FranciscoSolis
                                 </Link>

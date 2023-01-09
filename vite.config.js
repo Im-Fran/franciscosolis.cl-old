@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import react from '@vitejs/plugin-react';
+import svgLoader from '@andylacko/vite-svg-react-loader'
 import { resolve } from "path";
 
 export default defineConfig({
@@ -20,6 +21,7 @@ export default defineConfig({
             refresh: true,
         }),
         react(),
+        svgLoader(),
     ],
     build: {
         input: {
