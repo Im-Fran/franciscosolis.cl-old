@@ -1,9 +1,40 @@
 {
-  "image": "mcr.microsoft.com/devcontainers/universal:2",
-  "features": {
-    "ghcr.io/devcontainers/features/docker-from-docker:1": {
-      "dockerDashComposeVersion": "v2"
+  "name": "franciscosolis.cl",
+  "forwardPorts": [
+    80,
+    5173,
+    5432,
+    6379,
+    1025,
+    8025,
+    6001
+  ],
+  "portsAttributes": {
+    "80": {
+      "label": "Web Application"
     },
+    "5173":{
+      "label": "Vite Dev Server"
+    },
+    "5432": {
+      "label": "PostgreSQL"
+    },
+    "6379": {
+      "label": "Redis"
+    },
+    "1025": {
+      "label": "Mailhog SMTP"
+    },
+    "8025": {
+      "label": "Mailhog UI"
+    },
+    "6001": {
+      "label": "Soketi WebSocket"
+    }
+  },
+  "shutdownAction": "stopCompose",
+  "dockerComposeFile": "../docker-compose.yml",
+  "features": {
     "ghcr.io/devcontainers/features/node:1": {
       "version": "18"
     },
