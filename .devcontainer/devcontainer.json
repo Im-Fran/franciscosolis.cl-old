@@ -32,10 +32,6 @@
       "label": "Soketi WebSocket"
     }
   },
-  "shutdownAction": "stopCompose",
-  "dockerComposeFile": ["../docker-compose.yml"],
-  "service": "laravel.test",
-  "postCreateCommand": "cp .env.example .env && composer install && php artisan key:generate && yarn install",
   "features": {
     "ghcr.io/devcontainers/features/common-utils:2": {
       "installZsh": true,
@@ -51,5 +47,6 @@
       "version": "latest",
       "installComposer": "true"
     }
-  }
+  },
+  "postCreateCommand": "cp .env.example .env && composer install && php artisan key:generate && ./vendor/bin/sail up -d"
 }
