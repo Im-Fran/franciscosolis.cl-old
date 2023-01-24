@@ -1,7 +1,18 @@
-import { useRef } from 'react'
-
+import Modal from "@/js/Components/Modals/Modal";
+import ModalIcon from "@/js/Components/Modals/ModalIcon";
+import InputError from "@/js/Components/Forms/InputError";
+import Input from "@/js/Components/Forms/Input";
+import Label from "@/js/Components/Forms/Label";
+import {PencilIcon} from "@heroicons/react/24/outline";
+import {useForm} from "@inertiajs/react";
+import Button from "@/js/Components/Button";
 
 export default function CreatePermissionModal({ }) {
+
+    const { data, handleChange, setData, errors, processing } = useForm({
+        title: '',
+        name: '',
+    })
 
     return (
         <Modal title="Create New Permission">
@@ -16,14 +27,14 @@ export default function CreatePermissionModal({ }) {
                         <Input
                             type="text"
                             name="title"
-                            value={createForm.data.title}
+                            value={data.title}
                             placeholder="Admin Dashboard"
                             className="mt-1 block w-full"
                             isFocused={true}
-                            handleChange={e => handleChange(createForm.setData, e)}
+                            handleChange={e => handleChange(setData, e)}
                         />
 
-                        <InputError message={createForm.errors.title} className="mt-2" />
+                        <InputError message={errors.title} className="mt-2" />
                     </div>
 
                     <div className="mt-5">
@@ -32,19 +43,19 @@ export default function CreatePermissionModal({ }) {
                         <Input
                             type="text"
                             name="name"
-                            value={createForm.data.name}
+                            value={data.name}
                             placeholder="admin.dashboard"
                             className="mt-1 block w-full"
-                            handleChange={e => handleChange(createForm.setData, e)}
+                            handleChange={e => handleChange(setData, e)}
                         />
 
-                        <InputError message={createForm.errors.name} className="mt-2" />
+                        <InputError message={errors.name} className="mt-2" />
                     </div>
                 </Modal.Body>
 
                 <Modal.Footer>
-                    <Button color={400} onClick={createPermission} processing={createForm.processing}>Create</Button>
-                    <Button color={200} onClick={toggleShow}>Cancel</Button>
+                    <Button color={400} onClick={() => {}} processing={processing}>Create</Button>
+                    <Button color={200} onClick={() => {}}>Cancel</Button>
                 </Modal.Footer>
             </Modal>
     )

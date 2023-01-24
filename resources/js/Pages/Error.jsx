@@ -1,4 +1,4 @@
-import { Inertia } from '@inertiajs/inertia';
+import { router } from '@inertiajs/react';
 
 import ColoredBlack from '$/Colored-Black.svg';
 import ColoredWhite from '$/Colored-White.svg';
@@ -23,7 +23,7 @@ export default function Error({ errors, exception, data }){
         if(hasPrevousPage()) {
             window.history.back();
         } else {
-            Inertia.visit(route('home'));
+            router.visit(route('home'));
         }
     }
 

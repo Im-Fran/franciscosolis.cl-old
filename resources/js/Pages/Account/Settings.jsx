@@ -1,6 +1,5 @@
 import {useState} from 'react';
-import {useForm, usePage} from "@inertiajs/inertia-react";
-import {Inertia} from '@inertiajs/inertia';
+import {router, useForm, usePage} from "@inertiajs/react";
 import {handleError, fixForms, handleImageSize, handleChange} from '@/js/Utils/Utils'
 import toast from 'react-hot-toast';
 
@@ -110,7 +109,7 @@ export default function Settings() {
             });
             console.log('Trying to upload a non-image file: ' + file.type);
         } else {
-            Inertia.post(route('account.settings.profilephoto'), {
+            router.post(route('account.settings.profilephoto'), {
                 profile_photo: file,
                 gravatar: null,
             }, {
@@ -140,8 +139,8 @@ export default function Settings() {
                 duration: 5000,
             });
         } else {
-            Inertia.post(route('account.settings.profilephoto.delete'), {
-                _method: 'delete', // We use this to show the toasts, if we use `Inertia.delete` for some reason it won't show the toasts.
+            router.post(route('account.settings.profilephoto.delete'), {
+                _method: 'delete', // We use this to show the toasts, if we use `router.delete` for some reason it won't show the toasts.
             }, {
                 preserveScroll: true,
                 forceFormData: true,
@@ -166,7 +165,7 @@ export default function Settings() {
                 duration: 5000,
             })
         } else {
-            Inertia.post(route('account.settings.profilephoto'), {
+            router.post(route('account.settings.profilephoto'), {
                 gravatar: true,
                 profile_photo: null,
             }, {

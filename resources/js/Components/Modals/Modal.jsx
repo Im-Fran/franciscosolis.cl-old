@@ -21,7 +21,7 @@ const Icon = () => null;
 const Body = () => null;
 const Footer = () => null;
 
-const Modal = ({ children = null, title = null}) => {
+let Modal = ({ children = null, title = null}) => {
     const ref = useRef(null);
     const nodeRef = useRef(null);
     const [show, setShow] = useState(false);

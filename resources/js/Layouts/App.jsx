@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Head, usePage } from '@inertiajs/inertia-react';
+import { Head, usePage } from '@inertiajs/react';
 import toast, { Toaster } from 'react-hot-toast';
 import ReactTooltip from 'react-tooltip';
 

@@ -8,9 +8,6 @@
     "devDependencies": {
         "@andylacko/vite-svg-react-loader": "^2.0.5",
         "@headlessui/react": "^1.7.4",
-        "@inertiajs/inertia": "^0.11.1",
-        "@inertiajs/inertia-react": "^0.8.1",
-        "@inertiajs/progress": "^0.2.7",
         "@tailwindcss/forms": "^0.5.3",
         "@vitejs/plugin-react": "^2.2.0",
         "autoprefixer": "^10.4.13",
@@ -26,6 +23,7 @@
     },
     "dependencies": {
         "@heroicons/react": "^2.0.13",
+        "@inertiajs/react": "^1.0.0",
         "dayjs": "^1.11.7",
         "html-to-image": "^1.11.1",
         "jspdf": "^2.5.1",

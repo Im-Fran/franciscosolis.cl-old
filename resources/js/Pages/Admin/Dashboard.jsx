@@ -1,5 +1,4 @@
-import { Inertia } from '@inertiajs/inertia';
-import { useForm } from '@inertiajs/inertia-react';
+import { useForm } from '@inertiajs/react';
 
 import AdminLayout from "@/js/Layouts/AdminLayout";
 import { UsersIcon, ArrowPathIcon } from '@heroicons/react/24/outline';

@@ -1,4 +1,4 @@
-import { usePage } from "@inertiajs/inertia-react";
+import { usePage } from "@inertiajs/react";
 import toast from "react-hot-toast";
 
 // Handles the image size of the given url. This will allow us to show smaller/larger images and support all the 3rd party image providers.

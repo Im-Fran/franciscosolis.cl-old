@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import ClickAwayListener from 'react-click-away-listener';
-import { Link, usePage } from '@inertiajs/inertia-react';
+import { Link, usePage } from '@inertiajs/react';
 
 import { Bars4Icon, Bars3CenterLeftIcon, ArrowRightOnRectangleIcon, ArrowLeftOnRectangleIcon, PencilSquareIcon, HomeIcon, ExclamationTriangleIcon, XMarkIcon, Cog6ToothIcon, EnvelopeIcon, KeyIcon, UsersIcon } from '@heroicons/react/24/outline'
 import Logo from '$/Logo.svg';

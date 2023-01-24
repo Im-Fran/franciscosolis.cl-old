@@ -1,6 +1,5 @@
 import {useState, useEffect} from "react";
-import { Inertia } from "@inertiajs/inertia";
-import { Link, useForm, usePage } from "@inertiajs/inertia-react";
+import { router, Link, useForm, usePage } from "@inertiajs/react";
 import { handleError, fixForms, handleChange } from "@/js/Utils/Utils";
 import QRCode from 'qrcode';
 import jsPDF from 'jspdf';
@@ -122,14 +121,14 @@ export default function TwoFactorSetup({ secret, qr_url, recovery_codes }) {
     };
 
     const regenerateCodes = () => {
-        Inertia.patch(route('account.security.access.two-factor-auth.recovery-codes.regenerate'), {
+        router.patch(route('account.security.access.two-factor-auth.recovery-codes.regenerate'), {
             only: ['recovery_codes', 'errors', 'flash'],
             preserveScroll: true,
         })
     }
 
     const regenerateSecret = () => {
-        Inertia.patch(route('account.security.access.two-factor-auth.secret.regenerate'), {
+        router.patch(route('account.security.access.two-factor-auth.secret.regenerate'), {
             only: ['secret', 'qr_url', 'errors', 'flash'],
             preserveScroll: true,
         })

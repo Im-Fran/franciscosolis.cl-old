@@ -1,4 +1,4 @@
-import { Inertia } from "@inertiajs/inertia";
+import { router } from "@inertiajs/react";
 import toast from "react-hot-toast";
 
 import { CheckCircleIcon, TrashIcon, BellIcon, ClockIcon } from '@heroicons/react/24/outline';
@@ -14,7 +14,7 @@ export default function Notifications({ notifications, unreadNotifications }) {
     ];
 
     const markAsRead = (notification) => {
-        Inertia.post(route('account.notifications.markasread', {notification: notification.id}), {}, {
+        router.post(route('account.notifications.markasread', {notification: notification.id}), {}, {
             onSuccess: () => {
                 toast.success('Notification marked as read', {
                     duration: 3000,
@@ -30,7 +30,7 @@ export default function Notifications({ notifications, unreadNotifications }) {
 
     const deleteNotification = (notification) => {
         if(confirm('Are you sure you want to delete this notification?')){
-            Inertia.post(route('account.notifications.delete', {notification: notification.id}), {
+            router.post(route('account.notifications.delete', {notification: notification.id}), {
                 _method: 'DELETE',
             }, {
                 onSuccess: () => {

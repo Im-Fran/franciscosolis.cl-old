@@ -1,4 +1,4 @@
-import { Inertia } from '@inertiajs/inertia';
+import { router } from '@inertiajs/react';
 
 import { ComputerDesktopIcon, DevicePhoneMobileIcon } from '@heroicons/react/24/outline';
 import RelativeTime from "@/js/Components/RelativeTime";
@@ -17,7 +17,7 @@ export default function Devices({ sessions }) {
         e.stopPropagation()
         e.preventDefault()
 
-        Inertia.post(route('account.security.access.devices.delete'), {
+        router.post(route('account.security.access.devices.delete'), {
             _method: 'DELETE',
             session_id: session_id,
          }, {

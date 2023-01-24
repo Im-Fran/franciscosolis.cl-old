@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
-import { usePage, Link } from '@inertiajs/inertia-react'
+import { usePage, Link } from '@inertiajs/react'
+import toast from "react-hot-toast";
 
 import { BellIcon } from '@heroicons/react/24/outline';
 
