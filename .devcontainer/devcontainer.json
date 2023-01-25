@@ -1,52 +1,56 @@
 {
-  "name": "franciscosolis.cl",
-  "forwardPorts": [
-    80,
-    5173,
-    5432,
-    6379,
-    1025,
-    8025,
-    6001
-  ],
-  "portsAttributes": {
-    "80": {
-      "label": "Web Application"
-    },
-    "5173":{
-      "label": "Vite Dev Server"
-    },
-    "5432": {
-      "label": "PostgreSQL"
-    },
-    "6379": {
-      "label": "Redis"
-    },
-    "1025": {
-      "label": "Mailhog SMTP"
-    },
-    "8025": {
-      "label": "Mailhog UI"
-    },
-    "6001": {
-      "label": "Soketi WebSocket"
-    }
-  },
-  "features": {
-    "ghcr.io/devcontainers/features/common-utils:2": {
-      "installZsh": true,
-      "configureZshAsDefaultShell": true,
-      "installOhMyZsh": true,
-      "upgradePackages": true
-    },
-    "ghcr.io/devcontainers/features/github-cli:1": {},
-    "ghcr.io/devcontainers/features/node:1": {
-      "version": "18"
-    },
-    "ghcr.io/devcontainers/features/php:1": {
-      "version": "latest",
-      "installComposer": "true"
-    }
-  },
-  "postCreateCommand": "cp .env.example .env && composer install && php artisan key:generate && ./vendor/bin/sail up -d"
+	"name": "franciscosolis.cl",
+	"dockerComposeFile": [
+		"../docker-compose.yml"
+	],
+	"service": "laravel.test",
+	"workspaceFolder": "/var/www/html",
+	"settings": {},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"mikestead.dotenv",
+				"amiralizadeh9480.laravel-extra-intellisense",
+				"ryannaddy.laravel-artisan",
+				"onecentlin.laravel5-snippets",
+				"onecentlin.laravel-blade"
+			]
+		}
+	},
+	"remoteUser": "sail",
+	"postCreateCommand": "chown -R 1000:1000 /var/www/html",
+	"forwardPorts": [
+		80,
+		5173,
+		5432,
+		6379,
+		1025,
+		8025,
+		6001
+	],
+	"portsAttributes": {
+		"80": {
+			"label": "Web Application"
+		},
+		"5173":{
+			"label": "Vite Dev Server"
+		},
+		"5432": {
+			"label": "PostgreSQL"
+		},
+		"6379": {
+			"label": "Redis"
+		},
+		"1025": {
+			"label": "Mailhog SMTP"
+		},
+		"8025": {
+			"label": "Mailhog UI"
+		},
+		"6001": {
+			"label": "Soketi WebSocket"
+		}
+	},
+	"runServices": [],
+	"shutdownAction": "none"
 }
