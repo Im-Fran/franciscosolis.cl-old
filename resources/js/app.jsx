@@ -1,5 +1,5 @@
 import '@/js/bootstrap';
-import '@/css/app.css';
+import '@/js/Utils/Styles'
 
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
