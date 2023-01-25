@@ -111,7 +111,7 @@ export default function Settings() {
         } else {
             router.post(route('account.settings.profilephoto'), {
                 profile_photo: file,
-                gravatar: null,
+                type: 'file',
             }, {
                 preserveScroll: true,
                 forceFormData: true,
@@ -158,35 +158,49 @@ export default function Settings() {
         }
     }
 
-    const enableGravatar = () => {
-        const {profile_photo_path} = auth.user;
-        if(profile_photo_path === 'gravatar') {
-            toast.error('You already have a gravatar set as your profile photo.', {
-                duration: 5000,
-            })
-        } else {
-            router.post(route('account.settings.profilephoto'), {
-                gravatar: true,
-                profile_photo: null,
-            }, {
-                preserveScroll: true,
-                forceFormData: true,
-                onError: (error) => {
-                    handleError(error, 'There was an error while setting the gravatar config. Please try again later.')
-                },
-                onSuccess: () => {
-                    toast.success('Now using gravatar as image!', {
-                        duration: 5000,
-                    });
-                },
-                onFinish: () => {
-                    setProfilePhotoState('Edit');
-                },
-                only: ['auth', 'flash', 'errors'],
-            })
-        }
+    const updateGravatar = () => {
+        router.post(route('account.settings.profilephoto'), {
+            type: 'gravatar',
+            profile_photo: null,
+        }, {
+            preserveScroll: true,
+            forceFormData: true,
+            onError: (error) => {
+                handleError(error, 'There was an error while setting the gravatar config. Please try again later.')
+            },
+            onSuccess: () => {
+                toast.success('Now using gravatar as image!', {
+                    duration: 5000,
+                });
+            },
+            onFinish: () => {
+                setProfilePhotoState('Edit');
+            },
+            only: ['auth', 'flash', 'errors'],
+        })
     }
 
+    const updatePixel = () => {
+        router.post(route('account.settings.profilephoto'), {
+            type: 'pixel',
+            profile_photo: null,
+        }, {
+            preserveScroll: true,
+            forceFormData: true,
+            onError: (error) => {
+                handleError(error, 'There was an error while setting the pixel art config. Please try again later.')
+            },
+            onSuccess: () => {
+                toast.success('Now using newly generated pixel art as image!', {
+                    duration: 5000,
+                });
+            },
+            onFinish: () => {
+                setProfilePhotoState('Edit');
+            },
+            only: ['auth', 'flash', 'errors'],
+        })
+    }
 
     return (
         <AccountLayout title="Settings" meta={meta}>
@@ -206,7 +220,8 @@ export default function Settings() {
                         <div className="flex flex-col ml-10">
                             <div><Button type="button" onClick={onClickEditProfilePhoto} className="!text-sm">Select New Profile Photo</Button></div>
                             <div><Button type="button" onClick={clearProfilePhoto} color={200} className="!text-sm mt-3">Clear Profile Photo</Button></div>
-                            <div><Button type="button" onClick={enableGravatar} color={300} className="!text-sm mt-3">Use Gravatar</Button></div>
+                            <div><Button type="button" onClick={updateGravatar} color={300} className="!text-sm mt-3">Use Gravatar</Button></div>
+                            <div><Button type="button" onClick={updatePixel} color={300} className="!text-sm mt-3">Use Pixel Art</Button></div>
                             <input onChange={handleProfilePhotoUpload} id="select-profilephoto" name="profilephoto" type="file" hidden/>
                         </div>
                     </div>
