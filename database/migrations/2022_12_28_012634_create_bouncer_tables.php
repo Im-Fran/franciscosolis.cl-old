@@ -1,21 +1,17 @@
 <?php
 
-use Silber\Bouncer\Database\Models;
-
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateBouncerTables extends Migration
-{
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+use Silber\Bouncer\Database\Models;
+
+class CreateBouncerTables extends Migration {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
-    {
-        Schema::create(Models::table('abilities'), function (Blueprint $table) {
+    public function up() {
+        Schema::create(Models::table('abilities'), function(Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('title')->nullable();
@@ -27,7 +23,7 @@ class CreateBouncerTables extends Migration
             $table->timestamps();
         });
 
-        Schema::create(Models::table('roles'), function (Blueprint $table) {
+        Schema::create(Models::table('roles'), function(Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('title')->nullable();
@@ -40,7 +36,7 @@ class CreateBouncerTables extends Migration
             );
         });
 
-        Schema::create(Models::table('assigned_roles'), function (Blueprint $table) {
+        Schema::create(Models::table('assigned_roles'), function(Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('role_id')->unsigned()->index();
             $table->bigInteger('entity_id')->unsigned();
@@ -55,11 +51,11 @@ class CreateBouncerTables extends Migration
             );
 
             $table->foreign('role_id')
-                  ->references('id')->on(Models::table('roles'))
-                  ->onUpdate('cascade')->onDelete('cascade');
+                ->references('id')->on(Models::table('roles'))
+                ->onUpdate('cascade')->onDelete('cascade');
         });
 
-        Schema::create(Models::table('permissions'), function (Blueprint $table) {
+        Schema::create(Models::table('permissions'), function(Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('ability_id')->unsigned()->index();
             $table->bigInteger('entity_id')->unsigned()->nullable();
@@ -73,18 +69,15 @@ class CreateBouncerTables extends Migration
             );
 
             $table->foreign('ability_id')
-                  ->references('id')->on(Models::table('abilities'))
-                  ->onUpdate('cascade')->onDelete('cascade');
+                ->references('id')->on(Models::table('abilities'))
+                ->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
-    {
+    public function down() {
         Schema::drop(Models::table('permissions'));
         Schema::drop(Models::table('assigned_roles'));
         Schema::drop(Models::table('roles'));

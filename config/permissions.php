@@ -56,5 +56,5 @@ return [
                 'admin.permissions.delete',
             ],
         ],
-    ]
+    ],
 ];

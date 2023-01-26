@@ -4,10 +4,8 @@ namespace App\Console\Commands;
 
 use Bouncer;
 use Illuminate\Console\Command;
-use Silber\Bouncer\Database\Ability;
 
-class ValidatePermissionsCommand extends Command
-{
+class ValidatePermissionsCommand extends Command {
     /**
      * The name and signature of the console command.
      *
@@ -27,10 +25,10 @@ class ValidatePermissionsCommand extends Command
      *
      * @return int
      */
-    public function handle(){
+    public function handle() {
         $this->info('Validating permissions...');
         $abilitites = [];
-        foreach(config('permissions.permissions') as $permission => $name) {
+        foreach (config('permissions.permissions') as $permission => $name) {
             $abilitites[$permission] = Bouncer::ability()->firstOrCreate([
                 'name' => $permission,
                 'title' => $name,
@@ -38,19 +36,20 @@ class ValidatePermissionsCommand extends Command
         }
 
         $this->info('Validating roles...');
-        foreach(config('permissions.roles') as $name => $data) {
+        foreach (config('permissions.roles') as $name => $data) {
             $role = Bouncer::role()->firstOrCreate([
                 'name' => $name,
                 'title' => $data['name'],
             ]);
 
             Bouncer::disallow($role)->everything();
-            foreach($data['permissions'] ?? [] as $permission) {
+            foreach ($data['permissions'] ?? [] as $permission) {
                 Bouncer::allow($role)->to($abilitites[$permission]);
             }
         }
 
         $this->info('Done!');
+
         return Command::SUCCESS;
     }
 }

@@ -23,7 +23,7 @@ class ProfilePhotoUpdateRequest extends FormRequest {
     public function rules() {
         return [
             'profile_photo' => ['required_if:type,file', 'image', 'nullable'],
-	        'type' => ['string', 'nullable'],
+            'type' => ['string', 'nullable'],
         ];
     }
 }

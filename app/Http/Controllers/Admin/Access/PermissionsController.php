@@ -4,18 +4,15 @@ namespace App\Http\Controllers\Admin\Access;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Access\CreatePermissionRequest;
-use Bouncer;
-use DB;
 use Illuminate\Http\Request;
 use Silber\Bouncer\Database\Ability;
 
 class PermissionsController extends Controller {
-
-    public function index(Request $request){
-        $search = '%' . strtolower($request->input('query', '')) . '%';
+    public function index(Request $request) {
+        $search = '%'.strtolower($request->input('query', '')).'%';
 
         return inertia('Admin/Permissions/Index', [
-            'permissions' => fn() => Ability::query()->where(function($query) use($search) {
+            'permissions' => fn () => Ability::query()->where(function($query) use ($search) {
                 $query->whereRaw('LOWER(name) LIKE ?', $search)
                     ->orWhereRaw('LOWER(title) LIKE ?', $search);
             })->paginate(),
@@ -50,6 +47,6 @@ class PermissionsController extends Controller {
         $title = $ability->title;
         $ability->delete();
 
-        return back()->with('success', "Permission $title deleted successfully");
+        return back()->with('success', "Permission {$title} deleted successfully");
     }
 }

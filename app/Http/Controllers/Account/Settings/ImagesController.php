@@ -11,6 +11,7 @@ class ImagesController extends Controller {
     public function uploadProfilePhoto(ProfilePhotoUpdateRequest $request) {
         $user = $request->user();
         $user->updateProfilePhoto($request->type === 'file' ? $request->profile_photo : $request->type);
+
         return back();
     }
 

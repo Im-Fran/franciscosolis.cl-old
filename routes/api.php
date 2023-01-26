@@ -18,3 +18,7 @@ Route::prefix('activity-status')->middleware(['auth:sanctum'])->group(function()
     Route::get('/{user}', [Controllers\ActivityController::class, 'getActivity'])
         ->name('activity-status.get');
 });
+
+Route::name('api.v1.')->prefix('v1')->group(function() {
+    require __DIR__.'/apis/v1.php';
+});

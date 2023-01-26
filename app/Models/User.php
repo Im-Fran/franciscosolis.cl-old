@@ -6,6 +6,7 @@ use App\Contracts\TwoFactorAuthenticationProvider;
 use App\Helpers\Helpers;
 use App\Helpers\UserSettings;
 use App\Traits\HasProfilePhoto;
+use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -35,7 +36,6 @@ class User extends Authenticatable implements MustVerifyEmail {
         'password',
         'profile_photo_path',
         'gravatar_email',
-        'last_activity_at',
         'two_factor_secret',
         'two_factor_recovery_codes',
         'two_factor_verified_at',
@@ -51,6 +51,7 @@ class User extends Authenticatable implements MustVerifyEmail {
         'profile_photo_url',
         'two_factor_enabled',
         'is_online',
+        'last_activity_at',
     ];
 
     /**
@@ -159,6 +160,22 @@ class User extends Authenticatable implements MustVerifyEmail {
         }
 
         return false;
+    }
+
+    /* Gets last activity time */
+    public function getLastActivityAtAttribute(): ?Carbon {
+        $last_activity = \DB::table('sessions')
+            ->select('last_activity')
+            ->where('user_id', '=', $this->id)
+            ->whereNotIn('id', \Cache::rememberForever("logout-{$this->id}", fn () => collect()))
+            ->orderByDesc('last_activity')
+            ->first()?->last_activity;
+		
+		if($last_activity == null) {
+			return null;
+		}
+		
+		return Carbon::parse($last_activity);
     }
 
     /* Check if the user is online (in the last 5 minutes) */

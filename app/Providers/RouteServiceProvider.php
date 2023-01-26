@@ -53,8 +53,8 @@ class RouteServiceProvider extends ServiceProvider {
      * Configure the module aliases to be used in the application.
      */
     protected function configureAliases() {
-        Route::bind('user', fn($value) => User::whereRaw('LOWER(slug) = ?', is_string($value) ? $value : '')->firstOrFail());
-        Route::bind('ability', fn($value) => Ability::query()->whereRaw('LOWER(name) = ?', is_string($value) ? $value : '')->firstOrFail());
-        Route::bind('role', fn($value) => Role::query()->whereRaw('LOWER(name) = ?', is_string($value) ? $value : '')->firstOrFail());
+        Route::bind('user', fn ($value) => User::whereRaw('LOWER(slug) = ?', is_string($value) ? strtolower($value) : '')->firstOrFail());
+        Route::bind('ability', fn ($value) => Ability::query()->whereRaw('LOWER(name) = ?', is_string($value) ? $value : '')->firstOrFail());
+        Route::bind('role', fn ($value) => Role::query()->whereRaw('LOWER(name) = ?', is_string($value) ? $value : '')->firstOrFail());
     }
 }

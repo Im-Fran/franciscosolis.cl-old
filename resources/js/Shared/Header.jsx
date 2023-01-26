@@ -76,8 +76,7 @@ export default function Header() {
                         <div className="flex justify-between items-center w-full">
                             <div className="flex flex-row justify-between items-center">
                                 <Link href={route('home')} className="text-white text-xl font-bold md:text-2xl flex items-center">
-                                    {/* <img src={Logo} alt="FranciscoSolis" className="h-8 w-8 fill-brand-100" loading="lazy"/> */}
-                                    <Logo className="h-8 w-8 fill-brand-100"/>
+                                    <img src={Logo} alt="FranciscoSolis" className="h-8 w-8 fill-brand-100" loading="lazy"/>
                                     &nbsp;
                                     FranciscoSolis
                                 </Link>

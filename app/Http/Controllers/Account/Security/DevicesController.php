@@ -15,28 +15,27 @@ class DevicesController extends Controller {
         $user = $request->user();
 
         return inertia('Account/Security/Devices', [
-            'sessions' => fn () => collect(
-                DB::connection(config('session.connection'))->table(config('session.table', 'session'))
-                    ->where('user_id', $request->user()->id)
-                    ->whereNotIn('id', Cache::rememberForever("logout-{$user->id}", fn () => collect()))
-                    ->orderByDesc('last_activity')
-                    ->get(['id', 'user_agent', 'ip_address', 'last_activity'])
-            )->map(function($session) use ($request) {
-                $agent = $this->createAgent($session);
+            'sessions' => fn () => DB::connection(config('session.connection'))->table(config('session.table', 'session'))
+                ->where('user_id', $request->user()->id)
+                ->whereNotIn('id', Cache::rememberForever("logout-{$user->id}", fn () => collect()))
+                ->orderByDesc('last_activity')
+                ->get(['id', 'user_agent', 'ip_address', 'last_activity'])
+                ->map(function($session) use ($request) {
+                    $agent = $this->createAgent($session);
 
-                return (object) [
-                    'id' => $session->id,
-                    'agent' => [
-                        'platform' => $agent->platform(),
-                        'browser' => $agent->browser(),
-                        'type' => $this->getType($agent),
-                    ],
-                    'ip_address' => $session->ip_address,
-                    'is_current_device' => $session->id === $request->session()->getId(),
-                    'location' => IpLocation::get($session->ip_address)->location_string,
-                    'last_active' => Carbon::parse($session->last_activity),
-                ];
-            }),
+                    return (object) [
+                        'id' => $session->id,
+                        'agent' => [
+                            'platform' => $agent->platform(),
+                            'browser' => $agent->browser(),
+                            'type' => $this->getType($agent),
+                        ],
+                        'ip_address' => $session->ip_address,
+                        'is_current_device' => $session->id === $request->session()->getId(),
+                        'location' => IpLocation::get($session->ip_address)->location_string,
+                        'last_active' => Carbon::parse($session->last_activity),
+                    ];
+                }),
         ]);
     }
 

@@ -1,4 +1,4 @@
-import { router } from '@inertiajs/react';
+import {router} from '@inertiajs/react';
 
 import ColoredBlack from '$/Colored-Black.svg';
 import ColoredWhite from '$/Colored-White.svg';
@@ -30,7 +30,7 @@ export default function Error({ errors, exception, data }){
     return (
         <App title={`Error ${data.code}`} meta={meta} horizontal="center" vertical="center">
             <div className="flex flex-col items-center text-center">
-                <img src={ColoredBlack} alt="FranciscoSolis" className="max-w-md" theme-light={ColoredBlack} theme-dark={ColoredWhite} themed-image="true" />
+                <img src={ColoredBlack} alt="FranciscoSolis" className="max-w-md" theme-light={ColoredBlack} theme-dark={ColoredWhite} themed-image="true"/>
                 <h1 className="text-brand-100 font-bold text-8xl">O.o</h1>
                 <h1 className="text-brand-100 text-2xl mt-10">Error {data.code}</h1>
                 <span className="text-md text-brand-500 dark:text-brand-600 mt-2">{data.message}</span>

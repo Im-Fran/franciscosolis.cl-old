@@ -11,7 +11,6 @@ use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Middleware\TrimStrings;
 use App\Http\Middleware\TrustHosts;
 use App\Http\Middleware\TrustProxies;
-use App\Http\Middleware\UpdateActivityMiddleware;
 use App\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Auth\Middleware\AuthenticateWithBasicAuth;
 use Illuminate\Auth\Middleware\Authorize;
@@ -73,7 +72,6 @@ class Kernel extends HttpKernel {
             SubstituteBindings::class,
             VerifyCsrfToken::class,
             LogoutDestroyedSession::class,
-            UpdateActivityMiddleware::class,
         ],
 
         'api' => [
@@ -102,8 +100,5 @@ class Kernel extends HttpKernel {
         'throttle' => ThrottleRequests::class,
         'verified' => EnsureEmailIsVerified::class,
         '2fa' => Middleware::class,
-        'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
-        'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
-        'role_or_permission' => \Spatie\Permission\Middlewares\RoleOrPermissionMiddleware::class,
     ];
 }
