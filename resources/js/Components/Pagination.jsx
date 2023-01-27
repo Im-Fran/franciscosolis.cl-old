@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Link, router } from '@inertiajs/react';
 
 import { ChevronLeftIcon, ChevronDoubleLeftIcon, ChevronRightIcon, ChevronDoubleRightIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
@@ -60,8 +60,7 @@ export default function Pagination({ children, data, only = null, queryField = n
         </Link>
     ))
 
-    const [show, setShow] = useState(false);
-    const toggleShow = () => setShow((prev) => !prev);
+    const ModalRef = useRef(null);
 
     const [currentSearch, setCurrentSearch] = useState((new URL(window.location.href)).searchParams.get(queryField) || '');
     const submitSearch = () => {
@@ -72,7 +71,7 @@ export default function Pagination({ children, data, only = null, queryField = n
             },
             preserveScroll: false,
             onStart: () => {
-                setShow(false)
+                ModalRef.current?.close();
             },
         })
     }
@@ -80,7 +79,7 @@ export default function Pagination({ children, data, only = null, queryField = n
     return (
         <div className="flex justify-center gap-6">
             {queryField && <div className="relative flex items-center justify-center w-10 h-10">
-                <Modal title={searchDisplay} show={show} toggleShow={toggleShow}>
+                <Modal ref={ModalRef} title={searchDisplay}>
                     <Modal.Icon>
                         <ModalIcon color="bg-blue-300 dark:bg-gray-600 text-white" icon={<MagnifyingGlassIcon className="w-6 h-6"/>}/>
                     </Modal.Icon>
@@ -102,10 +101,10 @@ export default function Pagination({ children, data, only = null, queryField = n
 
                     <Modal.Footer>
                         <Button color={100} onClick={submitSearch}>Search</Button>
-                        <Button color={200} onClick={toggleShow}>Cancel</Button>
+                        <Button color={200} onClick={() => ModalRef.current?.close()}>Cancel</Button>
                     </Modal.Footer>
                 </Modal>
-                <MagnifyingGlassIcon className="absolute w-6 h-6 cursor-pointer" onClick={toggleShow}/>
+                <MagnifyingGlassIcon className="absolute w-6 h-6 cursor-pointer" onClick={() => ModalRef.current?.open()}/>
             </div>}
 
             <Link href={data.first_page_url} disabled={first() === 1} className="flex items-center justify-center w-10 h-10 ">

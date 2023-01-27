@@ -8,7 +8,7 @@ export default function ThemeSwitch() {
 
     const updateThemedImages = () => {
         document.querySelectorAll('img[themed-image]').forEach(it => {
-            if(it.getAttribute('themed-image') !== 'false'){
+            if (it.getAttribute('themed-image') !== 'false') {
                 it.src = it.getAttribute(`theme-${dark ? 'dark' : 'light'}`)
             }
         })
@@ -27,6 +27,17 @@ export default function ThemeSwitch() {
     };
 
     useEffect(updateThemedImages, [dark])
+
+    useEffect(() => {
+        const event = (e) => {
+            if(e.altKey && e.key === 'k') {
+                toggleDark();
+            }
+        };
+        document.addEventListener('keydown', event);
+
+        return () => document.removeEventListener('keydown', event);
+    });
 
 
     return (
