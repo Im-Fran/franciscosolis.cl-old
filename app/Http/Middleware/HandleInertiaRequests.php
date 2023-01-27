@@ -37,27 +37,28 @@ class HandleInertiaRequests extends Middleware {
      */
     public function share(Request $request) {
         return array_merge(parent::share($request), [
-            'auth' => function() use($request){
-				$user = $request->user();
-				return [
-					'user' => $user,
-					'check' => $user != null,
-					'can' => $user == null ? [] : \Cache::tags('abilities-check')->remember('abilities-check-'.Auth::id(), now()->addMinutes(15), function() use ($user) {
-						$can = [];
-						if ($user == null) {
-							return $can;
-						}
-						
-						$user->load(['abilities', 'roles.abilities']);
-						$abilities = $user->roles->pluck('abilities')->flatten()->merge($user->abilities)->unique('name')->pluck('name');
-						
-						foreach (Ability::query()->select(['name'])->pluck('name') as $ability) {
-							$can[$ability] = $abilities->contains($ability);
-						}
-						
-						return $can;
-					}),
-				];
+            'auth' => function() use ($request) {
+                $user = $request->user();
+
+                return [
+                    'user' => $user,
+                    'check' => $user != null,
+                    'can' => $user == null ? [] : \Cache::tags('abilities-check')->remember('abilities-check-'.Auth::id(), now()->addMinutes(15), function() use ($user) {
+                        $can = [];
+                        if ($user == null) {
+                            return $can;
+                        }
+
+                        $user->load(['abilities', 'roles.abilities']);
+                        $abilities = $user->roles->pluck('abilities')->flatten()->merge($user->abilities)->unique('name')->pluck('name');
+
+                        foreach (Ability::query()->select(['name'])->pluck('name') as $ability) {
+                            $can[$ability] = $abilities->contains($ability);
+                        }
+
+                        return $can;
+                    }),
+                ];
             },
             'flash' => function() {
                 if (flash()->message) {

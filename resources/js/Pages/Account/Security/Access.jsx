@@ -36,7 +36,7 @@ export default function Access() {
         });
     };
 
-    const handleBlur = (e) => {
+    const handleBlur = () => {
         if(data.password !== data.password_confirmation) {
             setError('password_confirmation', 'The password does not match.');
         } else {
@@ -90,6 +90,14 @@ export default function Access() {
                             <InputError message={errors.password_confirmation} className="mt-2" />
                         </div>
                     </div>
+
+                    <Input
+                        type="text"
+                        name={"username" /* This is to comply with and help passwords managers */}
+                        autoComplete="username"
+                        value={auth.user.email}
+                        hidden
+                    />
 
                     {/* Save button */}
                     <Button color={100} className="!text-sm">Update Password</Button>

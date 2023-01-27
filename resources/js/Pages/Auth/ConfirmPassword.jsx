@@ -46,6 +46,7 @@ export default function ConfirmPassword() {
                         className="mt-1 block w-full"
                         isFocused={true}
                         handleChange={onHandleChange}
+                        autoComplete={"current-password"}
                     />
 
                     <InputError message={errors.password} className="mt-2" />

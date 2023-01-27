@@ -166,15 +166,15 @@ class User extends Authenticatable implements MustVerifyEmail {
     public function getLastActivityAtAttribute(): ?Carbon {
         return \Cache::remember(
             "last-activity-at-{$this->id}",
-            now()->addSeconds(250),
+            now()->addMinutes(3),
             fn () => Carbon::parse(
-            \DB::table('sessions')
-                ->select('last_activity')
-                ->where('user_id', '=', $this->id)
-                ->whereNotIn('id', \Cache::rememberForever("logout-{$this->id}", fn () => collect()))
-                ->orderByDesc('last_activity')
-                ->first()?->last_activity ?? null
-        )
+                \DB::table('sessions')
+                    ->select('last_activity')
+                    ->where('user_id', '=', $this->id)
+                    ->whereNotIn('id', \Cache::rememberForever("logout-{$this->id}", fn () => collect()))
+                    ->orderByDesc('last_activity')
+                    ->first()?->last_activity ?? null
+            )
         );
     }
 
