@@ -170,12 +170,12 @@ class User extends Authenticatable implements MustVerifyEmail {
             ->whereNotIn('id', \Cache::rememberForever("logout-{$this->id}", fn () => collect()))
             ->orderByDesc('last_activity')
             ->first()?->last_activity;
-		
-		if($last_activity == null) {
-			return null;
-		}
-		
-		return Carbon::parse($last_activity);
+
+        if ($last_activity == null) {
+            return null;
+        }
+
+        return Carbon::parse($last_activity);
     }
 
     /* Check if the user is online (in the last 5 minutes) */
