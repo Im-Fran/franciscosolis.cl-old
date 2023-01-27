@@ -12,6 +12,6 @@ export default function NotificationRenderer({ notification, short }) {
         case 'App\\Notifications\\Account\\TwoFactorAuthenticationDisabled':
             return <><TwoFactorAuthenticationDisabled short={short}/></>
         default:
-            return <>{notification.message || ''}</>
+            return <>{notification.data?.message || ''}</>
     }
 }

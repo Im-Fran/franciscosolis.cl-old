@@ -164,23 +164,23 @@ class User extends Authenticatable implements MustVerifyEmail {
 
     /* Gets last activity time */
     public function getLastActivityAtAttribute(): ?Carbon {
-        $last_activity = \DB::table('sessions')
-            ->select('last_activity')
-            ->where('user_id', '=', $this->id)
-            ->whereNotIn('id', \Cache::rememberForever("logout-{$this->id}", fn () => collect()))
-            ->orderByDesc('last_activity')
-            ->first()?->last_activity;
-
-        if ($last_activity == null) {
-            return null;
-        }
-
-        return Carbon::parse($last_activity);
+        return \Cache::remember(
+            "last-activity-at-{$this->id}",
+            now()->addSeconds(250),
+            fn () => Carbon::parse(
+            \DB::table('sessions')
+                ->select('last_activity')
+                ->where('user_id', '=', $this->id)
+                ->whereNotIn('id', \Cache::rememberForever("logout-{$this->id}", fn () => collect()))
+                ->orderByDesc('last_activity')
+                ->first()?->last_activity ?? null
+        )
+        );
     }
 
     /* Check if the user is online (in the last 5 minutes) */
     public function getIsOnlineAttribute(): bool {
-        return $this->last_activity_at ? $this->last_activity_at->diffInMinutes(now()) < 5 : false;
+        return $this->last_activity_at && $this->last_activity_at->diffInMinutes(now()) < 5;
     }
 
     /* Updates the given settings */
