@@ -242,6 +242,7 @@ export default function Settings() {
                                 handleChange={(e) => handleChange(setData, e)}
                                 handleBlur={onBlurName}
                                 value={data.name}
+                                isFocused
                                 required
                             />
 

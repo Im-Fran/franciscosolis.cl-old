@@ -20,7 +20,7 @@ const Icon = () => null;
 const Body = () => null;
 const Footer = () => null;
 
-const Modal = forwardRef(({children = null, title = null, defaultShow = false}, ref) => {
+const Modal = forwardRef(({children = null, title = null, defaultShow = false, onModalOpen = () => {}, onModalClose = () => {}}, ref) => {
     const nodeRef = useRef(null);
     const [show, setShow] = useState(defaultShow);
     const [hidden, setHidden] = useState(!show);
@@ -41,7 +41,13 @@ const Modal = forwardRef(({children = null, title = null, defaultShow = false}, 
 
     return (
         <div ref={ref} className="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-            <Transition nodeRef={nodeRef} in={show} timeout={1500} onEnter={() => setHidden(false)} onExited={() => setTimeout(() => setHidden(true), 500)}>
+            <Transition nodeRef={nodeRef} in={show} timeout={1500} onEnter={() => {
+                setHidden(false);
+                onModalOpen();
+            }} onExited={() => setTimeout(() => {
+                setHidden(true);
+                onModalClose();
+            }, 500)}>
                 {state => (
                     <div hidden={hidden}>
                         <div className={"fixed inset-0 bg-gray-600 bg-opacity-75 dark:bg-opacity-50 transition-opacity " + backgroundBackDropClass[state]} onClick={() => console.log('test')}></div>

@@ -61,6 +61,13 @@ export default function Pagination({ children, data, only = null, queryField = n
     ))
 
     const ModalRef = useRef(null);
+    const [focusSearch, setFocusSearch] = useState(false);
+    const onModalOpen = () => {
+        setFocusSearch(true);
+    }
+    const onModalClose = () => {
+        setFocusSearch(false);
+    }
 
     const [currentSearch, setCurrentSearch] = useState((new URL(window.location.href)).searchParams.get(queryField) || '');
     const submitSearch = () => {
@@ -79,7 +86,7 @@ export default function Pagination({ children, data, only = null, queryField = n
     return (
         <div className="flex justify-center gap-6">
             {queryField && <div className="relative flex items-center justify-center w-10 h-10">
-                <Modal ref={ModalRef} title={searchDisplay}>
+                <Modal ref={ModalRef} title={searchDisplay} onModalOpen={onModalOpen} onModalClose={onModalClose}>
                     <Modal.Icon>
                         <ModalIcon color="bg-blue-300 dark:bg-gray-600 text-white" icon={<MagnifyingGlassIcon className="w-6 h-6"/>}/>
                     </Modal.Icon>
@@ -93,7 +100,7 @@ export default function Pagination({ children, data, only = null, queryField = n
                                 value={currentSearch}
                                 placeholder="Search..."
                                 className="mt-1 block w-full"
-                                isFocused={true}
+                                isFocused={focusSearch}
                                 handleChange={e => setCurrentSearch(e.target.value)}
                             />
                         </form>
