@@ -1,4 +1,4 @@
-import {forwardRef, useImperativeHandle, useRef} from "react";
+import {forwardRef, useImperativeHandle, useRef, useState} from "react";
 import {useForm} from "@inertiajs/react";
 import {handleChange} from "@/js/Utils/Utils";
 
@@ -10,15 +10,22 @@ import Label from "@/js/Components/Forms/Label";
 import {PencilIcon} from "@heroicons/react/24/outline";
 import Button from "@/js/Components/Button";
 
-const CreatePermissionModal = forwardRef((props, ref) => {
-    const {data, setData, errors, processing, post} = useForm({
-        title: '',
-        name: '',
+const EditPermissionModal = forwardRef((props, ref) => {
+    const [permission, setPermission] = useState(null);
+
+    const {data, setData, errors, processing, patch} = useForm({
+        title: permission?.title || '',
+        name: permission?.name || '',
     })
 
     const ModalRef = useRef(null);
 
-    const open = () => {
+    const open = (permission) => {
+        setPermission(permission);
+        setData({
+            title: permission.title,
+            name: permission.name,
+        });
         ModalRef.current?.open();
     }
 
@@ -26,8 +33,8 @@ const CreatePermissionModal = forwardRef((props, ref) => {
         ModalRef.current?.close();
     }
 
-    const createPermission = () => {
-        post(route('admin.abilities.store'), {
+    const editPermission = () => {
+        patch(route('admin.abilities.edit', { ability: permission?.name }), {
             onSuccess: () => {
                 close();
             },
@@ -37,7 +44,7 @@ const CreatePermissionModal = forwardRef((props, ref) => {
     useImperativeHandle(ref, () => ({open, close}));
 
     return (
-        <Modal ref={ModalRef} title="Create New Permission">
+        <Modal ref={ModalRef} title={`Edit ${permission?.title}`}>
             <Modal.Icon>
                 <ModalIcon color="bg-blue-300 dark:bg-gray-600 text-white" icon={<PencilIcon className="w-6 h-6"/>}/>
             </Modal.Icon>
@@ -76,11 +83,11 @@ const CreatePermissionModal = forwardRef((props, ref) => {
             </Modal.Body>
 
             <Modal.Footer>
-                <Button color={400} onClick={createPermission} processing={processing}>Create</Button>
+                <Button color={400} onClick={editPermission} processing={processing}>Save</Button>
                 <Button color={200} onClick={ModalRef.current?.close}>Cancel</Button>
             </Modal.Footer>
         </Modal>
     );
 })
 
-export default CreatePermissionModal;
+export default EditPermissionModal;

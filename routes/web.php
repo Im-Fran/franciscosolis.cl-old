@@ -74,7 +74,6 @@ Route::prefix('admin')->middleware(['auth', '2fa', 'verified'])->group(function(
     Route::prefix('permissions')->group(function() {
         Route::get('/', [AdminAccess\PermissionsController::class, 'index'])->name('admin.abilities');
         Route::post('/', [AdminAccess\PermissionsController::class, 'store'])->name('admin.abilities.store');
-        Route::get('/{ability}', [AdminAccess\PermissionsController::class, 'edit'])->name('admin.abilities.edit');
         Route::patch('/{ability}', [AdminAccess\PermissionsController::class, 'update'])->name('admin.abilities.update');
         Route::delete('/{ability}', [AdminAccess\PermissionsController::class, 'destroy'])->name('admin.abilities.delete');
     });

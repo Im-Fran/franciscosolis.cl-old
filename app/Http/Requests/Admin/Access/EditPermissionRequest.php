@@ -3,8 +3,9 @@
 namespace App\Http\Requests\Admin\Access;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class CreatePermissionRequest extends FormRequest {
+class EditPermissionRequest extends FormRequest {
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -21,8 +22,8 @@ class CreatePermissionRequest extends FormRequest {
      */
     public function rules() {
         return [
-            'name' => ['required', 'string', 'max:255', 'unique:abilities,name'],
-            'title' => ['required', 'string', 'max:255', 'unique:abilities,title'],
+            'name' => ['required', 'string', 'max:255', Rule::unique('abilities', 'name')->ignore($this->ability->id)],
+            'title' => ['required', 'string', 'max:255', Rule::unique('abilities', 'title')->ignore($this->ability->id)],
         ];
     }
 }

@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { router, useForm } from "@inertiajs/react";
+import {useRef} from "react";
+import { router } from "@inertiajs/react";
 
-import { PencilIcon, PlusIcon } from '@heroicons/react/24/outline'
+import { PlusIcon } from '@heroicons/react/24/outline'
 import Pagination from "@/js/Components/Pagination";
 import Column from "@/js/Components/Table/Column";
 import Row from "@/js/Components/Table/Row";
@@ -9,22 +9,16 @@ import RowItem from "@/js/Components/Table/RowItem";
 import Table from "@/js/Components/Table/Table";
 import AdminLayout from "@/js/Layouts/AdminLayout";
 import Button from "@/js/Components/Button";
+import CreatePermissionModal from "@/js/Components/Modals/Admin/Permissions/CreatePermissionModal";
+import EditPermissionModal from "@/js/Components/Modals/Admin/Permissions/EditPermissionModal";
 
 export default function Index({ permissions }) {
     const meta = [
         { property: 'og:title', content: 'Admin > Permissions | FranciscoSolis' },
     ]
 
-    const [show, setShow] = useState(false);
-    const toggleShow = () => setShow((prev) => !prev);
-
-    const [showEdit, setShowEdit] = useState(false);
-    const toggleShowEdit = () => setShowEdit((prev) => !prev);
-
-    const createForm = useForm('CreatePermissions', {
-        name: '',
-        title: '',
-    })
+    const CreatePermissionModalRef = useRef(null);
+    const EditPermissionModalRef = useRef(null);
 
     const deletePermission = (e, permission) => {
         e.preventDefault();
@@ -37,33 +31,25 @@ export default function Index({ permissions }) {
         }
     }
 
-    const createPermission = () => {
-        createForm.post(route('admin.abilities.store'), {
-            onFinish: () => {
-                toggleShow();
-                createForm.reset();
-            }
-        })
-    }
-
     return (
         <AdminLayout title="Admin > Permissions" meta={meta}>
-
-
+            <CreatePermissionModal ref={CreatePermissionModalRef}/>
+            <EditPermissionModal ref={EditPermissionModalRef} />
             <Table>
                 <Table.Columns>
                     <Column>Id</Column>
-                    <Column>Name</Column>
                     <Column>Title</Column>
+                    <Column>Name</Column>
                     <Column>Actions</Column>
                 </Table.Columns>
                 <Table.Rows>
                     {permissions.data.map(permission => (
                         <Row key={permission.id}>
                             <RowItem>#{permission.id}</RowItem>
-                            <RowItem>{permission.name}</RowItem>
                             <RowItem>{permission.title}</RowItem>
-                            <RowItem>
+                            <RowItem>{permission.name}</RowItem>
+                            <RowItem className="flex gap-5">
+                                <Button color={600} onClick={() => EditPermissionModalRef.current?.open(permission)}>Edit</Button>
                                 <Button color={200} onClick={e => deletePermission(e, permission)}>Delete</Button>
                             </RowItem>
                         </Row>
@@ -71,7 +57,7 @@ export default function Index({ permissions }) {
                 </Table.Rows>
                 <Table.Pagination position="center">
                     <Pagination data={permissions} queryField="query" searchDisplay={"Search Permissions"}>
-                        <PlusIcon className="w-6 h-6 cursor-pointer" onClick={toggleShow}/>
+                        <PlusIcon className="w-6 h-6 cursor-pointer" onClick={() => CreatePermissionModalRef.current?.open()}/>
                     </Pagination>
                 </Table.Pagination>
             </Table>

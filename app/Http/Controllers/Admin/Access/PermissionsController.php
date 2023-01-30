@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Access;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Access\CreatePermissionRequest;
+use App\Http\Requests\Admin\Access\EditPermissionRequest;
 use Illuminate\Http\Request;
 use Silber\Bouncer\Database\Ability;
 
@@ -28,13 +29,7 @@ class PermissionsController extends Controller {
         return back()->with('success', 'Permission created successfully');
     }
 
-    public function edit(Ability $ability) {
-        return inertia('Admin/Permissions/Edit', [
-            'permission' => $ability,
-        ]);
-    }
-
-    public function update(Ability $ability, CreatePermissionRequest $request) {
+    public function update(Ability $ability, EditPermissionRequest $request) {
         $ability->update([
             'name' => $request->input('name'),
             'title' => $request->input('title'),

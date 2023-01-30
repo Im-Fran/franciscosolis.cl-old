@@ -43,20 +43,12 @@ class HandleInertiaRequests extends Middleware {
                 return [
                     'user' => $user,
                     'check' => $user != null,
-                    'can' => $user == null ? [] : \Cache::tags('abilities-check')->remember('abilities-check-'.Auth::id(), now()->addMinutes(15), function() use ($user) {
-                        $can = [];
+                    'can' => $user == null ? fn () => array_fill_keys(Ability::query()->select(['name'])->pluck('name')->toArray(), false) : \Cache::tags('abilities-check')->remember('abilities-check-'.Auth::id(), now()->addMinutes(15), function() use ($user) {
                         if ($user == null) {
-                            return $can;
+                            return array_fill_keys(Ability::query()->select(['name'])->pluck('name')->toArray(), false);
                         }
 
-                        $user->load(['abilities', 'roles.abilities']);
-                        $abilities = $user->roles->pluck('abilities')->flatten()->merge($user->abilities)->unique('name')->pluck('name');
-
-                        foreach (Ability::query()->select(['name'])->pluck('name') as $ability) {
-                            $can[$ability] = $abilities->contains($ability);
-                        }
-
-                        return $can;
+                        return array_fill_keys($user->abilities->merge($user->roles->pluck('abilities')->flatten())->unique('name')->pluck('name')->toArray(), true) + array_fill_keys(Ability::query()->select(['name'])->pluck('name')->toArray(), false);
                     }),
                 ];
             },
