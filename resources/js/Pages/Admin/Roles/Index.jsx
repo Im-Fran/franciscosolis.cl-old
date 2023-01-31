@@ -1,3 +1,4 @@
+import {useRef} from "react";
 import { router } from "@inertiajs/react";
 
 import { PlusIcon } from '@heroicons/react/24/outline'
@@ -8,11 +9,14 @@ import RowItem from "@/js/Components/Table/RowItem";
 import Table from "@/js/Components/Table/Table";
 import AdminLayout from "@/js/Layouts/AdminLayout";
 import Button from "@/js/Components/Button";
+import CreateRoleModal from "@/js/Components/Modals/Admin/Roles/CreateRoleModal";
 
 export default function Index({ roles }) {
     const meta = [
         { property: 'og:title', content: 'Admin > Roles | FranciscoSolis' },
     ]
+
+    const CreateRoleModalRef = useRef(null);
 
     const deleteRole = (e, role) => {
         e.preventDefault();
@@ -27,6 +31,7 @@ export default function Index({ roles }) {
 
     return (
         <AdminLayout title="Admin > Roles" meta={meta}>
+            <CreateRoleModal ref={CreateRoleModalRef}/>
             <Table>
                 <Table.Columns>
                     <Column>Id</Column>
@@ -40,15 +45,16 @@ export default function Index({ roles }) {
                             <RowItem>#{role.id}</RowItem>
                             <RowItem>{role.title}</RowItem>
                             <RowItem>{role.name}</RowItem>
-                            <RowItem>
+                            <RowItem className="flex gap-5">
+                                <Button color={600} onClick={() => router.visit(route('admin.roles.edit', { role: role.name }))}>Edit</Button>
                                 <Button color={200} onClick={e => deleteRole(e, role)}>Delete</Button>
                             </RowItem>
                         </Row>
                     ))}
                 </Table.Rows>
                 <Table.Pagination position="center">
-                    <Pagination data={roles} queryField="query" searchDisplay={"Search Roles"}>
-                        <PlusIcon className="w-6 h-6 cursor-pointer" onClick={toggleShow}/>
+                    <Pagination data={roles} queryField="search" searchDisplay={"Search Roles"}>
+                        <PlusIcon className="w-6 h-6 cursor-pointer" onClick={() => CreateRoleModalRef.current?.open()}/>
                     </Pagination>
                 </Table.Pagination>
             </Table>

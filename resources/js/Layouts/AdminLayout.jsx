@@ -25,7 +25,7 @@ export default function AdminLayout({ children, title, meta, className }) {
 
                     <SidebarTitle title="ACCESS" icon={<CheckBadgeIcon className="w-6 h-6"/>}/>
                     <SidebarLink title="Permissions" icon={<KeyIcon className="w-6 h-6"/>} href={route('admin.abilities')} activeRoute="admin.abilities"/>
-                    <SidebarLink title="Roles" icon={<ShieldCheckIcon className="w-6 h-6"/>} href={route('admin.roles')} activeRoute="admin.roles"/>
+                    <SidebarLink title="Roles" icon={<ShieldCheckIcon className="w-6 h-6"/>} href={route('admin.roles')} activeRoute={['admin.roles', 'admin.roles.edit']}/>
 
                 </Sidebar.Links>
 

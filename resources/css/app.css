@@ -85,6 +85,10 @@ input:checked + .slider:before {
     background: white url('/resources/img/theme-dark.png') no-repeat center;
 }
 
+input {
+    box-shadow: none !important;
+}
+
 /* Rounded sliders */
 .slider.round {
     border-radius: 26px;

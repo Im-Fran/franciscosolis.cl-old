@@ -80,6 +80,15 @@ export default function Pagination({ children, data, only = null, queryField = n
             onStart: () => {
                 ModalRef.current?.close();
             },
+            onError: () => {
+                ModalRef.current?.open();
+            },
+            onSuccess: () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth',
+                })
+            }
         })
     }
 

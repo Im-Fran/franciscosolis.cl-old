@@ -4,7 +4,7 @@ export default function Button({ type = 'submit', color = 100, className = '', p
         <button
             type={type}
             className={
-                `inline-flex items-center px-4 py-2 hover:bg-transparent border border-transparent rounded-md font-bold text-xs text-white uppercase tracking-widest transition ease-in-out duration-200 ${
+                `inline-flex items-center px-4 py-1 hover:bg-transparent border border-transparent rounded-md font-bold text-xs text-white uppercase tracking-widest transition ease-in-out duration-200 ${
                     processing && ' opacity-25 '
                 } ${buttonClasses} ${className}`
             }

@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\Access\CreateRoleRequest;
 use App\Http\Requests\Admin\Access\EditRoleRequest;
 use Illuminate\Http\Request;
 use Inertia\Response;
+use Silber\Bouncer\Database\Ability;
 use Silber\Bouncer\Database\Role;
 
 class RolesController extends Controller {
@@ -38,8 +39,11 @@ class RolesController extends Controller {
     }
 
     public function edit(Role $role) {
+        $role->load('abilities');
+
         return inertia('Admin/Roles/Edit', [
             'role' => $role,
+            'abilities' => Ability::query()->select(['id', 'name', 'title'])->get(),
         ]);
     }
 
@@ -48,6 +52,7 @@ class RolesController extends Controller {
             'name' => $request->input('name'),
             'title' => $request->input('title'),
         ]);
+        $role->abilities()->sync(Ability::query()->whereIn('name', $request->permissions)->select(['id'])->pluck('id')->toArray());
 
         return back()->with('success', 'Role updated successfully');
     }

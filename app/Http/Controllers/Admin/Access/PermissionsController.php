@@ -10,7 +10,7 @@ use Silber\Bouncer\Database\Ability;
 
 class PermissionsController extends Controller {
     public function index(Request $request) {
-        $search = '%'.strtolower($request->input('query', '')).'%';
+        $search = '%'.strtolower($request->input('search', '')).'%';
 
         return inertia('Admin/Permissions/Index', [
             'permissions' => fn () => Ability::query()->where(function($query) use ($search) {

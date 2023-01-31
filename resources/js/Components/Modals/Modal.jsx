@@ -1,6 +1,6 @@
 import { Transition } from "react-transition-group";
 import { XMarkIcon } from '@heroicons/react/24/outline'
-import { useRef, useState, useImperativeHandle, forwardRef } from "react";
+import {useRef, useState, useImperativeHandle, forwardRef, useEffect} from "react";
 
 const backgroundBackDropClass = {
     entering: "ease-out duration-300 opacity-0",
@@ -36,6 +36,18 @@ const Modal = forwardRef(({children = null, title = null, defaultShow = false, o
     const close = () => {
         setShow(false);
     }
+
+    useEffect(() => {
+        const escListener = (e) => {
+            if (e.key === 'Escape') {
+                close();
+            }
+        }
+
+        document.addEventListener('keydown', escListener);
+
+        return () => document.removeEventListener('keydown', escListener);
+    }, [])
 
     useImperativeHandle(ref, () => ({open, close}));
 
