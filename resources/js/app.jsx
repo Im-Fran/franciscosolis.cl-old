@@ -10,7 +10,6 @@ import { createRoot } from 'react-dom/client';
 
 import { createInertiaApp } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
-import PersistentLayout from '@/js/Layouts/PersistentLayout'
 
 dayjs.extend(relativeTime);
 dayjs.extend(isToday);
@@ -22,13 +21,8 @@ createInertiaApp({
         color: '#4B5563',
         showSpinner: true,
     },
-    resolve: (name) => {
-        const page = resolvePageComponent(`./Pages/${name}.jsx`, import.meta.glob(['./Pages/**/*.jsx', '../images/**']))
-        page.layout = PersistentLayout
-        return page
-    },
-    setup({el, App, props}) {
-        const root = createRoot(el);
-        return root.render(<App {...props} />);
-    },
-}).then();
+    resolve: (name) => resolvePageComponent(`./Pages/${name}.jsx`, import.meta.glob(['./Pages/**/*.jsx', '../images/**'])),
+    setup: ({el, App, props}) => createRoot(el).render(<App {...props} />),
+}).then(() => {
+    window.dayjs = dayjs
+});
