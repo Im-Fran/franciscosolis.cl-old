@@ -1,6 +1,6 @@
 import {useState} from 'react';
 import {router, useForm, usePage} from "@inertiajs/react";
-import {handleError, fixForms, handleImageSize, handleChange} from '@/js/Utils/Utils'
+import {handleError, fixForms, handleChange} from '@/js/Utils/Utils'
 import toast from 'react-hot-toast';
 
 import { Cog6ToothIcon, ShieldCheckIcon } from '@heroicons/react/24/outline';
@@ -34,7 +34,7 @@ export default function Settings() {
         e.stopPropagation();
         privacyForm.transform((form) => ({
             ...form,
-            'activity.public': form['activity.public'] ? true : false,
+            'activity.public': !!form['activity.public'],
         }));
         privacyForm.post(route('account.settings.privacy.update'), {
             preserveScroll: true,
@@ -86,12 +86,12 @@ export default function Settings() {
         document.getElementById('select-profilephoto').click();
     };
 
-    const onProfilePhotoMouseEnter = (e) => {
+    const onProfilePhotoMouseEnter = () => {
         document.getElementById('profilePhotoEdit').classList.remove('h-0');
         document.getElementById('profilePhotoEdit').classList.add('h-1/4');
     };
 
-    const onProfilePhotoMouseLeave = (e) => {
+    const onProfilePhotoMouseLeave = () => {
         if(profilePhotoState === 'Edit') {
             document.getElementById('profilePhotoEdit').classList.remove('h-1/4');
             document.getElementById('profilePhotoEdit').classList.add('h-0');

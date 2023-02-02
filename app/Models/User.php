@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Contracts\TwoFactorAuthenticationProvider;
+use App\Events\Users\ActivityPingEvent;
 use App\Helpers\Helpers;
 use App\Helpers\UserSettings;
 use App\Traits\HasProfilePhoto;
@@ -164,9 +165,13 @@ class User extends Authenticatable implements MustVerifyEmail {
 
     /* Gets last activity time */
     public function getLastActivityAtAttribute(): ?Carbon {
-        return \Cache::remember(
+        if ($this->settings['activity.public'] === false) {
+            return null;
+        }
+
+        $response = \Cache::remember(
             "last-activity-at-{$this->id}",
-            now()->addMinutes(3),
+            180,
             fn () => Carbon::parse(
                 \DB::table('sessions')
                     ->select('last_activity')
@@ -176,6 +181,14 @@ class User extends Authenticatable implements MustVerifyEmail {
                     ->first()?->last_activity ?? null
             )
         );
+
+        if ($response != null) {
+            if (now()->diffInMinutes($response) < 5) {
+                broadcast(new ActivityPingEvent($this));
+            }
+        }
+
+        return $response;
     }
 
     /* Check if the user is online (in the last 5 minutes) */
@@ -185,12 +198,13 @@ class User extends Authenticatable implements MustVerifyEmail {
 
     /* Updates the given settings */
     public function updateSettings(array $settings) {
+        $newSettings = $this->settings;
         foreach ($settings as $key => $value) {
-            if (UserSettings::$defaultSettings[$key]) {
-                $this->settings[$key] = $value ?: UserSettings::$defaultSettings[$key];
+            if (isset(UserSettings::$defaultSettings[$key])) {
+                $newSettings[$key] = $value ?: UserSettings::$defaultSettings[$key];
             }
         }
-        $this->save();
+        $this->update(['settings' => $newSettings]);
     }
 
     /* Updates the given setting */

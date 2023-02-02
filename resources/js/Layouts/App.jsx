@@ -1,14 +1,14 @@
 import { useEffect } from 'react';
-import { Head, usePage } from '@inertiajs/react';
+import {Head, Link, usePage} from '@inertiajs/react';
 import toast, { Toaster } from 'react-hot-toast';
 import { Tooltip } from 'react-tooltip';
 
 import Header from '@/js/Shared/Header';
 import Foot from '@/js/Shared/Foot';
-import PersistentLayout from '@/js/Layouts/PersistentLayout';
+import {BellIcon} from "@heroicons/react/24/outline";
 
-const App = ({ children, title, meta = [], vertical = "top", horizontal = "left" }) => {
-    const { flash } = usePage().props;
+export default function App({ children, title, meta = [], vertical = "top", horizontal = "left" }) {
+    const { auth, flash } = usePage().props;
     useEffect(() => {
         flash.forEach(item => {
             if (typeof toast[item.type] === 'function') {
@@ -23,9 +23,22 @@ const App = ({ children, title, meta = [], vertical = "top", horizontal = "left"
         })
     }, [flash]);
 
-    const metaItems = meta.map((item, index) => {
-        return <meta key={`meta-${index}`} head-key={`meta-${index}`} {...item} />
-    })
+    useEffect(() => {
+        window.Echo?.private(`User.${auth.user?.id}`)?.notification(notification => {
+            toast(notification.action ? (
+                <div className="flex flex-row justify-between w-full">
+                    <span>{notification.message}</span>
+                    <div className="border-l border-brand-500 pr-2 ml-3" />
+                    <Link href={notification.action.url} className="text-blue-500">{notification.action.display}</Link>
+                </div>
+            ) : notification.message, {
+                duration: 5000,
+                icon: (<BellIcon className="w-6 h-6 animate-ring" />),
+            })
+        })
+
+        return () => window.Echo?.leave(`User.${auth.user?.id}`);
+    }, [auth, window.Echo]);
 
     // Check if user's preference is dark mode
     const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
@@ -39,6 +52,9 @@ const App = ({ children, title, meta = [], vertical = "top", horizontal = "left"
             <div className={(localStorage.getItem('theme') === 'dark') ? 'dark' : ''}>
                 <Head>
                     <title>{title}</title>
+                    {/*{meta.map((item, index) => (*/}
+                    {/*    <meta head-key={`meta-${index}`} {...item}/>*/}
+                    {/*))}*/}
                 </Head>
                 <div className="transition transform-all duration-200 bg-white dark:bg-[#212121] text-gray-900 dark:text-white">
                     <Header />
@@ -53,8 +69,3 @@ const App = ({ children, title, meta = [], vertical = "top", horizontal = "left"
         </>
     );
 }
-
-App.layout = page => <PersistentLayout children={page}/>
-console.log('Hi from App.jsx', App.layout);
-
-export default App;

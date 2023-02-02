@@ -26,14 +26,17 @@ try {
         authEndpoint: '/broadcasting/auth',
         key: import.meta.env.VITE_PUSHER_APP_KEY,
         wsHost: import.meta.env.VITE_PUSHER_HOST,
-        wsPort: import.meta.env.VITE_PUSHER_PORT,
-        wssPort: import.meta.env.VITE_PUSHER_PORT,
+        wsPort: import.meta.env.VITE_PUSHER_SOKETI_PORT,
+        wssPort: import.meta.env.VITE_PUSHER_SOKETI_PORT,
         forceTLS: import.meta.env.VITE_PUSHER_SCHEME === 'https',
         disableStats: true,
         enabledTransports: ['ws', 'wss'],
-        encrypted: true,
+        encrypted: import.meta.env.VITE_PUSHER_ENCRYPTED === 'true',
+        cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
     });
-}catch(e){}
+}catch(e){
+    console.error('Failed to connect to Server WebSocket!', e);
+}
 
 import toast from 'react-hot-toast';
 
