@@ -19,7 +19,7 @@ export default function AdminLayout({ children, title, meta, className }) {
                 <Sidebar.Links>
                     <SidebarTitle title="OVERVIEW" icon={<Bars4Icon className="w-6 h-6"/>}/>
                     <SidebarLink title="Dashboard" icon={<ClipboardIcon className="w-6 h-6"/>} href={route('admin.dashboard')} activeRoute="admin.dashboard"/>
-                    <SidebarLink title="Users" icon={<UsersIcon className="w-6 h-6"/>} href={route('admin.users')} activeRoute="admin.users"/>
+                    <SidebarLink title="Users" icon={<UsersIcon className="w-6 h-6"/>} href={route('admin.users')} activeRoute={['admin.users', 'admin.users.edit']}/>
 
                     <div className="my-5"/>
 

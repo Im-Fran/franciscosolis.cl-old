@@ -1,8 +1,8 @@
-import {router, useForm} from "@inertiajs/react";
+import {Link, router, useForm} from "@inertiajs/react";
 import {handleChange, handleError} from "@/js/Utils/Utils";
 
 import AdminLayout from "@/js/Layouts/AdminLayout";
-import {ShieldCheckIcon} from "@heroicons/react/24/outline";
+import {ChevronLeftIcon, ShieldCheckIcon} from "@heroicons/react/24/outline";
 import Label from "@/js/Components/Forms/Label";
 import Input from "@/js/Components/Forms/Input";
 import InputError from "@/js/Components/Forms/InputError";
@@ -37,11 +37,11 @@ export default function Edit ({ user, abilities, roles }) {
         value: role.name,
     }));
 
-    const {data, setData, errors, setError, clearErrors, patch, transform } = useForm(`AdminEditUser:${user.id}`, {
+    const {data, setData, errors, setError, clearErrors, patch, transform } = useForm({
         name: user.name,
         email: user.email,
-        abilities: user.abilities,
-        roles: user.roles,
+        abilities: userAbilities,
+        roles: userRoles,
     })
 
     const submit = (e) => {
@@ -50,9 +50,11 @@ export default function Edit ({ user, abilities, roles }) {
         // Now we return just the value of the abilities and roles.
         transform((form) => ({
             ...form,
-            abilities: form.abilities.map((it) => it.value),
-            roles: form.roles.map((it) => it.value),
+            abilities: data.abilities.map((it) => it.value),
+            roles: data.roles.map((it) => it.value),
         }));
+
+
         patch(route('admin.users.update', { user: user.slug }), {
             preserveScroll: true,
             onSuccess: () => {
@@ -79,7 +81,7 @@ export default function Edit ({ user, abilities, roles }) {
         privacyForm.post(route('admin.users.privacy', { user: user.slug }), {
             preserveScroll: true,
             onSuccess: () => {
-                toast.success('Settings updated successfully.')
+                toast.success('Privacy settings updated successfully.')
             },
             onError: (err) => {
                 handleError(err, 'There was an error updating the settings.')
@@ -105,9 +107,24 @@ export default function Edit ({ user, abilities, roles }) {
         }
     };
 
+    const resetImage = () => {
+        if(user.profile_photo_path == null) {
+            toast.error('There\'s no profile picture to reset.');
+            return
+        }
+
+        router.delete(route('admin.users.image.reset', { user: user.slug }), {
+            onSuccess: () => toast.success('Profile picture reset successfully.'),
+            onError: (err) => handleError(err, 'There was an error resetting the profile picture.'),
+        })
+    }
+
     return (
         <AdminLayout title={`Admin > Users > Edit ${user.name}`} meta={meta}>
             <div className="flex flex-col w-full items-start">
+                <div className="flex">
+                    <Link preserveState href={route('admin.users')} className="flex items-center mb-2 text-blue-500 text-sm cursor-pointer"><ChevronLeftIcon className="w-5 h-5"/> Go Back</Link>
+                </div>
                 <form onSubmit={submit} className="mb-5 w-full">
                     <h2 className="flex text-xl">Editing {user.name}'s Account</h2>
                     <hr className="w-1/3 border-0 border-t-2 border-gray-500 mb-10"/>
@@ -156,7 +173,7 @@ export default function Edit ({ user, abilities, roles }) {
                                 <UserProfilePicture user={user} size={1024} sizeClass="h-32 w-32" showStatus={false}/>
                             </div>
                             <div className="col-span-2">
-                                <Button color={200} onClick={() => router.delete(route('admin.users.image.reset', { user: user.slug }))}>Reset Image</Button>
+                                <Button type="button" color={200} onClick={resetImage}>Reset Image</Button>
                             </div>
                         </div>
 

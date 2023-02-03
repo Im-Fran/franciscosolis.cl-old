@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Admin\Users;
 
+use Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
 class EditUserRequest extends FormRequest {
@@ -10,8 +11,8 @@ class EditUserRequest extends FormRequest {
      *
      * @return bool
      */
-    public function authorize() {
-        return true;
+    public function authorize(): bool {
+        return Auth::user()->can('admin.users.update');
     }
 
     /**
@@ -19,7 +20,7 @@ class EditUserRequest extends FormRequest {
      *
      * @return array<string, mixed>
      */
-    public function rules() {
+    public function rules(): array {
         return [
             'name' => ['required', 'string', ('unique:users,name,'.$this->user->id), 'between:4,255', 'regex:([a-zA-Z]+[a-zA-Z0-9_\. ][a-zA-Z0-9]+)'],
             'email' => ['required', 'email', ('unique:users,email,'.$this->user->id)],

@@ -11,7 +11,7 @@ class CreatePermissionRequest extends FormRequest {
      * @return bool
      */
     public function authorize() {
-        return true; // TODO: Check that user has permission
+        return \Auth::user()->can('admin.permissions.create');
     }
 
     /**

@@ -6,10 +6,12 @@ return [
         'admin.dashboard' => 'Admin Dashboard',
 
         'admin.roles' => 'Admin Roles',
+        'admin.roles.create' => 'Admin Create Roles',
         'admin.roles.update' => 'Admin Update Roles',
         'admin.roles.delete' => 'Admin Delete Roles',
 
         'admin.permissions' => 'Admin Permissions',
+        'admin.permissions.create' => 'Admin Create Permissions',
         'admin.permissions.update' => 'Admin Update Permissions',
         'admin.permissions.delete' => 'Admin Delete Permissions',
 

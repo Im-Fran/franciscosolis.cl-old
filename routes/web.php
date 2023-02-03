@@ -64,30 +64,30 @@ Route::prefix('/account')->middleware(['auth', '2fa', 'verified'])->group(functi
     });
 });
 
-Route::prefix('admin')->middleware(['auth', '2fa', 'verified', 'can:admin.dashboard'])->group(function() { // TODO: Add permissions middleware
+Route::prefix('admin')->middleware(['auth', '2fa', 'verified', 'can:admin.dashboard'])->group(function() {
     Route::get('/', [Admin\DashboardController::class, 'index'])->name('admin.dashboard')->middleware(['can:admin.dashboard']);
 
     Route::prefix('users')->middleware(['can:admin.users'])->group(function() {
-        Route::get('/', [Admin\UsersController::class, 'index'])->name('admin.users');
+        Route::get('/', [Admin\UsersController::class, 'index'])->name('admin.users')->middleware(['can:admin.users']);
         Route::get('/{user}', [Admin\UsersController::class, 'edit'])->name('admin.users.edit')->middleware(['can:admin.users.update']);
         Route::patch('/{user}', [Admin\UsersController::class, 'update'])->name('admin.users.update')->middleware(['can:admin.users.update']);
-        Route::post('/{user}/images', [Admin\UsersController::class, 'resetImage'])->name('admin.users.image.reset')->middleware(['can:admin.users.update.image']);
-        Route::post('/{user}/privacy', [Admin\UsersController::class, 'privacy'])->name('admin.users.privacy')->middleware(['can:admin.users.privacy']);
+        Route::delete('/{user}/image', [Admin\UsersController::class, 'resetImage'])->name('admin.users.image.reset')->middleware(['can:admin.users.update.image']);
+        Route::post('/{user}/privacy', [Admin\UsersController::class, 'updatePrivacy'])->name('admin.users.privacy')->middleware(['can:admin.users.privacy']);
     });
 
     Route::prefix('permissions')->group(function() {
-        Route::get('/', [AdminAccess\PermissionsController::class, 'index'])->name('admin.abilities');
-        Route::post('/', [AdminAccess\PermissionsController::class, 'store'])->name('admin.abilities.store');
-        Route::patch('/{ability}', [AdminAccess\PermissionsController::class, 'update'])->name('admin.abilities.update');
-        Route::delete('/{ability}', [AdminAccess\PermissionsController::class, 'destroy'])->name('admin.abilities.delete');
+        Route::get('/', [AdminAccess\PermissionsController::class, 'index'])->name('admin.abilities')->middleware(['can:admin.permissions']);
+        Route::post('/', [AdminAccess\PermissionsController::class, 'store'])->name('admin.abilities.store')->middleware(['can:admin.permissions.create']);
+        Route::patch('/{ability}', [AdminAccess\PermissionsController::class, 'update'])->name('admin.abilities.update')->middleware(['can:admin.permissions.update']);
+        Route::delete('/{ability}', [AdminAccess\PermissionsController::class, 'destroy'])->name('admin.abilities.delete')->middleware(['can:admin.permissions.delete']);
     });
 
     Route::prefix('roles')->group(function() {
-        Route::get('/', [AdminAccess\RolesController::class, 'index'])->name('admin.roles');
-        Route::post('/', [AdminAccess\RolesController::class, 'store'])->name('admin.roles.store');
-        Route::get('/{role}', [AdminAccess\RolesController::class, 'edit'])->name('admin.roles.edit');
-        Route::patch('/{role}', [AdminAccess\RolesController::class, 'update'])->name('admin.roles.update');
-        Route::delete('/{role}', [AdminAccess\RolesController::class, 'destroy'])->name('admin.roles.delete');
+        Route::get('/', [AdminAccess\RolesController::class, 'index'])->name('admin.roles')->middleware(['can:admin.roles']);
+        Route::post('/', [AdminAccess\RolesController::class, 'store'])->name('admin.roles.store')->middleware(['can:admin.roles.create']);
+        Route::get('/{role}', [AdminAccess\RolesController::class, 'edit'])->name('admin.roles.edit')->middleware(['can:admin.roles.update']);
+        Route::patch('/{role}', [AdminAccess\RolesController::class, 'update'])->name('admin.roles.update')->middleware(['can:admin.roles.update']);
+        Route::delete('/{role}', [AdminAccess\RolesController::class, 'destroy'])->name('admin.roles.delete')->middleware(['can:admin.roles.delete']);
     });
 });
 
