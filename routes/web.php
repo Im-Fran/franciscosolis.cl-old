@@ -64,11 +64,15 @@ Route::prefix('/account')->middleware(['auth', '2fa', 'verified'])->group(functi
     });
 });
 
-Route::prefix('admin')->middleware(['auth', '2fa', 'verified'])->group(function() { // TODO: Add permissions middleware
-    Route::get('/', [Admin\DashboardController::class, 'index'])->name('admin.dashboard');
+Route::prefix('admin')->middleware(['auth', '2fa', 'verified', 'can:admin.dashboard'])->group(function() { // TODO: Add permissions middleware
+    Route::get('/', [Admin\DashboardController::class, 'index'])->name('admin.dashboard')->middleware(['can:admin.dashboard']);
 
-    Route::prefix('users')->group(function() {
+    Route::prefix('users')->middleware(['can:admin.users'])->group(function() {
         Route::get('/', [Admin\UsersController::class, 'index'])->name('admin.users');
+        Route::get('/{user}', [Admin\UsersController::class, 'edit'])->name('admin.users.edit')->middleware(['can:admin.users.update']);
+        Route::patch('/{user}', [Admin\UsersController::class, 'update'])->name('admin.users.update')->middleware(['can:admin.users.update']);
+        Route::post('/{user}/images', [Admin\UsersController::class, 'resetImage'])->name('admin.users.image.reset')->middleware(['can:admin.users.update.image']);
+        Route::post('/{user}/privacy', [Admin\UsersController::class, 'privacy'])->name('admin.users.privacy')->middleware(['can:admin.users.privacy']);
     });
 
     Route::prefix('permissions')->group(function() {

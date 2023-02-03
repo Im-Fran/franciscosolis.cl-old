@@ -48,6 +48,8 @@ class RegisteredUserController extends Controller {
 
         Auth::login($user);
 
+        $user->assign('user');
+
         return redirect(RouteServiceProvider::HOME);
     }
 }

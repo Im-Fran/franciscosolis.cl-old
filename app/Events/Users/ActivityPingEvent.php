@@ -2,7 +2,7 @@
 
 namespace App\Events\Users;
 
-use App\Models\User;
+use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
@@ -12,22 +12,28 @@ use Illuminate\Queue\SerializesModels;
 class ActivityPingEvent implements ShouldBroadcast {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    private User $user;
+    private string $slug;
+
+    private $lastActivityAt;
 
     /**
      * Create a new event instance.
+     *
+     * @param mixed $slug
+     * @param mixed $lastActivityAt
      */
-    public function __construct(User $user) {
-        $this->user = $user;
+    public function __construct($slug, $lastActivityAt) {
+        $this->slug = $slug;
+        $this->lastActivityAt = $lastActivityAt;
     }
 
     /**
      * Get the channels the event should broadcast on.
      *
-     * @return array|\Illuminate\Broadcasting\Channel
+     * @return array|Channel
      */
     public function broadcastOn() {
-        return new PrivateChannel("UserActivity.{$this->user->slug}");
+        return new PrivateChannel("UserActivity.{$this->slug}");
     }
 
     public function broadcastAs(): string {
@@ -36,7 +42,7 @@ class ActivityPingEvent implements ShouldBroadcast {
 
     public function broadcastWith(): array {
         return [
-            'last_activity_at' => $this->user->last_activity_at,
+            'last_activity_at' => $this->lastActivityAt,
         ];
     }
 }

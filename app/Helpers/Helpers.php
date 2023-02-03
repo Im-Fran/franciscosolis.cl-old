@@ -4,6 +4,7 @@ namespace App\Helpers;
 
 use App\Models\IpLocation;
 use App\Notifications\Account\LoginNotification;
+use Carbon\Carbon;
 use DeviceDetector\DeviceDetector;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -57,5 +58,14 @@ class Helpers {
 
     public static function generateRecoveryCode(): string {
         return Str::random(6).'.'.Str::random(4).'.'.Str::random(6).'.'.Str::random(4);
+    }
+
+    // Parses the given date using carbon, but also caches the result to improve performance
+    public static function carbon($date) {
+        if ($date == null) {
+            return;
+        }
+
+        return \Cache::rememberForever('carbon-'.md5($date), fn () => Carbon::parse($date));
     }
 }

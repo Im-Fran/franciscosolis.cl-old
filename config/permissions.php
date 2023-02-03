@@ -15,6 +15,9 @@ return [
 
         'admin.users' => 'Admin Users',
         'admin.users.update' => 'Admin Update Users',
+        'admin.users.update.image' => 'Admin Update User Image',
+        'admin.users.update.privacy' => 'Admin Update User Privacy',
+        'admin.users.update.password' => 'Admin Update User Password',
         'admin.users.delete' => 'Admin Delete Users',
     ],
 

@@ -5,6 +5,9 @@ import RowItem from "@/js/Components/Table/RowItem";
 import Table from "@/js/Components/Table/Table";
 import UserProfilePicture from "@/js/Components/UserProfilePicture";
 import AdminLayout from "@/js/Layouts/AdminLayout";
+import Button from "@/js/Components/Button";
+import {PencilSquareIcon} from "@heroicons/react/24/outline";
+import {router} from "@inertiajs/react";
 
 export default function Index({ users }) {
     const meta = [
@@ -28,7 +31,9 @@ export default function Index({ users }) {
                                 <span>{user.name}</span>
                             </RowItem>
                             <RowItem>{user.email}</RowItem>
-                            <RowItem>{/* TODO */}</RowItem>
+                            <RowItem>
+                                <Button color={600} onClick={() => router.visit(route('admin.users.edit', { user: user.slug }))}><PencilSquareIcon className="w-5 h-5"/>&nbsp;Edit</Button>
+                            </RowItem>
                         </Row>
                     ))}
                 </Table.Rows>

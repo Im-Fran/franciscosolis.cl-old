@@ -7,7 +7,9 @@ use App\Events\Users\ActivityPingEvent;
 use App\Helpers\Helpers;
 use App\Helpers\UserSettings;
 use App\Traits\HasProfilePhoto;
+use Cache;
 use Carbon\Carbon;
+use DB;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -169,26 +171,28 @@ class User extends Authenticatable implements MustVerifyEmail {
             return null;
         }
 
-        $response = \Cache::remember(
-            "last-activity-at-{$this->id}",
-            180,
-            fn () => Carbon::parse(
-                \DB::table('sessions')
-                    ->select('last_activity')
-                    ->where('user_id', '=', $this->id)
-                    ->whereNotIn('id', \Cache::rememberForever("logout-{$this->id}", fn () => collect()))
-                    ->orderByDesc('last_activity')
-                    ->first()?->last_activity ?? null
-            )
-        );
+        $response = Cache::remember("last-activity-at-{$this->id}", now()->addSeconds(60), fn () => $this->getLastActivityFromSession());
+        $lastCheck = Cache::rememberForever("last-activity-check-{$this->id}", fn () => now());
+        if (now()->diffInMinutes($lastCheck) > 10) {
+            $response = $this->getLastActivityFromSession();
+            Cache::put("last-activity-at-{$this->id}", $response, now()->addSeconds(60));
+            Cache::put("last-activity-check-{$this->id}", now(), now()->addMinutes(10));
+        }
 
         if ($response != null) {
-            if (now()->diffInMinutes($response) < 5) {
-                broadcast(new ActivityPingEvent($this));
-            }
+            broadcast(new ActivityPingEvent($this->slug, $response));
         }
 
         return $response;
+    }
+
+    private function getLastActivityFromSession(): ?Carbon {
+        return Helpers::carbon(DB::table('sessions')
+            ->select('last_activity')
+            ->where('user_id', '=', $this->id)
+            ->whereNotIn('id', Cache::rememberForever("logout-{$this->id}", fn () => collect()))
+            ->orderByDesc('last_activity')
+            ->first()?->last_activity ?? null);
     }
 
     /* Check if the user is online (in the last 5 minutes) */
