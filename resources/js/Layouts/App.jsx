@@ -1,11 +1,12 @@
 import { useEffect } from 'react';
-import {Head, Link, usePage} from '@inertiajs/react';
+import {Head, Link, router, usePage} from '@inertiajs/react';
 import toast, { Toaster } from 'react-hot-toast';
 import { Tooltip } from 'react-tooltip';
 
 import Header from '@/js/Shared/Header';
 import Foot from '@/js/Shared/Foot';
 import {BellIcon} from "@heroicons/react/24/outline";
+import axios from "axios";
 
 export default function App({ children, title, meta = [], vertical = "top", horizontal = "left" }) {
     const { auth, flash } = usePage().props;
@@ -22,6 +23,25 @@ export default function App({ children, title, meta = [], vertical = "top", hori
             }
         })
     }, [flash]);
+
+    useEffect(() => {
+        if(auth.user?.settings['activity.public']) {
+            const heartbeat = () => { // Send heartbeat every 30 seconds, but try to every 15 seconds
+                if(dayjs().diff(dayjs(auth.user?.last_activity_at), 's') > 30) { // Validate that it's been 30 seconds since last heartbeat
+                    axios.get(route('api.v1.self.heartbeat')).then(() => { // Send heartbeat
+                        router.reload({ // Reload page to update last_activity_at
+                            only: ['auth'],
+                        });
+                    })
+                }
+            }
+
+            const interval = setInterval(heartbeat, 15000); // Send heartbeat every 15 seconds
+            heartbeat(); // Send heartbeat immediately
+
+            return () => clearInterval(interval) // Clear interval on unmount
+        }
+    });
 
     useEffect(() => {
         window.Echo?.private(`User.${auth.user?.id}`)?.notification(notification => {

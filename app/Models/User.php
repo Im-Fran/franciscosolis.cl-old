@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Contracts\TwoFactorAuthenticationProvider;
-use App\Events\Users\ActivityPingEvent;
 use App\Helpers\Helpers;
 use App\Helpers\UserSettings;
 use App\Traits\HasProfilePhoto;
@@ -13,6 +12,7 @@ use DB;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -26,7 +26,8 @@ class User extends Authenticatable implements MustVerifyEmail {
         HasApiTokens,
         Notifiable,
         HasProfilePhoto,
-        HasRolesAndAbilities;
+        HasRolesAndAbilities,
+        SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -43,6 +44,7 @@ class User extends Authenticatable implements MustVerifyEmail {
         'two_factor_recovery_codes',
         'two_factor_verified_at',
         'settings',
+	    'last_activity_at',
     ];
 
     /**
@@ -54,7 +56,6 @@ class User extends Authenticatable implements MustVerifyEmail {
         'profile_photo_url',
         'two_factor_enabled',
         'is_online',
-        'last_activity_at',
     ];
 
     /**
@@ -165,39 +166,13 @@ class User extends Authenticatable implements MustVerifyEmail {
         return false;
     }
 
-    /* Gets last activity time */
-    public function getLastActivityAtAttribute(): ?Carbon {
-        if ($this->settings['activity.public'] === false) {
-            return null;
-        }
-
-        $response = Cache::remember("last-activity-at-{$this->id}", now()->addSeconds(60), fn () => $this->getLastActivityFromSession());
-        $lastCheck = Cache::rememberForever("last-activity-check-{$this->id}", fn () => now());
-        if (now()->diffInMinutes($lastCheck) > 10) {
-            $response = $this->getLastActivityFromSession();
-            Cache::put("last-activity-at-{$this->id}", $response, now()->addSeconds(60));
-            Cache::put("last-activity-check-{$this->id}", now(), now()->addMinutes(10));
-        }
-
-        if ($response != null) {
-            broadcast(new ActivityPingEvent($this->slug, $response));
-        }
-
-        return $response;
-    }
-
-    private function getLastActivityFromSession(): ?Carbon {
-        return Helpers::carbon(DB::table('sessions')
-            ->select('last_activity')
-            ->where('user_id', '=', $this->id)
-            ->whereNotIn('id', Cache::rememberForever("logout-{$this->id}", fn () => collect()))
-            ->orderByDesc('last_activity')
-            ->first()?->last_activity ?? null);
-    }
-
     /* Check if the user is online (in the last 5 minutes) */
     public function getIsOnlineAttribute(): bool {
-        return $this->last_activity_at && $this->last_activity_at->diffInMinutes(now()) < 5;
+        if($this->settings['activity.public']) {
+			return $this->last_activity_at?->gt(now()->subMinutes(5)) ?: false;
+        }
+		
+		return false;
     }
 
     /* Updates the given settings */

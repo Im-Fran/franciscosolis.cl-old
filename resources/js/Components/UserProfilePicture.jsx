@@ -7,13 +7,13 @@ export default function ({ id = null, user, sizeClass = 'h-8 w-8', size = 32, st
     const [online, setOnline] = useState(false)
 
     useEffect(() => {
-        const channel = window.Echo?.private(`UserActivity.${user.slug}`).listen('.users.activityping', (e) => {
-            setLastPing(dayjs(e.last_activity_at))
-        })
+        const channel = window.Echo?.listen('presence-UserActivity', '.heartbeat', (e) => {
+            console.log('Heartbeat', e)
+        });
 
         return () => {
-            channel?.stopListening('.users.activityping')
-            window.Echo?.leave(`UserActivity.${user.slug}`)
+            channel?.stopListening('.heartbeat')
+            window.Echo?.leave('UserActivity')
         }
     }, [user])
 

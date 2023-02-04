@@ -17,8 +17,15 @@ class UsersController extends Controller {
     /* Shows the user list */
     public function index(): Response|ResponseFactory {
         return inertia('Admin/Users/Index', [
-            'users' => fn () => User::paginate(10),
+            'users' => fn () => User::orderBy('created_at')->paginate(10),
         ]);
+    }
+
+    /* Marks the given user as deleted */
+    public function delete(User $user): RedirectResponse {
+        $user->delete();
+
+        return redirect()->route('admin.users.index')->with('success', 'User deleted successfully');
     }
 
     /* Show edit form for the given user */

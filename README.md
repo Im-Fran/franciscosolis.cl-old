@@ -23,6 +23,7 @@ sail build --no-cache # Build the sail container. Make sure you configured the s
 sail up -d # Run the container in background
 sail art optimize # If you want a faster load this will optimize the environment by caching lots of settings. If you have a permissions issue check below.
 sail art migrate --seed # Migrate and seed database
+sail art validate:permissions # Make sure roles and abilities are in the database.
 ```
 
 ### Permissions Issue

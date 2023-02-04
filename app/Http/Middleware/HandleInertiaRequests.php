@@ -2,7 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use Auth;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Session;
@@ -43,13 +42,26 @@ class HandleInertiaRequests extends Middleware {
                 return [
                     'user' => $user,
                     'check' => $user != null,
-                    'can' => $user == null ? fn () => array_fill_keys(Ability::query()->select(['name'])->pluck('name')->toArray(), false) : \Cache::tags('abilities-check')->remember('abilities-check-'.Auth::id(), now()->addMinutes(15), function() use ($user) {
+                    'can' => $user == null ? fn () => Ability::query()->select(['name'])->pluck('name')->flatMap(fn ($it) => [$it => false]) : function() use ($user) {
+                        $allAbilities = Ability::query()->select(['name'])->pluck('name');
                         if ($user == null) {
-                            return array_fill_keys(Ability::query()->select(['name'])->pluck('name')->toArray(), false);
+                            return $allAbilities->flatMap(fn ($it) => [$it => false]);
                         }
 
-                        return array_fill_keys($user->abilities->merge($user->roles->pluck('abilities')->flatten())->unique('name')->pluck('name')->toArray(), true) + array_fill_keys(Ability::query()->select(['name'])->pluck('name')->toArray(), false);
-                    }),
+                        if ($user->can('*')) {
+                            return $allAbilities->flatMap(fn ($it) => [$it => true]);
+                        }
+
+                        return $allAbilities->flatMap(fn ($it) => [$it => false])
+                            ->merge( // This will merge all user abilities
+                                $user->abilities
+                                    ->pluck('name')
+                                    ->flatMap(fn ($it) => [$it => true]) // Make the user abilities true
+                                    ->merge( // Merge role abilities with user abilities
+                                        $user->roles->flatMap(fn ($it) => $it->abilities->pluck('name')->flatMap(fn ($ability) => [$ability => true])) // Get all role abilities and make them true
+                                    )
+                            )->toArray();
+                    },
                 ];
             },
             'flash' => function() {

@@ -10,7 +10,7 @@ class DatabaseSeeder extends Seeder {
      */
     public function run() {
         $this->call([
-            // TODO: Add seeders here
+            Users\UserSeeder::class
         ]);
     }
 }

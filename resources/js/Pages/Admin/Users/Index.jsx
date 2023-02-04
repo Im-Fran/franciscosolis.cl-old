@@ -6,7 +6,7 @@ import Table from "@/js/Components/Table/Table";
 import UserProfilePicture from "@/js/Components/UserProfilePicture";
 import AdminLayout from "@/js/Layouts/AdminLayout";
 import Button from "@/js/Components/Button";
-import {PencilSquareIcon} from "@heroicons/react/24/outline";
+import {CheckIcon, PencilSquareIcon, TrashIcon, XMarkIcon} from "@heroicons/react/24/outline";
 import {router} from "@inertiajs/react";
 
 export default function Index({ users }) {
@@ -20,6 +20,7 @@ export default function Index({ users }) {
                     <Column>Id</Column>
                     <Column>Name</Column>
                     <Column>Email</Column>
+                    <Column>Verified</Column>
                     <Column>Actions</Column>
                 </Table.Columns>
                 <Table.Rows>
@@ -32,7 +33,12 @@ export default function Index({ users }) {
                             </RowItem>
                             <RowItem>{user.email}</RowItem>
                             <RowItem>
-                                <Button color={600} onClick={() => router.visit(route('admin.users.edit', { user: user.slug }))}><PencilSquareIcon className="w-5 h-5"/>&nbsp;Edit</Button>
+                                {user.email_verified_at && <CheckIcon className="w-5 h-5 text-green-500"/>}
+                                {!user.email_verified_at && <XMarkIcon className="w-5 h-5 text-red-500"/>}
+                            </RowItem>
+                            <RowItem className="flex gap-5">
+                                {user.deleted_at == null && <Button color={600} onClick={() => router.visit(route('admin.users.edit', {user: user.slug}))}><PencilSquareIcon className="w-5 h-5"/>&nbsp;Edit</Button>}
+                                {user.deleted_at == null && <Button color={200} onClick={() => router.visit(route('admin.users.delete', { user: user.slug}))} can="admin.users.delete"><TrashIcon className="w-5 h-5"/>&nbsp;Delete</Button>}
                             </RowItem>
                         </Row>
                     ))}

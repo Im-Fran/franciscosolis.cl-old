@@ -15,5 +15,4 @@ use Illuminate\Support\Facades\Broadcast;
 */
 
 Broadcast::channel('User.{id}', fn ($user, $id) => (int) $user->id === (int) $id);
-
-Broadcast::channel('UserActivity.{user}', fn ($user, User $requested) => $requested->settings['activity.public']);
+Broadcast::channel('UserActivity', fn ($user) => $user != null);
