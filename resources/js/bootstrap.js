@@ -18,7 +18,6 @@ if (token) {
 /* Load WebSocket */
 import Echo from 'laravel-echo';
 import Pusher from 'pusher-js';
-window.pusher = Pusher;
 
 try {
     window.Echo = new Echo({
@@ -33,6 +32,12 @@ try {
         enabledTransports: ['ws', 'wss'],
         encrypted: import.meta.env.VITE_PUSHER_ENCRYPTED === 'true',
         cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
+    });
+    window.pusher = Pusher.instances.length ? Pusher.instances[0] : null;
+
+    window.Echo?.listen('UserActivity', '.heartbeat', (e) => {
+        // Push the event to the whole app
+        window.dispatchEvent(new CustomEvent('userActivity', { detail: e }));
     });
 }catch(e){
     console.error('Failed to connect to Server WebSocket!', e);

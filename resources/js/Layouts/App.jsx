@@ -26,8 +26,8 @@ export default function App({ children, title, meta = [], vertical = "top", hori
 
     useEffect(() => {
         if(auth.user?.settings['activity.public']) {
-            const heartbeat = () => { // Send heartbeat every 30 seconds, but try to every 15 seconds
-                if(dayjs().diff(dayjs(auth.user?.last_activity_at), 's') > 30) { // Validate that it's been 30 seconds since last heartbeat
+            const heartbeat = () => { // Send heartbeat every 3 minutes, but try to every minute
+                if(dayjs().diff(dayjs(auth.user?.last_activity_at), 'm') > 3) { // Validate that it's been 3 minutes since last heartbeat
                     axios.get(route('api.v1.self.heartbeat')).then(() => { // Send heartbeat
                         router.reload({ // Reload page to update last_activity_at
                             only: ['auth'],
@@ -36,7 +36,7 @@ export default function App({ children, title, meta = [], vertical = "top", hori
                 }
             }
 
-            const interval = setInterval(heartbeat, 15000); // Send heartbeat every 15 seconds
+            const interval = setInterval(heartbeat, 60000); // Send heartbeat every minute
             heartbeat(); // Send heartbeat immediately
 
             return () => clearInterval(interval) // Clear interval on unmount
@@ -44,20 +44,24 @@ export default function App({ children, title, meta = [], vertical = "top", hori
     });
 
     useEffect(() => {
-        window.Echo?.private(`User.${auth.user?.id}`)?.notification(notification => {
-            toast(notification.action ? (
-                <div className="flex flex-row justify-between w-full">
-                    <span>{notification.message}</span>
-                    <div className="border-l border-brand-500 pr-2 ml-3" />
-                    <Link href={notification.action.url} className="text-blue-500">{notification.action.display}</Link>
-                </div>
-            ) : notification.message, {
-                duration: 5000,
-                icon: (<BellIcon className="w-6 h-6 animate-ring" />),
-            })
-        })
+        if(auth.check && auth.user) {
+            const notify = (notification) => {
+                toast(notification.action ? (
+                    <div className="flex flex-row justify-between w-full">
+                        <span>{notification.message}</span>
+                        <div className="border-l border-brand-500 pr-2 ml-3" />
+                        <Link href={notification.action.url} className="text-blue-500">{notification.action.display}</Link>
+                    </div>
+                ) : notification.message, {
+                    duration: 5000,
+                    icon: (<BellIcon className="w-6 h-6 animate-ring" />),
+                })
+            };
 
-        return () => window.Echo?.leave(`User.${auth.user?.id}`);
+            window.Echo?.private(`User.${auth.user?.id}`)?.notification(notify)
+
+            return () => window.Echo?.leave(`User.${auth.user?.id}`);
+        }
     }, [auth, window.Echo]);
 
     // Check if user's preference is dark mode

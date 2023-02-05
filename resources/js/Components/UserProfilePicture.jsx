@@ -7,15 +7,17 @@ export default function ({ id = null, user, sizeClass = 'h-8 w-8', size = 32, st
     const [online, setOnline] = useState(false)
 
     useEffect(() => {
-        const channel = window.Echo?.listen('presence-UserActivity', '.heartbeat', (e) => {
-            console.log('Heartbeat', e)
-        });
-
-        return () => {
-            channel?.stopListening('.heartbeat')
-            window.Echo?.leave('UserActivity')
+        const listener = (e) => {
+            const receivedUser = e.detail
+            if(receivedUser.id === user.id && receivedUser.slug === user.slug && receivedUser.name === user.name){
+                setLastPing(dayjs())
+            }
         }
-    }, [user])
+
+        window.addEventListener('userActivity', listener)
+
+        return () => window.removeEventListener('userActivity', listener)
+    }, [user, window.Echo])
 
     useEffect(() => {
         const updateStatus = () => {
