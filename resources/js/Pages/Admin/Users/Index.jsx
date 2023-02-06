@@ -10,11 +10,8 @@ import {ArrowPathRoundedSquareIcon, CheckIcon, PencilSquareIcon, TrashIcon, XMar
 import {router} from "@inertiajs/react";
 
 export default function Index({ users }) {
-    const meta = [
-        { property: 'og:title', content: 'Admin > Users | FranciscoSolis' },
-    ]
     return (
-        <AdminLayout title="Admin > Users" meta={meta}>
+        <AdminLayout title="Admin > Users">
             <Table>
                 <Table.Columns>
                     <Column sort="id">Id</Column>

@@ -11,10 +11,6 @@ import Select from "@/js/Components/Forms/Select";
 import Button from "@/js/Components/Button";
 
 export default function Edit({ role, abilities }) {
-    const meta = [
-        { property: 'og:title', content: `Admin > Roles > Edit ${role.title} | FranciscoSolis` },
-    ]
-
     const {data, setData, patch, processing, errors, transform} = useForm(`EditRole:${role.id}`, {
         title: role.title,
         name: role.name,
@@ -53,7 +49,7 @@ export default function Edit({ role, abilities }) {
     }));
 
     return (
-        <AdminLayout title={`Admin > Roles > Edit ${role.title}`} meta={meta}>
+        <AdminLayout title={`Admin > Roles > Edit ${role.title}`}>
             <div className="w-full">
                 <div className="flex">
                     <Link preserveState href={route('admin.roles')} className="flex items-center mb-2 text-blue-500 text-sm cursor-pointer"><ChevronLeftIcon className="w-5 h-5"/> Go Back</Link>

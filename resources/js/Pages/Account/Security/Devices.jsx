@@ -9,10 +9,6 @@ import Row from '@/js/Components/Table/Row';
 import RowItem from '@/js/Components/Table/RowItem';
 
 export default function Devices({ sessions }) {
-    const meta = [
-        { property: 'og:title', content: 'Account > Security > Login & Sessions | FranciscoSolis' },
-    ];
-
     const logout = (e, session_id) => {
         e.stopPropagation()
         e.preventDefault()
@@ -26,7 +22,7 @@ export default function Devices({ sessions }) {
     };
 
     return (
-        <AccountLayout title="Security > Devices" meta={meta}>
+        <AccountLayout title="Security > Devices">
             <div className="flex flex-col w-full items-start mb-5">
                 <h2 className="text-xl">Devices</h2>
                 <hr className="w-1/4 border-0 border-t-2 border-gray-500 mb-10"/>

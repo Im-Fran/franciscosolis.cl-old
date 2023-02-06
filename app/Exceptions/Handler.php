@@ -69,7 +69,12 @@ class Handler extends ExceptionHandler {
                     ],
                 ];
 
-                return inertia('Error', $data)->toResponse($request)->setStatusCode($code)->sendHeaders($headers);
+                $data['meta'] = [
+                    ['name' => 'og:title', 'content' => "Error {$code}"],
+                    ['name' => 'og:description', 'content' => $data['data']['message']],
+                ];
+
+                return inertia('Error', $data)->toResponse($request)->setStatusCode($code)->withHeaders($headers);
             }
         });
     }

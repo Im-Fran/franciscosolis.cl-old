@@ -26,6 +26,10 @@ class UsersController extends Controller {
             ->paginate(10);
 
         return inertia('Admin/Users/Index', [
+            'meta' => [
+                ['name' => 'og:title', 'content' => 'Admin > Users'],
+                ['name' => 'og:description', 'content' => 'Manage users'],
+            ],
             'users' => $users,
         ]);
     }
@@ -49,6 +53,10 @@ class UsersController extends Controller {
         $user->load(['abilities', 'roles']);
 
         return inertia('Admin/Users/Edit', [
+            'meta' => [
+                ['name' => 'og:title', 'content' => "Admin > Users > Edit {$user->name}"],
+                ['name' => 'og:description', 'content' => "Edit {$user->name}'s account"],
+            ],
             'user' => fn () => $user,
             'abilities' => fn () => Ability::query()->select(['title', 'name'])->get(),
             'roles' => fn () => Role::query()->select(['title', 'name'])->get(),
@@ -66,7 +74,7 @@ class UsersController extends Controller {
         $roles = Role::query()->select(['id'])->whereIn('name', $request->roles)->pluck('id')->toArray();
         $user->roles()->sync($roles);
 
-        return redirect()->route('admin.users.edit', ['user' => $user->slug]);
+        return redirect(route('admin.users.edit', ['user' => $user->slug]));
     }
 
     /* Updates the privacy settings for the given user */
@@ -75,7 +83,7 @@ class UsersController extends Controller {
 
         $user->updateSettings($request->all());
 
-        return redirect()->route('admin.users.edit', ['user' => $user->slug]);
+        return redirect(route('admin.users.edit', ['user' => $user->slug]));
     }
 
     /* Resets the profile photo */

@@ -13,10 +13,6 @@ import toast from "react-hot-toast";
 import Select from "@/js/Components/Forms/Select";
 
 export default function Edit ({ user, abilities, roles }) {
-    const meta = [
-        { property: 'og:title', content: `Admin > Users > Edit ${user.name} | FranciscoSolis` },
-    ]
-
     const abilitiesOptions = abilities.map((ability) => ({
         label: ability.title,
         value: ability.name,
@@ -120,7 +116,7 @@ export default function Edit ({ user, abilities, roles }) {
     }
 
     return (
-        <AdminLayout title={`Admin > Users > Edit ${user.name}`} meta={meta}>
+        <AdminLayout title={`Admin > Users > Edit ${user.name}`}>
             <div className="flex flex-col w-full items-start">
                 <div className="flex">
                     <Link preserveState href={route('admin.users')} className="flex items-center mb-2 text-blue-500 text-sm cursor-pointer"><ChevronLeftIcon className="w-5 h-5"/> Go Back</Link>

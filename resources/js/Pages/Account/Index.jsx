@@ -4,10 +4,6 @@ import NotificationRenderer from '@/js/Components/Notifications/NotificationRend
 import RelativeTime from "@/js/Components/RelativeTime";
 
 export default function Index({ notifications, notificationsCount }) {
-    const meta = [
-        { property: 'og:title', content: 'Account > Overview | FranciscoSolis' },
-    ];
-
     const renderNotifications = () => {
         if(notifications.length === 0) {
             return (
@@ -33,7 +29,7 @@ export default function Index({ notifications, notificationsCount }) {
     };
 
     return (
-        <AccountLayout title="My Account" meta={meta}>
+        <AccountLayout title="My Account">
             <div className="md:grid md:grid-cols-5 gap-16 w-full text-brand-500 dark:text-white">
                 <div className="col-span-2 col-start-4 bg-gray-50 dark:bg-brand-500 border border-brand-500 border-solid border-opacity-10 dark:border-none shadow-md rounded-lg w-full pt-2 transition-all">
                     <div className="flex flex-col items-center w-full text-4xl">

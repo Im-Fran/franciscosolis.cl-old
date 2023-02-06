@@ -12,5 +12,7 @@ class PrivacyController extends Controller {
         $request->validate(UserSettings::$validation);
 
         $request->user()->updateSettings($request->all());
+
+        return back();
     }
 }

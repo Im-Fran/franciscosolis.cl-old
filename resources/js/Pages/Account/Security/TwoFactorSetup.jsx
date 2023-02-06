@@ -62,10 +62,6 @@ export default function TwoFactorSetup({ secret, qr_url, recovery_codes }) {
         setShowQR((prev) => !prev);
     }
 
-    const meta = [
-        { property: 'og:title', content: 'Account > Security > 2FA Setup | FranciscoSolis' },
-    ];
-
     const { data, setData, errors, post, setError, clearErrors } = useForm(fixForms({
         one_time_password: '',
     }));
@@ -136,7 +132,7 @@ export default function TwoFactorSetup({ secret, qr_url, recovery_codes }) {
     }
 
     return (
-        <AccountLayout title="Security > 2FA Setup" meta={meta}>
+        <AccountLayout title="Security > 2FA Setup">
             <div className="flex flex-col w-full items-start">
                 <form onSubmit={submit} className="mb-5 w-full">
                     <div className="flex">

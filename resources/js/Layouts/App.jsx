@@ -8,7 +8,7 @@ import Foot from '@/js/Shared/Foot';
 import {BellIcon} from "@heroicons/react/24/outline";
 import axios from "axios";
 
-export default function App({ children, title, meta = [], vertical = "top", horizontal = "left" }) {
+export default function App({ children, title, vertical = "top", horizontal = "left" }) {
     const { auth, flash } = usePage().props;
     useEffect(() => {
         flash.forEach(item => {
@@ -77,9 +77,6 @@ export default function App({ children, title, meta = [], vertical = "top", hori
             <div className={(localStorage.getItem('theme') === 'dark') ? 'dark' : ''}>
                 <Head>
                     <title>{title}</title>
-                    {/*{meta.map((item, index) => (*/}
-                    {/*    <meta head-key={`meta-${index}`} {...item}/>*/}
-                    {/*))}*/}
                 </Head>
                 <div className="transition transform-all duration-200 bg-white dark:bg-[#212121] text-gray-900 dark:text-white">
                     <Header />

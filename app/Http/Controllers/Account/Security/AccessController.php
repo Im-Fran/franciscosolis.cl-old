@@ -20,7 +20,12 @@ use PragmaRX\Google2FA\Exceptions\SecretKeyTooShortException;
 class AccessController extends Controller {
     /* Shows the access dashboard */
     public function index(): Response|ResponseFactory {
-        return inertia('Account/Security/Access');
+        return inertia('Account/Security/Access', [
+            'meta' => [
+                ['name' => 'og:title', 'content' => 'Account > Security > Login & Sessions'],
+                ['name' => 'og:description', 'content' => 'Change your password and 2FA settings'],
+            ],
+        ]);
     }
 
     /* Updates the current password to the given one */
@@ -47,6 +52,10 @@ class AccessController extends Controller {
         $qr_url = app(TwoFactorAuthenticationProvider::class)->qrCodeUrl($user->email, $user->two_factor_secret);
 
         return inertia('Account/Security/TwoFactorSetup', [
+            'meta' => [
+                ['name' => 'og:title', 'content' => 'Account > Security > 2FA Setup'],
+                ['name' => 'og:description', 'content' => 'Setup 2FA for your account'],
+            ],
             'secret' => fn () => $user->two_factor_enabled ? 'hidden' : $user->two_factor_secret,
             'qr_url' => fn () => $qr_url,
             'recovery_codes' => fn () => $user->two_factor_recovery_codes,
@@ -54,6 +63,11 @@ class AccessController extends Controller {
     }
 
     /* Regenerates the 2FA Secret */
+    /**
+     * @throws IncompatibleWithGoogleAuthenticatorException
+     * @throws SecretKeyTooShortException
+     * @throws InvalidCharactersException
+     */
     public function regenerateTwoFactorSecret(Request $request, EnableTwoFactorAuth $enableTwoFactorAuth): RedirectResponse {
         $user = $request->user();
         $enableTwoFactorAuth($user);

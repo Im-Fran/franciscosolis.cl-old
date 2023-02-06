@@ -7,14 +7,21 @@ use App\Models\IpLocation;
 use Cache;
 use Carbon\Carbon;
 use DB;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Inertia\Response;
+use Inertia\ResponseFactory;
 use Jenssegers\Agent\Agent;
 
 class DevicesController extends Controller {
-    public function index(Request $request) {
+    public function index(Request $request): Response|ResponseFactory {
         $user = $request->user();
 
         return inertia('Account/Security/Devices', [
+            'meta' => [
+                ['name' => 'og:title', 'content' => 'Account > Security > Devices'],
+                ['name' => 'og:description', 'content' => 'Manage your devices'],
+            ],
             'sessions' => fn () => DB::connection(config('session.connection'))->table(config('session.table', 'session'))
                 ->where('user_id', $request->user()->id)
                 ->whereNotIn('id', Cache::rememberForever("logout-{$user->id}", fn () => collect()))
@@ -39,7 +46,7 @@ class DevicesController extends Controller {
         ]);
     }
 
-    public function destroy(Request $request) {
+    public function destroy(Request $request): RedirectResponse {
         $user = $request->user();
         $sessionId = $request->session_id;
 
@@ -74,7 +81,7 @@ class DevicesController extends Controller {
         return back()->with('error', 'Device not found.');
     }
 
-    protected function getType($agent) {
+    protected function getType($agent): string {
         if ($agent->isDesktop()) {
             return 'Desktop';
         } elseif ($agent->isTablet()) {

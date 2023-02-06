@@ -11,6 +11,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Validation\ValidationException;
 use function inertia;
 use Inertia\Response;
 
@@ -20,8 +21,12 @@ class AuthenticatedSessionController extends Controller {
      *
      * @return Response
      */
-    public function create() {
+    public function create(): Response {
         return inertia('Auth/Login', [
+            'meta' => [
+                ['name' => 'og:title', 'content' => 'Auth > Login'],
+                ['name' => 'og:description', 'content' => 'Login to your account'],
+            ],
             'canResetPassword' => Route::has('password.request'),
             'status' => session('status'),
         ]);
@@ -32,9 +37,11 @@ class AuthenticatedSessionController extends Controller {
      *
      * @param LoginRequest $request
      *
+     * @throws ValidationException
+     *
      * @return RedirectResponse
      */
-    public function store(LoginRequest $request) {
+    public function store(LoginRequest $request): RedirectResponse {
         $user = User::whereEmail($request->email)->first();
         $request->authenticate(); // Just make sure is not rate limited and that the credentials are valid
 
@@ -57,7 +64,7 @@ class AuthenticatedSessionController extends Controller {
      *
      * @return RedirectResponse
      */
-    public function destroy(Request $request) {
+    public function destroy(Request $request): RedirectResponse {
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
