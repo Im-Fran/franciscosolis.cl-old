@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+::-webkit-scrollbar {
+    display: none;
+}
 
 .link-underline {
     border-bottom-width: 0;
@@ -80,6 +83,10 @@ input:checked + .slider:before {
     -ms-transform: translateX(18px);
     transform: translateX(18px);
     background: white url('/resources/img/theme-dark.png') no-repeat center;
+}
+
+input {
+    box-shadow: none !important;
 }
 
 /* Rounded sliders */

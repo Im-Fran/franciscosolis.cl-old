@@ -1,4 +1,4 @@
-import { usePage } from "@inertiajs/inertia-react";
+import { usePage } from "@inertiajs/react";
 import toast from "react-hot-toast";
 
 // Handles the image size of the given url. This will allow us to show smaller/larger images and support all the 3rd party image providers.
@@ -63,4 +63,8 @@ export const uuidv4 = () => {
         var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
         return v.toString(16);
     });
+}
+
+export const isString = (value) => {
+    return typeof value === 'string' || value instanceof String;
 }

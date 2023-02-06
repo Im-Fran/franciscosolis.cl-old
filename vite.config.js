@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import react from '@vitejs/plugin-react';
+import reactSvgPlugin from 'vite-plugin-react-svg';
 import { resolve } from "path";
 
 export default defineConfig({
@@ -20,6 +21,10 @@ export default defineConfig({
             refresh: true,
         }),
         react(),
+        reactSvgPlugin({
+            defaultExport: 'url',
+            titleProp: true,
+        }),
     ],
     build: {
         input: {
@@ -30,11 +35,9 @@ export default defineConfig({
                 manualChunks: {
                     'fsolis/react': ['react'],
                     'fsolis/react-dom': ['react-dom'],
+		    'fsolis/inertia': ['@inertiajs/react'],
                     'fsolis/http-requests': [
                         'axios',
-                        '@inertiajs/inertia',
-                        '@inertiajs/inertia-react',
-                        '@inertiajs/progress'
                     ],
                     'fsolis/ui': [
                         'autoprefixer',

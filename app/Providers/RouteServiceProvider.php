@@ -8,6 +8,8 @@ use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvi
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
+use Silber\Bouncer\Database\Ability;
+use Silber\Bouncer\Database\Role;
 
 class RouteServiceProvider extends ServiceProvider {
     /**
@@ -51,10 +53,8 @@ class RouteServiceProvider extends ServiceProvider {
      * Configure the module aliases to be used in the application.
      */
     protected function configureAliases() {
-        Route::bind('user', function($value) {
-            $user = User::whereSlug($value)->first();
-
-            return $user != null ? $user : abort(404);
-        });
+        Route::bind('user', fn ($value) => User::withTrashed(strpos(request()->route()->uri, 'admin/') == 0)->whereRaw('LOWER(slug) = ?', is_string($value) ? strtolower($value) : '')->firstOrFail());
+        Route::bind('ability', fn ($value) => Ability::query()->whereRaw('LOWER(name) = ?', is_string($value) ? $value : '')->firstOrFail());
+        Route::bind('role', fn ($value) => Role::query()->whereRaw('LOWER(name) = ?', is_string($value) ? $value : '')->firstOrFail());
     }
 }

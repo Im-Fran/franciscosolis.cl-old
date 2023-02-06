@@ -1,4 +1,4 @@
-import { Link } from '@inertiajs/inertia-react'
+import { Link } from '@inertiajs/react'
 
 import AnimatedLink from "@/js/Components/AnimatedLink";
 import ThemeSwitch from '@/js/Components/ThemeSwitch';

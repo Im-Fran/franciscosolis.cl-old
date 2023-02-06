@@ -14,9 +14,12 @@ class UserResource extends JsonResource {
      */
     public function toArray($request) {
         return [
+            'id' => $this->id,
             'name' => $this->name,
             'profile_photo_url' => $this->profile_photo_url,
-            'last_activity_at' => $this->last_activity_at,
+            'last_activity_at' => $this->settings['activity.public'] ? $this->last_activity_at : null,
+            'is_online' => $this->settings['activity.public'] && $this->is_online,
+            'slug' => $this->slug,
         ];
     }
 }

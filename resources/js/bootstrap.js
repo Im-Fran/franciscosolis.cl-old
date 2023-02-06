@@ -18,7 +18,6 @@ if (token) {
 /* Load WebSocket */
 import Echo from 'laravel-echo';
 import Pusher from 'pusher-js';
-window.pusher = Pusher;
 
 try {
     window.Echo = new Echo({
@@ -26,14 +25,23 @@ try {
         authEndpoint: '/broadcasting/auth',
         key: import.meta.env.VITE_PUSHER_APP_KEY,
         wsHost: import.meta.env.VITE_PUSHER_HOST,
-        wsPort: import.meta.env.VITE_PUSHER_PORT,
-        wssPort: import.meta.env.VITE_PUSHER_PORT,
+        wsPort: import.meta.env.VITE_PUSHER_SOKETI_PORT,
+        wssPort: import.meta.env.VITE_PUSHER_SOKETI_PORT,
         forceTLS: import.meta.env.VITE_PUSHER_SCHEME === 'https',
         disableStats: true,
         enabledTransports: ['ws', 'wss'],
-        encrypted: true,
+        encrypted: import.meta.env.VITE_PUSHER_ENCRYPTED === 'true',
+        cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
     });
-}catch(e){}
+    window.pusher = Pusher.instances.length ? Pusher.instances[0] : null;
+
+    window.Echo?.listen('UserActivity', '.heartbeat', (e) => {
+        // Push the event to the whole app
+        window.dispatchEvent(new CustomEvent('userActivity', { detail: e }));
+    });
+}catch(e){
+    console.error('Failed to connect to Server WebSocket!', e);
+}
 
 import toast from 'react-hot-toast';
 
@@ -56,3 +64,8 @@ document.addEventListener('click', e => {
         toast.success('Copied to clipboard!');
     }
 })
+
+/* Markdown */
+import MarkdownIt from 'markdown-it';
+
+window.markdown = new MarkdownIt();

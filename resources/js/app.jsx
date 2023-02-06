@@ -1,5 +1,5 @@
 import '@/js/bootstrap';
-import '@/css/app.css';
+import '@/js/Utils/Styles'
 
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
@@ -8,10 +8,8 @@ import isFuture from '@/js/Utils/dayjs/isFuture';
 
 import { createRoot } from 'react-dom/client';
 
-import { createInertiaApp } from '@inertiajs/inertia-react';
-import { InertiaProgress } from '@inertiajs/progress';
+import { createInertiaApp } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
-import PersistentLayout from '@/js/Layouts/PersistentLayout'
 
 dayjs.extend(relativeTime);
 dayjs.extend(isToday);
@@ -19,15 +17,12 @@ dayjs.extend(isFuture);
 
 createInertiaApp({
     title: (title) => `${title} | FranciscoSolis`,
-    resolve: (name) => {
-        const page = resolvePageComponent(`./Pages/${name}.jsx`, import.meta.glob(['./Pages/**/*.jsx', '../images/**']))
-        page.layout = PersistentLayout
-        return page
+    progress: {
+        color: '#4B5563',
+        showSpinner: true,
     },
-    setup({ el, App, props }) {
-        const root = createRoot(el);
-        return root.render(<App {...props} />);
-    },
+    resolve: (name) => resolvePageComponent(`./Pages/${name}.jsx`, import.meta.glob(['./Pages/**/*.jsx', '../images/**'])),
+    setup: ({el, App, props}) => createRoot(el).render(<App {...props} />),
+}).then(() => {
+    window.dayjs = dayjs
 });
-
-InertiaProgress.init({ color: '#4B5563' });

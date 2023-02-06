@@ -1,16 +1,16 @@
 import { useEffect, useRef } from 'react';
 
-export default function Input({ type = 'text', name, value, className, autoComplete, required, isFocused, handleChange, handleBlur, handleClick, placeholder, pattern, readOnly }) {
-    const input = useRef();
+export default function Input({ type = 'text', name, value, className, autoComplete, required, isFocused = false, handleChange, handleBlur, handleClick, placeholder, pattern, readOnly, hidden = false }) {
+    const input = useRef(null);
 
     useEffect(() => {
         if (isFocused) {
             input.current.focus();
         }
-    }, []);
+    }, [input, isFocused]);
 
     return (
-        <div className="flex flex-col items-start">
+        <div className={"flex flex-col items-start " + (hidden ? 'hidden' : '')}>
             <input
                 type={type || 'text'}
                 name={name}

@@ -1,7 +1,6 @@
 import {useState} from 'react';
-import {useForm, usePage} from "@inertiajs/inertia-react";
-import {Inertia} from '@inertiajs/inertia';
-import {handleError, fixForms, handleImageSize, handleChange} from '@/js/Utils/Utils'
+import {router, useForm, usePage} from "@inertiajs/react";
+import {handleError, fixForms, handleChange} from '@/js/Utils/Utils'
 import toast from 'react-hot-toast';
 
 import { Cog6ToothIcon, ShieldCheckIcon } from '@heroicons/react/24/outline';
@@ -35,7 +34,7 @@ export default function Settings() {
         e.stopPropagation();
         privacyForm.transform((form) => ({
             ...form,
-            'activity.public': form['activity.public'] ? true : false,
+            'activity.public': !!form['activity.public'],
         }));
         privacyForm.post(route('account.settings.privacy.update'), {
             preserveScroll: true,
@@ -87,12 +86,12 @@ export default function Settings() {
         document.getElementById('select-profilephoto').click();
     };
 
-    const onProfilePhotoMouseEnter = (e) => {
+    const onProfilePhotoMouseEnter = () => {
         document.getElementById('profilePhotoEdit').classList.remove('h-0');
         document.getElementById('profilePhotoEdit').classList.add('h-1/4');
     };
 
-    const onProfilePhotoMouseLeave = (e) => {
+    const onProfilePhotoMouseLeave = () => {
         if(profilePhotoState === 'Edit') {
             document.getElementById('profilePhotoEdit').classList.remove('h-1/4');
             document.getElementById('profilePhotoEdit').classList.add('h-0');
@@ -110,9 +109,9 @@ export default function Settings() {
             });
             console.log('Trying to upload a non-image file: ' + file.type);
         } else {
-            Inertia.post(route('account.settings.profilephoto'), {
+            router.post(route('account.settings.profilephoto'), {
                 profile_photo: file,
-                gravatar: null,
+                type: 'file',
             }, {
                 preserveScroll: true,
                 forceFormData: true,
@@ -140,8 +139,8 @@ export default function Settings() {
                 duration: 5000,
             });
         } else {
-            Inertia.post(route('account.settings.profilephoto.delete'), {
-                _method: 'delete', // We use this to show the toasts, if we use `Inertia.delete` for some reason it won't show the toasts.
+            router.post(route('account.settings.profilephoto.delete'), {
+                _method: 'delete', // We use this to show the toasts, if we use `router.delete` for some reason it won't show the toasts.
             }, {
                 preserveScroll: true,
                 forceFormData: true,
@@ -159,35 +158,49 @@ export default function Settings() {
         }
     }
 
-    const enableGravatar = () => {
-        const {profile_photo_path} = auth.user;
-        if(profile_photo_path === 'gravatar') {
-            toast.error('You already have a gravatar set as your profile photo.', {
-                duration: 5000,
-            })
-        } else {
-            Inertia.post(route('account.settings.profilephoto'), {
-                gravatar: true,
-                profile_photo: null,
-            }, {
-                preserveScroll: true,
-                forceFormData: true,
-                onError: (error) => {
-                    handleError(error, 'There was an error while setting the gravatar config. Please try again later.')
-                },
-                onSuccess: () => {
-                    toast.success('Now using gravatar as image!', {
-                        duration: 5000,
-                    });
-                },
-                onFinish: () => {
-                    setProfilePhotoState('Edit');
-                },
-                only: ['auth', 'flash', 'errors'],
-            })
-        }
+    const updateGravatar = () => {
+        router.post(route('account.settings.profilephoto'), {
+            type: 'gravatar',
+            profile_photo: null,
+        }, {
+            preserveScroll: true,
+            forceFormData: true,
+            onError: (error) => {
+                handleError(error, 'There was an error while setting the gravatar config. Please try again later.')
+            },
+            onSuccess: () => {
+                toast.success('Now using gravatar as image!', {
+                    duration: 5000,
+                });
+            },
+            onFinish: () => {
+                setProfilePhotoState('Edit');
+            },
+            only: ['auth', 'flash', 'errors'],
+        })
     }
 
+    const updatePixel = () => {
+        router.post(route('account.settings.profilephoto'), {
+            type: 'pixel',
+            profile_photo: null,
+        }, {
+            preserveScroll: true,
+            forceFormData: true,
+            onError: (error) => {
+                handleError(error, 'There was an error while setting the pixel art config. Please try again later.')
+            },
+            onSuccess: () => {
+                toast.success('Now using newly generated pixel art as image!', {
+                    duration: 5000,
+                });
+            },
+            onFinish: () => {
+                setProfilePhotoState('Edit');
+            },
+            only: ['auth', 'flash', 'errors'],
+        })
+    }
 
     return (
         <AccountLayout title="Settings" meta={meta}>
@@ -207,7 +220,8 @@ export default function Settings() {
                         <div className="flex flex-col ml-10">
                             <div><Button type="button" onClick={onClickEditProfilePhoto} className="!text-sm">Select New Profile Photo</Button></div>
                             <div><Button type="button" onClick={clearProfilePhoto} color={200} className="!text-sm mt-3">Clear Profile Photo</Button></div>
-                            <div><Button type="button" onClick={enableGravatar} color={300} className="!text-sm mt-3">Use Gravatar</Button></div>
+                            <div><Button type="button" onClick={updateGravatar} color={300} className="!text-sm mt-3">Use Gravatar</Button></div>
+                            <div><Button type="button" onClick={updatePixel} color={300} className="!text-sm mt-3">Use Pixel Art</Button></div>
                             <input onChange={handleProfilePhotoUpload} id="select-profilephoto" name="profilephoto" type="file" hidden/>
                         </div>
                     </div>
@@ -228,6 +242,7 @@ export default function Settings() {
                                 handleChange={(e) => handleChange(setData, e)}
                                 handleBlur={onBlurName}
                                 value={data.name}
+                                isFocused
                                 required
                             />
 

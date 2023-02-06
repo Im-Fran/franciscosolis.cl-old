@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Helpers\Helpers;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -14,6 +13,7 @@ class IpLocation extends Model {
         'id',
         'ip_address',
         'location_data',
+        'updated_at',
     ];
 
     protected $casts = [
@@ -33,8 +33,8 @@ class IpLocation extends Model {
 
     public function ipAddress(): Attribute {
         return new Attribute(
-            get: fn($value) => decrypt($value),
-            set: fn($value) => encrypt($value)
+            get: fn ($value) => decrypt($value),
+            set: fn ($value) => encrypt($value)
         );
     }
 
@@ -67,6 +67,37 @@ class IpLocation extends Model {
     }
 
     public function getLocationStringAttribute(): string {
-        return Helpers::locationStringFromIPLocation($this);
+        if (!$this->location_data) {
+            return 'Unknown Location';
+        }
+
+        return "{$this->city_name}, {$this->region_name}, {$this->country_name}";
+    }
+
+    public static function get(?string $ip = null): IpLocation {
+        if (!$ip) {
+            $ip = config('location.testing.enabled') ? config('location.testing.ip') : request()->ip();
+        }
+
+        $ipLocation = self::firstOrCreate(['id' => sha1($ip)], ['ip_address' => $ip]);
+
+        if ($ipLocation->location_data || $ipLocation->updated_at->diffInMinutes(now()) < 15) {
+            return $ipLocation;
+        }
+
+        $loc = \Location::get($ip);
+        if (!$loc) {
+            $ipLocation->update(['updated_at' => now()]);
+
+            return $ipLocation;
+        }
+
+        $loc = $loc->toArray();
+        unset($loc['ip'], $loc['latitude'], $loc['longitude'], $loc['zipCode'], $loc['postalCode'], $loc['metroCode']);
+        $ipLocation->update([
+            'location_data' => $loc,
+        ]);
+
+        return $ipLocation;
     }
 }

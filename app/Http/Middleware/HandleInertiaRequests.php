@@ -2,10 +2,10 @@
 
 namespace App\Http\Middleware;
 
-use Auth;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Session;
+use Silber\Bouncer\Database\Ability;
 use Tightenco\Ziggy\Ziggy;
 
 class HandleInertiaRequests extends Middleware {
@@ -36,10 +36,34 @@ class HandleInertiaRequests extends Middleware {
      */
     public function share(Request $request) {
         return array_merge(parent::share($request), [
-            'auth' => fn() => [
-                'user' => $request->user(),
-                'check' => Auth::check(),
-            ],
+            'auth' => function() use ($request) {
+                $user = $request->user();
+
+                return [
+                    'user' => $user,
+                    'check' => $user != null,
+                    'can' => $user == null ? fn () => Ability::query()->select(['name'])->pluck('name')->flatMap(fn ($it) => [$it => false]) : function() use ($user) {
+                        $allAbilities = Ability::query()->select(['name'])->pluck('name');
+                        if ($user == null) {
+                            return $allAbilities->flatMap(fn ($it) => [$it => false]);
+                        }
+
+                        if ($user->can('*')) {
+                            return $allAbilities->flatMap(fn ($it) => [$it => true]);
+                        }
+
+                        return $allAbilities->flatMap(fn ($it) => [$it => false])
+                            ->merge( // This will merge all user abilities
+                                $user->abilities
+                                    ->pluck('name')
+                                    ->flatMap(fn ($it) => [$it => true]) // Make the user abilities true
+                                    ->merge( // Merge role abilities with user abilities
+                                        $user->roles->flatMap(fn ($it) => $it->abilities->pluck('name')->flatMap(fn ($ability) => [$ability => true])) // Get all role abilities and make them true
+                                    )
+                            )->toArray();
+                    },
+                ];
+            },
             'flash' => function() {
                 if (flash()->message) {
                     $flash = flash();

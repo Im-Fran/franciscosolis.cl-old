@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useForm } from '@inertiajs/inertia-react';
+import { useForm } from '@inertiajs/react';
 
 import App from '@/js/Layouts/App';
 import Button from '@/js/Components/Button';
@@ -46,6 +46,7 @@ export default function ConfirmPassword() {
                         className="mt-1 block w-full"
                         isFocused={true}
                         handleChange={onHandleChange}
+                        autoComplete={"current-password"}
                     />
 
                     <InputError message={errors.password} className="mt-2" />

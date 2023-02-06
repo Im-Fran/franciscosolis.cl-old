@@ -1,6 +1,5 @@
 import {useState, useEffect} from "react";
-import { Inertia } from "@inertiajs/inertia";
-import { Link, useForm, usePage } from "@inertiajs/inertia-react";
+import { router, Link, useForm, usePage } from "@inertiajs/react";
 import { handleError, fixForms, handleChange } from "@/js/Utils/Utils";
 import QRCode from 'qrcode';
 import jsPDF from 'jspdf';
@@ -12,6 +11,7 @@ import Input from "@/js/Components/Forms/Input";
 import InputError from "@/js/Components/Forms/InputError";
 import Clipboard from 'react-clipboard.js';
 import {ChevronLeftIcon, InformationCircleIcon,ExclamationTriangleIcon} from "@heroicons/react/24/outline";
+import Tooltip from "@/js/Components/Tooltip";
 
 export default function TwoFactorSetup({ secret, qr_url, recovery_codes }) {
     const { auth } = usePage().props;
@@ -122,14 +122,14 @@ export default function TwoFactorSetup({ secret, qr_url, recovery_codes }) {
     };
 
     const regenerateCodes = () => {
-        Inertia.patch(route('account.security.access.two-factor-auth.recovery-codes.regenerate'), {
+        router.patch(route('account.security.access.two-factor-auth.recovery-codes.regenerate'), {
             only: ['recovery_codes', 'errors', 'flash'],
             preserveScroll: true,
         })
     }
 
     const regenerateSecret = () => {
-        Inertia.patch(route('account.security.access.two-factor-auth.secret.regenerate'), {
+        router.patch(route('account.security.access.two-factor-auth.secret.regenerate'), {
             only: ['secret', 'qr_url', 'errors', 'flash'],
             preserveScroll: true,
         })
@@ -146,8 +146,8 @@ export default function TwoFactorSetup({ secret, qr_url, recovery_codes }) {
                     {secret === 'hidden' && recovery_codes && <>
                         <h2 className="flex items-center text-2xl">
                             Backup Codes&nbsp;
-                            <InformationCircleIcon className="h-5 w-5" data-tip="These are codes that you'll be able to use in case you lose your access to the 2FA codes."/>&nbsp;
-                            {hasUsedCodes && <ExclamationTriangleIcon className="h-5 w-5 fill-orange-400" data-tip="You have used some of the backup codes! Please regenerate them ASAP."/>}
+                            <Tooltip content="These are codes that you'll be able to use in case you lose your access to the 2FA codes." icon="info"/>
+                            {hasUsedCodes && <Tooltip content="You have used some of the backup codes! Please regenerate them ASAP." icon="warning"/>}
                         </h2>
                         <hr className="w-1/4 border-0 border-t-2 border-gray-500 mb-5"/>
                         <div className="flex flex-col mb-10">
@@ -157,7 +157,9 @@ export default function TwoFactorSetup({ secret, qr_url, recovery_codes }) {
                                     {recovery_codes.slice(0, 4).filter(it => it !== 'USED').map((code, index) => (
                                         <div key={index} className="flex items-center">
                                             <span className="mr-2">•</span>
-                                            <span className="text-sm cursor-pointer" data-clipboard={code} data-tip="Click to copy">{code}</span>
+                                            <Tooltip content="Click to copy">
+                                                <span className="text-sm cursor-pointer" data-clipboard={code}>{code}</span>
+                                            </Tooltip>
                                         </div>
                                     ))}
                                 </div>
@@ -165,7 +167,9 @@ export default function TwoFactorSetup({ secret, qr_url, recovery_codes }) {
                                     {recovery_codes.slice(4, 8).filter(it => it !== 'USED').map((code, index) => (
                                         <div key={index} className="flex items-center">
                                             <span className="mr-2">•</span>
-                                            <span className="text-sm cursor-pointer" data-clipboard={code} data-tip="Click to copy">{code}</span>
+                                            <Tooltip content="Click to copy">
+                                                <span className="text-sm cursor-pointer" data-clipboard={code}>{code}</span>
+                                            </Tooltip>
                                         </div>
                                     ))}
                                 </div>
@@ -183,15 +187,17 @@ export default function TwoFactorSetup({ secret, qr_url, recovery_codes }) {
                         </div>
                     </>}
 
-                    <h2 className="flex items-center text-xl">2FA {secret !== 'hidden' ? 'Setup' : 'Test'}&nbsp;<InformationCircleIcon className="h-5 w-5" data-tip={secret === 'hidden' ? 'Here you\'ll be able to test your 2FA codes!' : 'Setup your 2FA and test the code!'}/></h2>
+                    <Tooltip content={secret === 'hidden' ? 'Here you\'ll be able to test your 2FA codes!' : 'Setup your 2FA and test the code!'} icon="info">
+                        <h2 className="flex items-center text-xl">2FA {secret !== 'hidden' ? 'Setup' : 'Test'}</h2>
+                    </Tooltip>
                     <hr className="w-1/4 border-0 border-t-2 border-gray-500 mb-5"/>
 
                     {secret !== 'hidden' && <div className="flex flex-col mb-10">
                         <span>Scan the QR Code to begin setup:</span>
                         <div className="flex">
                             <div className={showQR ? '' : 'hidden'}>
-                                <img className="py-2 block dark:hidden" id="setup_qr_light"></img>
-                                <img className="py-2 hidden dark:block" id="setup_qr_dark"></img>
+                                <img className="py-2 block dark:hidden" id="setup_qr_light" alt="" src=""></img>
+                                <img className="py-2 hidden dark:block" id="setup_qr_dark" alt="" src=""></img>
 
                                 <div className="flex flex-col md:flex-row gap-5 mt-2">
                                     <Button type="button" onClick={toggleShowQR}>Show Key String</Button>
@@ -200,16 +206,15 @@ export default function TwoFactorSetup({ secret, qr_url, recovery_codes }) {
                             </div>
                             <div className={"flex flex-col" + (showQR ? ' hidden ' : '')}>
                                 <Label forInput="secret" value="Secret"/>
-                                <Clipboard data-clipboard-text={secret}>
-                                    <Input
-                                        name="secret"
-                                        value={secret}
-                                        className="w-[44rem]"
-                                        readOnly
-                                        type="text"
-                                        handleClick={e => e.target.select()}
-                                    />
-                                </Clipboard>
+                                <Input
+                                    name="secret"
+                                    value={secret}
+                                    className="w-[44rem]"
+                                    readOnly
+                                    type="text"
+                                    handleClick={e => e.target.select()}
+                                    data-clipboard={secret}
+                                />
 
                                 <div className="flex flex-col md:flex-row gap-5 mt-2">
                                     <Button type="button" onClick={toggleShowQR}>Show QR Code</Button>

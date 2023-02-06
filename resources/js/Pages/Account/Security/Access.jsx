@@ -1,7 +1,6 @@
 import AccountLayout from "@/js/Layouts/AccountLayout";
 
-import { Inertia } from "@inertiajs/inertia";
-import { usePage, useForm } from "@inertiajs/inertia-react";
+import { router, usePage, useForm } from "@inertiajs/react";
 import {handleError, fixForms, handleChange } from "@/js/Utils/Utils";
 import toast from 'react-hot-toast';
 import Button from "@/js/Components/Button";
@@ -37,7 +36,7 @@ export default function Access() {
         });
     };
 
-    const handleBlur = (e) => {
+    const handleBlur = () => {
         if(data.password !== data.password_confirmation) {
             setError('password_confirmation', 'The password does not match.');
         } else {
@@ -92,6 +91,14 @@ export default function Access() {
                         </div>
                     </div>
 
+                    <Input
+                        type="text"
+                        name={"username" /* This is to comply with and help passwords managers */}
+                        autoComplete="username"
+                        value={auth.user.email}
+                        hidden
+                    />
+
                     {/* Save button */}
                     <Button color={100} className="!text-sm">Update Password</Button>
                 </form>
@@ -102,10 +109,10 @@ export default function Access() {
                     <hr className="w-1/4 border-0 border-t-2 border-gray-500 mb-10"/>
 
                     <div className="flex gap-6">
-                        <Button onClick={() => Inertia.visit(route('account.security.access.two-factor-auth.setup'))} type="button" color={300}>
+                        <Button onClick={() => router.visit(route('account.security.access.two-factor-auth.setup'))} type="button" color={300}>
                             {two_factor_enabled ? 'Manage' : 'Enable'} 2FA
                         </Button>
-                        {two_factor_enabled && <Button onClick={() => Inertia.post(route('account.security.access.two-factor-auth.delete'), { _method: 'delete' })}
+                        {two_factor_enabled && <Button onClick={() => router.post(route('account.security.access.two-factor-auth.delete'), { _method: 'delete' })}
                                  type="button" color={200}>Disable 2FA</Button>}
                     </div>
                 </div>

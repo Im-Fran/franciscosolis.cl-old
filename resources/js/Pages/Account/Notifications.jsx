@@ -1,4 +1,4 @@
-import { Inertia } from "@inertiajs/inertia";
+import { router } from "@inertiajs/react";
 import toast from "react-hot-toast";
 
 import { CheckCircleIcon, TrashIcon, BellIcon, ClockIcon } from '@heroicons/react/24/outline';
@@ -6,6 +6,7 @@ import AccountLayout from "@/js/Layouts/AccountLayout";
 import RelativeTime from "@/js/Components/RelativeTime";
 import NotificationRenderer from "@/js/Components/Notifications/NotificationRenderer";
 import Pagination from "@/js/Components/Pagination";
+import Tooltip from "@/js/Components/Tooltip";
 
 export default function Notifications({ notifications, unreadNotifications }) {
 
@@ -14,7 +15,7 @@ export default function Notifications({ notifications, unreadNotifications }) {
     ];
 
     const markAsRead = (notification) => {
-        Inertia.post(route('account.notifications.markasread', {notification: notification.id}), {}, {
+        router.post(route('account.notifications.markasread', {notification: notification.id}), {}, {
             onSuccess: () => {
                 toast.success('Notification marked as read', {
                     duration: 3000,
@@ -30,7 +31,7 @@ export default function Notifications({ notifications, unreadNotifications }) {
 
     const deleteNotification = (notification) => {
         if(confirm('Are you sure you want to delete this notification?')){
-            Inertia.post(route('account.notifications.delete', {notification: notification.id}), {
+            router.post(route('account.notifications.delete', {notification: notification.id}), {
                 _method: 'DELETE',
             }, {
                 onSuccess: () => {
@@ -59,7 +60,9 @@ export default function Notifications({ notifications, unreadNotifications }) {
                 <div key={index.toString()} className={"flex flex-row items-center justify-between w-full px-4 py-2 border-b border-gray-200 whitespace-nowrap overflow-scroll " + (index === (unreadNotifications.length-1) ? ' border-none ' : '')}>
                     <div className="flex flex-row justify-start overflow-scroll w-full max-w-screen-md">
                         <div className="block w-6 h-6">
-                            <CheckCircleIcon data-tip="Mark As Read" className="w-6 h-6 text-brand-300 cursor-pointer" onClick={() => markAsRead(notification)}/>
+                            <Tooltip content="Mark As Read">
+                                <CheckCircleIcon className="w-6 h-6 text-brand-300 cursor-pointer" onClick={() => markAsRead(notification)}/>
+                            </Tooltip>
                         </div>
                         &nbsp;&nbsp;&nbsp;
                         <NotificationRenderer short={false} notification={notification}/>
@@ -76,7 +79,9 @@ export default function Notifications({ notifications, unreadNotifications }) {
             <div key={index} className={"flex flex-row items-center justify-between w-full px-4 py-2 border-b border-gray-200 whitespace-nowrap overflow-scroll " + (index === (notification.total-1) ? ' border-none ' : '')}>
                 <div className="flex flex-row justify-start overflow-scroll w-full max-w-screen-md">
                     <div className="block">
-                        <TrashIcon data-tip="Delete Notification" onClick={() => deleteNotification(notification)} className="w-6 h-6 text-brand-200 cursor-pointer"/>
+                        <Tooltip content="Delete Notification">
+                            <TrashIcon onClick={() => deleteNotification(notification)} className="w-6 h-6 text-brand-200 cursor-pointer"/>
+                        </Tooltip>
                     </div>
                     &nbsp;&nbsp;&nbsp;
                     <NotificationRenderer short={false} notification={notification}/>

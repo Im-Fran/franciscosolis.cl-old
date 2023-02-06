@@ -12,14 +12,22 @@ trait HasProfilePhoto {
      */
     public function updateProfilePhoto($photo) {
         tap($this->profile_photo_path, function($previous) use ($photo) {
-            $this->forceFill([
-                'profile_photo_path' => $photo === 'gravatar' ? 'gravatar' : $photo->storePublicly(
+            if ($photo === 'gravatar') {
+                $email = $this->gravatar_email ?? $this->email;
+                $photo = 'https://www.gravatar.com/avatar/'.md5(strtolower(trim($email)));
+            } elseif ($photo === 'pixel') {
+                $seed = urlencode($this->name.' '.\Str::random(8));
+                $photo = "https://api.dicebear.com/5.x/pixel-art/svg?seed={$seed}";
+            } else {
+                $photo = $photo->storePublicly(
                     'profile-photos',
                     ['disk' => $this->profilePhotoDisk()]
-                ),
-            ])->save();
+                );
+            }
 
-            if ($previous && $previous !== 'gravatar') {
+            $this->forceFill(['profile_photo_path' => $photo])->save();
+
+            if ($previous && Storage::disk($this->profilePhotoDisk())->exists($previous)) {
                 Storage::disk($this->profilePhotoDisk())->delete($previous);
             }
         });
@@ -35,9 +43,7 @@ trait HasProfilePhoto {
 
         Storage::disk($this->profilePhotoDisk())->delete($this->profile_photo_path);
 
-        $this->forceFill([
-            'profile_photo_path' => null,
-        ])->save();
+        $this->forceFill(['profile_photo_path' => null])->save();
     }
 
     /**
@@ -46,7 +52,15 @@ trait HasProfilePhoto {
      * @return string
      */
     public function getProfilePhotoUrlAttribute() {
-        return $this->profile_photo_path ? ($this->profile_photo_path === 'gravatar' ? ('https://www.gravatar.com/avatar/'.md5(strtolower($this->gravatar_email ?? $this->email)).'?s=200') : Storage::disk($this->profilePhotoDisk())->url($this->profile_photo_path)) : $this->defaultProfilePhotoUrl();
+        if ($this->profile_photo_path && str_starts_with($this->profile_photo_path, 'http')) {
+            return $this->profile_photo_path;
+        }
+
+        if ($this->profile_photo_path && Storage::disk($this->profilePhotoDisk())->exists($this->profile_photo_path)) {
+            return Storage::disk($this->profilePhotoDisk())->url($this->profile_photo_path);
+        }
+
+        return $this->defaultProfilePhotoUrl();
     }
 
     /**
@@ -55,11 +69,9 @@ trait HasProfilePhoto {
      * @return string
      */
     protected function defaultProfilePhotoUrl() {
-        $name = trim(collect(explode(' ', $this->name))->map(function($segment) {
-            return mb_substr($segment, 0, 1);
-        })->join(' '));
+        $name = urlencode($this->name);
 
-        return 'https://ui-avatars.com/api/?name='.urlencode($name).'&color=7F9CF5&background=EBF4FF';
+        return "https://api.dicebear.com/5.x/pixel-art/svg?seed={$name}";
     }
 
     /**

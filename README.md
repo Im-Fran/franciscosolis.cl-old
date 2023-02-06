@@ -1,64 +1,38 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Setting Up Development Environment
+> **NOTE**
+> The `/` path is the project root.
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+1. Make sure you have docker desktop installed.
+2. Make sure to have php installed. The version used by the project can be found here (is recommended to use [brew](https://brew.sh/) with tap [shivammathur/homebrew-php](https://github.com/shivammathur/homebrew-php)): `/.phpver`. You can install it like this: `brew tap shivammathur/php && brew install shivammathur/php/php@8.1`
+3. Make sure you have [composer](https://getcomposer.org/download/) installed. Is recommended to use brew to install it. You can install it like this: `brew install composer`
+4. Make sure you have node installed. The version used by the project can be found here (is recommended to use [nvm](https://github.com/nvm-sh/nvm)): `/.nvmrc`. It's recommended to install it from the official repo: [nvm-sh/nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+5. Make sure to enable yarn. You can do it by running the following command (after having node installed): `corepack enable`
+6. Make sure you have installed [`gh`](https://cli.github.com/)
+7. Setup the sail [shell alias](https://laravel.com/docs/sail#configuring-a-shell-alias)
 
-## About Laravel
+Then you can use the following set of commands to configure the repo. You may write them manually but is recommended to first install the dependencies and later run these commands:
+> **NOTE**
+> This command was made thinking your at the parent folder of the website project. I usually locate the folder under `~/Development/Websites`, so later the folder will be `~/Development/Websites/franciscosolis.cl`. You may choose any folder as parent folder.
+```sh
+gh repo clone Im-Fran/franciscosolis.cl # Clone repo
+cd franciscosolis.cl # Change dir to the repo
+cp .env.example .env # Copy .example.env to .env.
+composer install --no-scripts # Install php dependencies
+php artisan key:generate # Generate secret to encrypt data (do not forget about it!)
+sail build --no-cache # Build the sail container. Make sure you configured the shell alias! (Step 7)
+sail up -d # Run the container in background
+sail art optimize # If you want a faster load this will optimize the environment by caching lots of settings. If you have a permissions issue check below.
+sail art migrate --seed # Migrate and seed database
+sail art validate:permissions # Make sure roles and abilities are in the database.
+```
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
-
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
-
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Permissions Issue
+If you have issues with the file permissions here's something you can try:
+```sh
+sudo groupadd -f docker # Create the docker group
+sudo usermod -aG docker $USER # Add docker to your groups
+newgrp docker # Apply changes (is better to restart the server/computer)
+# After restart run this:
+sudo chgrp -R docker storage bootstrap/cache # Changes the group access to docker for the storage and bootstrap/cache
+sudo chmod -R 775 storage bootstrap/cache # Allows access to write, read and execute to user and group, but only read and execute to others.
+```

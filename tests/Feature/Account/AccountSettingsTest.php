@@ -22,7 +22,7 @@ class AccountSettingsTest extends TestCase {
         $this->get('/account/settings');
 
         $this->actingAs($user)->post('/account/settings/profilephoto', [
-            'gravatar' => true,
+            'type' => 'gravatar',
             'profile_photo' => null,
         ])->assertRedirect('/account/settings');
 

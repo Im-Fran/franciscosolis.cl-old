@@ -1,4 +1,4 @@
-import {InformationCircleIcon } from '@heroicons/react/24/outline';
+import Tooltip from "@/js/Components/Tooltip";
 
 export default function Checkbox({ name, value, label = 'None', handleChange, center = true, info = null }) {
     return (
@@ -11,7 +11,7 @@ export default function Checkbox({ name, value, label = 'None', handleChange, ce
                 </div>
                 <div className="flex items-center justify-center gap-2 ml-3 font-medium">
                     {label}
-                    {info ? <>&nbsp;<InformationCircleIcon data-tip={info} className="h-4 w-4"/></> : <></>}
+                    {info ? <>&nbsp;<Tooltip content={info} icon="info"/></> : <></>}
                 </div>
             </label>
         </div>

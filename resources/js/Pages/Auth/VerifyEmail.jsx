@@ -1,6 +1,5 @@
 import { useEffect } from "react";
-import { Link, useForm, usePage } from '@inertiajs/inertia-react';
-import { Inertia } from "@inertiajs/inertia";
+import { router, Link, useForm, usePage } from '@inertiajs/react';
 
 import App from '@/js/Layouts/App';
 import Button from '@/js/Components/Button';
@@ -19,7 +18,7 @@ export default function VerifyEmail({ status }) {
         if(window.Echo && auth.check && auth.user) {
             const channel = window.Echo.private('App.Models.User.' + auth.user.id).notification((notification) => {
                 if(notification.type === 'App\\Notifications\\Account\\EmailVerifiedNotification') {
-                    Inertia.visit(route('account'))
+                    router.visit(route('account'))
                 }
             });
 

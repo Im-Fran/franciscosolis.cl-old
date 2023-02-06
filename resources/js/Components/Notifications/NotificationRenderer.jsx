@@ -1,5 +1,3 @@
-import { useEffect } from 'react'
-
 import LoginNotification from "@/js/Components/Notifications/LoginNotification";
 import EmailVerifiedNotification from "@/js/Components/Notifications/EmailVerifiedNotification";
 import TwoFactorAuthenticationDisabled from "@/js/Components/Notifications/TwoFactorAuthenticationDisabled";
@@ -14,6 +12,6 @@ export default function NotificationRenderer({ notification, short }) {
         case 'App\\Notifications\\Account\\TwoFactorAuthenticationDisabled':
             return <><TwoFactorAuthenticationDisabled short={short}/></>
         default:
-            return <>{notification.message || ''}</>
+            return <>{notification.data?.message || ''}</>
     }
 }
