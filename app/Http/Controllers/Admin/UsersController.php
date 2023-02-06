@@ -20,7 +20,7 @@ class UsersController extends Controller {
         $order = request('order', 'created_at');
         $orderBy = request('orderBy', 'asc');
         $users = User::withTrashed()
-	        ->whereRaw('LOWER(name) LIKE ?', [$search])
+            ->whereRaw('LOWER(name) LIKE ?', [$search])
             ->orWhereRaw('LOWER(email) LIKE ?', [$search])
             ->orderBy($order, $orderBy)
             ->paginate(10);
@@ -29,12 +29,13 @@ class UsersController extends Controller {
             'users' => $users,
         ]);
     }
-	
-	/* Restores a deleted user */
-	public function restore(User $user): RedirectResponse {
-		$user->restore();
-		return back()->with('success', "{$user->name}'s account has been restored!");
-	}
+
+    /* Restores a deleted user */
+    public function restore(User $user): RedirectResponse {
+        $user->restore();
+
+        return back()->with('success', "{$user->name}'s account has been restored!");
+    }
 
     /* Marks the given user as deleted */
     public function delete(User $user): RedirectResponse {

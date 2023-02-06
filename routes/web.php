@@ -70,7 +70,7 @@ Route::prefix('admin')->middleware(['auth', '2fa', 'verified', 'can:admin.dashbo
     Route::prefix('users')->middleware(['can:admin.users'])->group(function() {
         Route::get('/', [Admin\UsersController::class, 'index'])->name('admin.users')->middleware(['can:admin.users']);
         Route::delete('/{user}', [Admin\UsersController::class, 'delete'])->name('admin.users.delete')->middleware(['can:admin.users.delete']);
-		Route::post('/{user}/restore', [Admin\UsersController::class, 'restore'])->name('admin.users.restore')->middleware(['can:admin.users.delete']);
+        Route::post('/{user}/restore', [Admin\UsersController::class, 'restore'])->name('admin.users.restore')->middleware(['can:admin.users.delete']);
         Route::get('/{user}', [Admin\UsersController::class, 'edit'])->name('admin.users.edit')->middleware(['can:admin.users.update']);
         Route::patch('/{user}', [Admin\UsersController::class, 'update'])->name('admin.users.update')->middleware(['can:admin.users.update']);
         Route::delete('/{user}/image', [Admin\UsersController::class, 'resetImage'])->name('admin.users.image.reset')->middleware(['can:admin.users.update.image']);

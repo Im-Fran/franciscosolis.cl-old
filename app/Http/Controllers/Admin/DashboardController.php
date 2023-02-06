@@ -13,8 +13,8 @@ class DashboardController extends Controller {
     public function index(): Response|ResponseFactory {
         return inertia('Admin/Dashboard', [
             'registeredUsers' => fn () => User::withTrashed()->count(),
-	        'abilities' => fn () => Ability::query()->count(),
-	        'roles' => fn () => Role::query()->count(),
+            'abilities' => fn () => Ability::query()->count(),
+            'roles' => fn () => Role::query()->count(),
         ]);
     }
 }
