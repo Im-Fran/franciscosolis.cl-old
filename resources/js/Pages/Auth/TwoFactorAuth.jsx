@@ -36,7 +36,7 @@ export default function ConfirmPassword() {
     };
 
     return (
-        <App title="Two Factor Authentication" vertical="center" horizontal="center" meta={[{ property: 'og:title', content: 'Two Factor Authentication | FranciscoSolis' }]}>
+        <App title="Two Factor Authentication" vertical="center" horizontal="center">
             <form className="flex flex-col items-center justify-start shadow-xl border border-brand-500 dark:border-none dark:bg-[#303030] rounded-2xl w-5/6 md:w-1/2 py-10" onSubmit={submit}>
                 <div className="mb-5 font-black text-3xl">Two Factor Authentication</div>
                 <div className="mb-4 text-sm">

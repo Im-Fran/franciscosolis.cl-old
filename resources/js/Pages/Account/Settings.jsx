@@ -13,10 +13,6 @@ import Checkbox from '@/js/Components/Forms/Checkbox';
 import UserProfilePicture from '@/js/Components/UserProfilePicture';
 
 export default function Settings() {
-    const meta = [
-        { property: 'og:title', content: 'Account > Settings | FranciscoSolis' },
-    ];
-
     const { auth } = usePage().props;
 
     const { data, setData, errors, patch, clearErrors, setError } = useForm(`EditUserSettings:${auth.user.id}`, fixForms({
@@ -203,7 +199,7 @@ export default function Settings() {
     }
 
     return (
-        <AccountLayout title="Settings" meta={meta}>
+        <AccountLayout title="Settings">
             <div className="flex flex-col w-full items-start">
                 <form onSubmit={submit} className="mb-5 w-full">
                     <h2 className="flex text-xl"><Cog6ToothIcon className="w-6 h-6"/>&nbsp; Profile Settings</h2>

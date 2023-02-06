@@ -6,32 +6,36 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
-use Inertia\Inertia;
+use Inertia\Response;
 
 class RegisteredUserController extends Controller {
     /**
      * Display the registration view.
      *
-     * @return \Inertia\Response
+     * @return Response
      */
-    public function create() {
-        return Inertia::render('Auth/Register');
+    public function create(): Response {
+        return inertia('Auth/Register', [
+            'meta' => [
+                ['name' => 'og:title', 'content' => 'Auth > Register'],
+                ['name' => 'og:description', 'content' => 'Register for an account on '.config('app.name')],
+            ],
+        ]);
     }
 
     /**
      * Handle an incoming registration request.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      *
-     * @throws \Illuminate\Validation\ValidationException
-     *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
-    public function store(Request $request) {
+    public function store(Request $request): RedirectResponse {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],

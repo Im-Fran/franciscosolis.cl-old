@@ -10,11 +10,6 @@ export default function Error({ errors, exception, data }){
 
     console.log(data, exception, errors);
 
-    const meta = [
-        { property: 'og:title', content: `Error ${data.code}` },
-        { property: 'og:description', content: data.message },
-    ]
-
     const hasPrevousPage = () => {
         return window.history.length > 1;
     }
@@ -28,7 +23,7 @@ export default function Error({ errors, exception, data }){
     }
 
     return (
-        <App title={`Error ${data.code}`} meta={meta} horizontal="center" vertical="center">
+        <App title={`Error ${data.code}`} horizontal="center" vertical="center">
             <div className="flex flex-col items-center text-center">
                 <img src={ColoredBlack} alt="FranciscoSolis" className="max-w-md" theme-light={ColoredBlack} theme-dark={ColoredWhite} themed-image="true"/>
                 <h1 className="text-brand-100 font-bold text-8xl">O.o</h1>

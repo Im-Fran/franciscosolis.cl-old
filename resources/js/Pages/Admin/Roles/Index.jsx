@@ -12,10 +12,6 @@ import Button from "@/js/Components/Button";
 import CreateRoleModal from "@/js/Components/Modals/Admin/Roles/CreateRoleModal";
 
 export default function Index({ roles }) {
-    const meta = [
-        { property: 'og:title', content: 'Admin > Roles | FranciscoSolis' },
-    ]
-
     const CreateRoleModalRef = useRef(null);
 
     const deleteRole = (e, role) => {
@@ -30,7 +26,7 @@ export default function Index({ roles }) {
     }
 
     return (
-        <AdminLayout title="Admin > Roles" meta={meta}>
+        <AdminLayout title="Admin > Roles">
             <CreateRoleModal ref={CreateRoleModalRef}/>
             <Table>
                 <Table.Columns>

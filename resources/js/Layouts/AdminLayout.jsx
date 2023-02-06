@@ -12,9 +12,9 @@ import Sidebar from "@/js/Components/Sidebar/Sidebar";
 import SidebarLink from "@/js/Components/Sidebar/SidebarLink";
 import SidebarTitle from "@/js/Components/Sidebar/SidebarTitle";
 
-export default function AdminLayout({ children, title, meta, className }) {
+export default function AdminLayout({ children, title, className }) {
     return (
-        <App title={title} meta={meta} vertical="top" horizontal="center">
+        <App title={title} vertical="top" horizontal="center">
             <Sidebar className="mx-5">
                 <Sidebar.Links>
                     <SidebarTitle title="OVERVIEW" icon={<Bars4Icon className="w-6 h-6"/>}/>

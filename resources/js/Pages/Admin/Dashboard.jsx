@@ -31,7 +31,7 @@ export default function Dashboard({ registeredUsers, abilities, roles }) {
     }
 
     return (
-        <AdminLayout title="Admin Dashboard" meta={[{ property: 'og:title', content: 'Admin Dashboard | FranciscoSolis' }]}>
+        <AdminLayout title="Admin Dashboard">
             <div className="flex w-full">
                 <div className="grid grid-cols-4 gap-6 w-full">
                     <div className="col-span-1 bg-brand-600 dark:bg-brand-500 rounded shadow py-2 px-4">

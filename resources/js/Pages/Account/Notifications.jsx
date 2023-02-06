@@ -9,11 +9,6 @@ import Pagination from "@/js/Components/Pagination";
 import Tooltip from "@/js/Components/Tooltip";
 
 export default function Notifications({ notifications, unreadNotifications }) {
-
-    const meta = [
-        { property: 'og:title', content: 'Account > Notifications | FranciscoSolis' },
-    ];
-
     const markAsRead = (notification) => {
         router.post(route('account.notifications.markasread', {notification: notification.id}), {}, {
             onSuccess: () => {
@@ -92,7 +87,7 @@ export default function Notifications({ notifications, unreadNotifications }) {
     };
 
     return (
-        <AccountLayout title="Notifications" meta={meta}>
+        <AccountLayout title="Notifications">
             <div className="md:grid md:grid-cols-3 gap-16 w-full text-brand-500 dark:text-white">
                 <div className="col-span-3 bg-gray-50 dark:bg-brand-500 border border-brand-500 border-solid border-opacity-10 dark:border-none shadow-md rounded-lg w-full py-2 transition-all">
                     <div className="flex flex-col items-center w-full text-4xl">

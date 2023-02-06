@@ -8,9 +8,10 @@
         <title inertia>{{ config('app.name', 'FranciscoSolis') }}</title>
         <link rel="icon" href="{{ asset('images/Logo.svg') }}" type="image/svg+xml">
 
+        @include('components.head')
+
         <!-- WebSocket -->
         <script>window.websocket_port = "{{ config('services.websocket.port') }}"</script>
-
 
         <!-- Fonts -->
         <link rel="stylesheet" href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap">

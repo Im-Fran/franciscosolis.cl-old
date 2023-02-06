@@ -4,24 +4,29 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules;
 use Illuminate\Validation\ValidationException;
-use Inertia\Inertia;
+use Inertia\Response;
 
 class NewPasswordController extends Controller {
     /**
      * Display the password reset view.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      *
-     * @return \Inertia\Response
+     * @return Response
      */
-    public function create(Request $request) {
-        return Inertia::render('Auth/ResetPassword', [
+    public function create(Request $request): Response {
+        return inertia('Auth/ResetPassword', [
+            'meta' => [
+                ['name' => 'og:title', 'content' => 'Auth > Reset Password'],
+                ['name' => 'og:description', 'content' => 'Reset your password'],
+            ],
             'email' => $request->email,
             'token' => $request->route('token'),
         ]);
@@ -30,13 +35,13 @@ class NewPasswordController extends Controller {
     /**
      * Handle an incoming new password request.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      *
-     * @throws \Illuminate\Validation\ValidationException
+     *@throws ValidationException
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
-    public function store(Request $request) {
+    public function store(Request $request): RedirectResponse {
         $request->validate([
             'token' => 'required',
             'email' => 'required|email',

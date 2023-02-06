@@ -9,10 +9,6 @@ import Input from "@/js/Components/Forms/Input";
 import InputError from "@/js/Components/Forms/InputError";
 
 export default function Access() {
-    const meta = [
-        { property: 'og:title', content: 'Account > Security > Login & Sessions | FranciscoSolis' },
-    ];
-
     const { auth } = usePage().props;
     const { two_factor_enabled } = auth.user;
 
@@ -45,7 +41,7 @@ export default function Access() {
     }
 
     return (
-        <AccountLayout title="Security > Access" meta={meta}>
+        <AccountLayout title="Security > Access">
             <div className="flex flex-col w-full items-start">
                 <form onSubmit={updatePassword} className="mb-5 w-full">
                     <h2 className="text-xl">Account Password</h2>

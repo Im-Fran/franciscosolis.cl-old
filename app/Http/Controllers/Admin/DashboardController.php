@@ -12,6 +12,10 @@ use Silber\Bouncer\Database\Role;
 class DashboardController extends Controller {
     public function index(): Response|ResponseFactory {
         return inertia('Admin/Dashboard', [
+            'meta' => [
+                ['name' => 'og:title', 'content' => 'Admin > Dashboard'],
+                ['name' => 'og:description', 'content' => 'Administration dashboard'],
+            ],
             'registeredUsers' => fn () => User::withTrashed()->count(),
             'abilities' => fn () => Ability::query()->count(),
             'roles' => fn () => Role::query()->count(),

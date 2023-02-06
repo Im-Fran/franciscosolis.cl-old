@@ -13,10 +13,6 @@ import CreatePermissionModal from "@/js/Components/Modals/Admin/Permissions/Crea
 import EditPermissionModal from "@/js/Components/Modals/Admin/Permissions/EditPermissionModal";
 
 export default function Index({ permissions }) {
-    const meta = [
-        { property: 'og:title', content: 'Admin > Permissions | FranciscoSolis' },
-    ]
-
     const CreatePermissionModalRef = useRef(null);
     const EditPermissionModalRef = useRef(null);
 
@@ -32,7 +28,7 @@ export default function Index({ permissions }) {
     }
 
     return (
-        <AdminLayout title="Admin > Permissions" meta={meta}>
+        <AdminLayout title="Admin > Permissions">
             <CreatePermissionModal ref={CreatePermissionModalRef}/>
             <EditPermissionModal ref={EditPermissionModalRef} />
             <Table>
