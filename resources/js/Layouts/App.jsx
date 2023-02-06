@@ -12,12 +12,13 @@ export default function App({ children, title, meta = [], vertical = "top", hori
     const { auth, flash } = usePage().props;
     useEffect(() => {
         flash.forEach(item => {
+            const message = markdown.renderInline(item.message)
             if (typeof toast[item.type] === 'function') {
-                toast[item.type](item.message, {
+                toast[item.type](message, {
                     duration: 5000,
                 })
             } else {
-                toast(item.message, {
+                toast(message, {
                     duration: 5000,
                 })
             }
@@ -48,11 +49,11 @@ export default function App({ children, title, meta = [], vertical = "top", hori
             const notify = (notification) => {
                 toast(notification.action ? (
                     <div className="flex flex-row justify-between w-full">
-                        <span>{notification.message}</span>
+                        <span>{markdown.renderInline(notification.message)}</span>
                         <div className="border-l border-brand-500 pr-2 ml-3" />
-                        <Link href={notification.action.url} className="text-blue-500">{notification.action.display}</Link>
+                        <Link href={notification.action.url} className="text-blue-500">{markdown.renderInline(notification.action.display)}</Link>
                     </div>
-                ) : notification.message, {
+                ) : markdown.renderInline(notification.message), {
                     duration: 5000,
                     icon: (<BellIcon className="w-6 h-6 animate-ring" />),
                 })

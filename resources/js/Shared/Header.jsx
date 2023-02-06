@@ -90,7 +90,7 @@ export default function Header() {
                                 {auth.user ? authenticated : guest}
                                 {(isOpen && auth.user) && <ClickAwayListener onClickAway={hideMenu}>
                                     <div className="relative inline-block mt-5">
-                                        <div className="absolute right-0 z-20 w-56 py-2 mt-2 overflow-hidden bg-white rounded-md shadow-xl dark:bg-[#232323]">
+                                        <div className="absolute right-0 z-[9999] w-56 py-2 mt-2 overflow-hidden bg-white rounded-md shadow-xl dark:bg-[#232323]">
                                             <AccountDropdownItem href={/*route('profile', { user: auth.user.slug })*/ '#'} className="w-full flex items-center py-3 px-1 -mt-2 text-sm text-gray-600 transition-colors duration-300 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-[#303030] dark:hover:text-white cursor-pointer">
                                                 <UserProfilePicture className="mx-1" imageClassName="flex-shrink-0" user={auth.user} size={128} sizeClass="w-9 h-9"/>
                                                 <div className="mx-1 text-left">

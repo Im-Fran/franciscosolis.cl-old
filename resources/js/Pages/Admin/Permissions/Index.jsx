@@ -56,7 +56,7 @@ export default function Index({ permissions }) {
                     ))}
                 </Table.Rows>
                 <Table.Pagination position="center">
-                    <Pagination data={permissions} queryField="search" searchDisplay={"Search Permissions"}>
+                    <Pagination data={permissions} queryField="search" searchDisplay={"Search Permissions"} only={['permissions']}>
                         <PlusIcon className="w-6 h-6 cursor-pointer" onClick={() => CreatePermissionModalRef.current?.open()}/>
                     </Pagination>
                 </Table.Pagination>

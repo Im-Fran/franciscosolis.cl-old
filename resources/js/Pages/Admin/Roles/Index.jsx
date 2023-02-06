@@ -53,7 +53,7 @@ export default function Index({ roles }) {
                     ))}
                 </Table.Rows>
                 <Table.Pagination position="center">
-                    <Pagination data={roles} queryField="search" searchDisplay={"Search Roles"}>
+                    <Pagination data={roles} queryField="search" searchDisplay={"Search Roles"} only={['roles']}>
                         <PlusIcon className="w-6 h-6 cursor-pointer" onClick={() => CreateRoleModalRef.current?.open()}/>
                     </Pagination>
                 </Table.Pagination>

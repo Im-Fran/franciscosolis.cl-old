@@ -6,9 +6,6 @@ use App\Contracts\TwoFactorAuthenticationProvider;
 use App\Helpers\Helpers;
 use App\Helpers\UserSettings;
 use App\Traits\HasProfilePhoto;
-use Cache;
-use Carbon\Carbon;
-use DB;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -44,7 +41,7 @@ class User extends Authenticatable implements MustVerifyEmail {
         'two_factor_recovery_codes',
         'two_factor_verified_at',
         'settings',
-	    'last_activity_at',
+        'last_activity_at',
     ];
 
     /**
@@ -168,11 +165,11 @@ class User extends Authenticatable implements MustVerifyEmail {
 
     /* Check if the user is online (in the last 5 minutes) */
     public function getIsOnlineAttribute(): bool {
-        if($this->settings['activity.public']) {
-			return $this->last_activity_at?->gt(now()->subMinutes(5)) ?: false;
+        if ($this->settings['activity.public']) {
+            return $this->last_activity_at?->gt(now()->subMinutes(5)) ?: false;
         }
-		
-		return false;
+
+        return false;
     }
 
     /* Updates the given settings */

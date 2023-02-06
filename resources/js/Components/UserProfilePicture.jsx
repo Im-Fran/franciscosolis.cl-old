@@ -36,7 +36,7 @@ export default function ({ id = null, user, sizeClass = 'h-8 w-8', size = 32, st
         return () => clearInterval(interval);
     }, [lastPing])
 
-    return <div className={"relative " + sizeClass + ' ' + className}>
+    return <div className={"relative z-10 " + sizeClass + ' ' + className}>
         {showStatus && <span className={(online ? 'opacity-100' : 'opacity-0') + " transition duration-300 ease-in-out absolute " + statusClassSize}>
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-400 opacity-75"></span>
             <span className={"absolute inline-flex rounded-full bg-brand-400 " + statusClassSize}></span>

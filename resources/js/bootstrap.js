@@ -64,3 +64,8 @@ document.addEventListener('click', e => {
         toast.success('Copied to clipboard!');
     }
 })
+
+/* Markdown */
+import MarkdownIt from 'markdown-it';
+
+window.markdown = new MarkdownIt();

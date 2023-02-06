@@ -11,13 +11,11 @@ use Illuminate\Queue\SerializesModels;
 
 class HeartbeatEvent implements ShouldBroadcast {
     use Dispatchable, InteractsWithSockets, SerializesModels;
-	
-	private User $user;
+
+    private User $user;
 
     /**
      * Create a new event instance.
-     *
-     * @return void
      */
     public function __construct(User $user) {
         $this->user = $user;
@@ -26,22 +24,21 @@ class HeartbeatEvent implements ShouldBroadcast {
     /**
      * Get the channels the event should broadcast on.
      *
-     * @return \Illuminate\Broadcasting\Channel|array
+     * @return array|\Illuminate\Broadcasting\Channel
      */
     public function broadcastOn() {
         return new Channel('UserActivity');
     }
-	
-	public function broadcastAs() {
-		return 'heartbeat';
-	}
-	
-	public function broadcastWith() {
-		return [
-			'id' => $this->user->id,
-			'name' => $this->user->name,
-			'slug' => $this->user->slug,
-		];
-	}
-	
+
+    public function broadcastAs() {
+        return 'heartbeat';
+    }
+
+    public function broadcastWith() {
+        return [
+            'id' => $this->user->id,
+            'name' => $this->user->name,
+            'slug' => $this->user->slug,
+        ];
+    }
 }

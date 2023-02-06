@@ -35,11 +35,9 @@ export default defineConfig({
                 manualChunks: {
                     'fsolis/react': ['react'],
                     'fsolis/react-dom': ['react-dom'],
+		    'fsolis/inertia': ['@inertiajs/react'],
                     'fsolis/http-requests': [
                         'axios',
-                        '@inertiajs/inertia',
-                        '@inertiajs/inertia-react',
-                        '@inertiajs/progress'
                     ],
                     'fsolis/ui': [
                         'autoprefixer',

@@ -16,16 +16,31 @@ use Silber\Bouncer\Database\Role;
 class UsersController extends Controller {
     /* Shows the user list */
     public function index(): Response|ResponseFactory {
+        $search = '%'.strtolower(request('search', '')).'%';
+        $order = request('order', 'created_at');
+        $orderBy = request('orderBy', 'asc');
+        $users = User::withTrashed()
+	        ->whereRaw('LOWER(name) LIKE ?', [$search])
+            ->orWhereRaw('LOWER(email) LIKE ?', [$search])
+            ->orderBy($order, $orderBy)
+            ->paginate(10);
+
         return inertia('Admin/Users/Index', [
-            'users' => fn () => User::orderBy('created_at')->paginate(10),
+            'users' => $users,
         ]);
     }
+	
+	/* Restores a deleted user */
+	public function restore(User $user): RedirectResponse {
+		$user->restore();
+		return back()->with('success', "{$user->name}'s account has been restored!");
+	}
 
     /* Marks the given user as deleted */
     public function delete(User $user): RedirectResponse {
         $user->delete();
 
-        return redirect()->route('admin.users.index')->with('success', 'User deleted successfully');
+        return back()->with('success', "{$user->name} has been deleted!");
     }
 
     /* Show edit form for the given user */

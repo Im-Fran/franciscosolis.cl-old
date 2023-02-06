@@ -10,6 +10,6 @@ class UserSeeder extends Seeder {
      * Run the database seeds.
      */
     public function run() {
-		User::factory(500)->create();
+        User::factory(500)->create();
     }
 }

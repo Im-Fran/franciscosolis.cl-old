@@ -16,14 +16,14 @@ class UserFactory extends Factory {
      * @return array<string, mixed>
      */
     public function definition() {
-		$name = fake()->name();
-		do {
-			$email = fake()->safeEmail();
-		} while (User::where('email', $email)->exists());
-		
+        $name = fake()->name();
+        do {
+            $email = fake()->safeEmail();
+        } while (User::where('email', $email)->exists());
+
         return [
             'name' => $name,
-	        'slug' =>  Str::slug($name),
+            'slug' => Str::slug($name),
             'email' => $email,
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
