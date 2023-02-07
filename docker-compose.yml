@@ -79,6 +79,14 @@ services:
             SOKETI_PRESENCE_MAX_MEMBERS: '${SOKETI_PRESENCE_MAX_MEMBERS:-1000}'
         networks:
             - sail
+    dicebear:
+        image: 'ghcr.io/dicebear/api:latest'
+        environment:
+            PORT: '${DICEBEAR_PORT:-3030}'
+            PNG_SIZE_MAX: 1024
+            JPEG_SIZE_MAX: 1024
+        ports:
+            - '${DICEBEAR_PORT:-3030}:3030'
 networks:
     sail:
         driver: bridge
