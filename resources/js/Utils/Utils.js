@@ -5,11 +5,8 @@ import toast from "react-hot-toast";
 export const handleImageSize = (url, size) => {
     // Check if is from gravatar
     const urlObj = new URL(url)
-    if (urlObj.hostname.includes('gravatar.com')) {
+    if (urlObj.hostname === 'www.gravatar.com') {
         urlObj.searchParams.set("s", size);
-        return urlObj.toString();
-    } else if(urlObj.hostname.includes('ui-avatars.com')) {
-        urlObj.searchParams.set("size", size);
         return urlObj.toString();
     } else {
         return url;
@@ -60,7 +57,7 @@ export const isDarkMode = () => {
 
 export const uuidv4 = () => {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-        var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+        let r = Math.random()*16|0, v = c === 'x' ? r : (r&0x3|0x8);
         return v.toString(16);
     });
 }
