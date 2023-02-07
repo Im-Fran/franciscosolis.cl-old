@@ -2,22 +2,24 @@
 
 namespace App\Traits;
 
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Str;
 
 trait HasProfilePhoto {
     /**
      * Updates the profile photo.
      *
-     * @param \Illuminate\Http\UploadedFile|string $photo
+     * @param string|UploadedFile $photo
      */
-    public function updateProfilePhoto($photo) {
+    public function updateProfilePhoto($photo): void {
         tap($this->profile_photo_path, function($previous) use ($photo) {
             if ($photo === 'gravatar') {
                 $email = $this->gravatar_email ?? $this->email;
                 $photo = 'https://www.gravatar.com/avatar/'.md5(strtolower(trim($email)));
             } elseif ($photo === 'pixel') {
-                $seed = urlencode($this->name.' '.\Str::random(8));
-                $photo = "https://api.dicebear.com/5.x/pixel-art/svg?seed={$seed}";
+                $seed = urlencode($this->name.' '.Str::random(8));
+                $photo = config('services.dicebear.endpoint')."/5.x/pixel-art/svg?seed={$seed}";
             } else {
                 $photo = $photo->storePublicly(
                     'profile-photos',
@@ -36,7 +38,7 @@ trait HasProfilePhoto {
     /**
      * Deletes the profile photo.
      */
-    public function deleteProfilePhoto() {
+    public function deleteProfilePhoto(): void {
         if (is_null($this->profile_photo_path)) {
             return;
         }
@@ -51,7 +53,7 @@ trait HasProfilePhoto {
      *
      * @return string
      */
-    public function getProfilePhotoUrlAttribute() {
+    public function getProfilePhotoUrlAttribute(): string {
         if ($this->profile_photo_path && str_starts_with($this->profile_photo_path, 'http')) {
             return $this->profile_photo_path;
         }
@@ -68,10 +70,10 @@ trait HasProfilePhoto {
      *
      * @return string
      */
-    protected function defaultProfilePhotoUrl() {
+    protected function defaultProfilePhotoUrl(): string {
         $name = urlencode($this->name);
 
-        return "https://api.dicebear.com/5.x/pixel-art/svg?seed={$name}";
+        return config('services.dicebear.endpoint')."/5.x/pixel-art/svg?seed={$name}";
     }
 
     /**

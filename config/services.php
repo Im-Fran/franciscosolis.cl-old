@@ -35,4 +35,8 @@ return [
         'port' => env('SOKETI_PORT', 6001),
     ],
 
+    'dicebar' => [
+        'endpoint' => env('DICEBEAR_ENDPOINT', ('http://localhost:'.env('DICEBEAR_PORT', 3030))),
+    ],
+
 ];
