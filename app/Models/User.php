@@ -9,10 +9,15 @@ use App\Traits\HasProfilePhoto;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use PragmaRX\Google2FA\Exceptions\IncompatibleWithGoogleAuthenticatorException;
+use PragmaRX\Google2FA\Exceptions\InvalidCharactersException;
+use PragmaRX\Google2FA\Exceptions\SecretKeyTooShortException;
+use Psr\SimpleCache\InvalidArgumentException;
 use Silber\Bouncer\Database\HasRolesAndAbilities;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
@@ -98,6 +103,8 @@ class User extends Authenticatable implements MustVerifyEmail {
             $user->settings = array_merge(UserSettings::$defaultSettings, $user->settings ?: []);
         });
     }
+	
+	// Attributes
 
     public function getSlugOptions(): SlugOptions {
         return SlugOptions::create()
@@ -109,7 +116,7 @@ class User extends Authenticatable implements MustVerifyEmail {
         return "User.{$this->id}";
     }
 
-    public function getTwoFactorEnabledAttribute() {
+    public function getTwoFactorEnabledAttribute(): bool {
         return !is_null($this->two_factor_secret) && !is_null($this->two_factor_verified_at);
     }
 
@@ -124,45 +131,19 @@ class User extends Authenticatable implements MustVerifyEmail {
             set: fn ($value) => $value != null ? encrypt($value) : null,
         );
     }
-
-    /**
-     * Interact with the user's two-factor recovery codes.
-     *
-     * @return null|array|Attribute
-     */
+	
+	/**
+	 * Interact with the user's two-factor recovery codes.
+	 *
+	 * @return Attribute
+	 */
     protected function twoFactorRecoveryCodes(): Attribute {
         return new Attribute(
             get: fn ($value) => $value != null ? json_decode(decrypt($value)) : null,
             set: fn ($value) => $value != null ? encrypt(json_encode($value)) : null,
         );
     }
-
-    /**
-     * Validate the given two-factor authentication code.
-     *
-     * @param string $input
-     */
-    public function validate2FA(string $input): bool {
-        if (!preg_match('/[0-9]{6}|[A-Za-z0-9]{6}\.[A-Za-z0-9]{4}\.[A-Za-z0-9]{6}\.[A-Za-z0-9]{4}/', $input)) {
-            return false;
-        }
-
-        if (app(TwoFactorAuthenticationProvider::class)->verify($this->two_factor_secret, $input)) {
-            return true;
-        }
-
-        if (collect($this->two_factor_recovery_codes)->filter(fn ($it) => preg_match('/[0-9]{6}|[A-Za-z0-9]{6}\.[A-Za-z0-9]{4}\.[A-Za-z0-9]{6}\.[A-Za-z0-9]{4}/', $it))->contains($input)) {
-            // Replace the used code with a new one
-            $this->update([
-                'two_factor_recovery_codes' => collect($this->two_factor_recovery_codes)->map(fn ($it) => $it == $input ? Helpers::generateRecoveryCode() : $it),
-            ]);
-
-            return true;
-        }
-
-        return false;
-    }
-
+	
     /* Check if the user is online (in the last 5 minutes) */
     public function getIsOnlineAttribute(): bool {
         if ($this->settings['activity.public']) {
@@ -171,6 +152,13 @@ class User extends Authenticatable implements MustVerifyEmail {
 
         return false;
     }
+	
+	/* Gets the Api Keys of this user */
+	public function apiKeys(): HasMany {
+		return $this->hasMany(ApiKey::class);
+	}
+	
+	// Actions
 
     /* Updates the given settings */
     public function updateSettings(array $settings) {
@@ -190,4 +178,36 @@ class User extends Authenticatable implements MustVerifyEmail {
             $this->save();
         }
     }
+	
+	/**
+	 * Validate the given two-factor authentication code.
+	 *
+	 * @param string $input
+	 * @return bool
+	 * @throws IncompatibleWithGoogleAuthenticatorException
+	 * @throws InvalidCharactersException
+	 * @throws SecretKeyTooShortException
+	 * @throws InvalidArgumentException
+	 */
+	public function validate2FA(string $input): bool {
+		if (!preg_match('/[0-9]{6}|[A-Za-z0-9]{6}\.[A-Za-z0-9]{4}\.[A-Za-z0-9]{6}\.[A-Za-z0-9]{4}/', $input)) {
+			return false;
+		}
+		
+		if (app(TwoFactorAuthenticationProvider::class)->verify($this->two_factor_secret, $input)) {
+			return true;
+		}
+		
+		if (collect($this->two_factor_recovery_codes)->filter(fn ($it) => preg_match('/[0-9]{6}|[A-Za-z0-9]{6}\.[A-Za-z0-9]{4}\.[A-Za-z0-9]{6}\.[A-Za-z0-9]{4}/', $it))->contains($input)) {
+			// Replace the used code with a new one
+			$this->update([
+				'two_factor_recovery_codes' => collect($this->two_factor_recovery_codes)->map(fn ($it) => $it == $input ? Helpers::generateRecoveryCode() : $it),
+			]);
+			
+			return true;
+		}
+		
+		return false;
+	}
+	
 }

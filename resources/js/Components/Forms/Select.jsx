@@ -6,11 +6,11 @@ const Select = forwardRef((props, ref) => {
     const classNames = {
         clearIndicator: () => 'text-brand-500 dark:text-white hover:cursor-pointer',
         container: () => 'shadow-sm border border-brand-500 dark:bg-[#202020] rounded-md',
-        control: () => '', // This is the box that holds around the input and label if any. No need because we use custom components.
+        control: () => 'overflow-scroll max-h-10', // This is the box that holds around the input and label if any. No need because we use custom components.
         dropdownIndicator: () => 'text-brand-500 dark:text-white hover:cursor-pointer',
         group: () => 'mx-2',
         groupHeading: () => 'text-[#777] mt-2',
-        indicatorsContainer: () => '', // No need for customization. The box that holds the clear and dropdown indicators.
+        indicatorsContainer: () => 'inset-y-0 max-h-10 sticky', // No need for customization. The box that holds the clear and dropdown indicators.
         indicatorSeparator: () => 'border-r border-brand-500 dark:border-brand-600 my-auto h-2/3',
         input: () => 'px-2 text-brand-500 dark:text-white',
         loadingIndicator: () => 'text-brand-100 dark:text-brand-300',
@@ -28,7 +28,7 @@ const Select = forwardRef((props, ref) => {
         valueContainer: () => 'py-1',
     };
 
-    return props.async ? (<AsyncReactSelect {...props} classNames={classNames} ref={ref} unstyled/>) : (<ReactSelect {...props} classNames={classNames} ref={ref} unstyled/>);
+    return props.async ? (<AsyncReactSelect {...props} classNames={classNames} className="z-[99999]" ref={ref} unstyled/>) : (<ReactSelect className="z-[99999]" {...props} classNames={classNames} ref={ref} unstyled/>);
 })
 
 export default Select;
