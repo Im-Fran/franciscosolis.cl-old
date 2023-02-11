@@ -50,19 +50,26 @@ document.addEventListener('click', e => {
     // check if element has attribute data-clipboard
     if (e.target.hasAttribute('data-clipboard')) {
         const text = e.target.getAttribute('data-clipboard');
-        if(navigator.clipboard) {
-            navigator.clipboard.writeText(text);
-        } else {
-            const input = document.createElement('input');
-            input.value = text;
-            input.readOnly = true;
-            document.body.appendChild(input);
-            input.select();
-            document.execCommand('copy');
-            input.remove();
-        }
-        toast.success('Copied to clipboard!');
+        window.dispatchEvent(new CustomEvent('clipboard-copy', { detail: { text } }));
     }
+})
+
+window.addEventListener('clipboard-copy', e => {
+    const text = e.detail.text;
+    if(navigator.clipboard) {
+        navigator.clipboard.writeText(text);
+    } else {
+        const input = document.createElement('input');
+        input.value = text;
+        input.readOnly = true;
+        document.body.appendChild(input);
+        input.select();
+        document.execCommand('copy');
+        input.remove();
+    }
+    toast.success('Copied to clipboard!\nNew clipboard contents:\n'+text, {
+        duration: 7000,
+    });
 })
 
 /* Markdown */

@@ -1,6 +1,6 @@
-import {forwardRef, useImperativeHandle, useRef} from "react";
-import {handleChange} from "@/js/Utils/Utils";
-import {useForm} from "@inertiajs/react";
+import {forwardRef, useImperativeHandle, useRef, useState} from "react";
+import {copyToClipboard, handleChange, obfuscateText} from "@/js/Utils/Utils";
+import {router, useForm} from "@inertiajs/react";
 
 import toast from "react-hot-toast";
 import {PlusCircleIcon} from "@heroicons/react/24/outline";
@@ -12,20 +12,18 @@ import Input from "@/js/Components/Forms/Input";
 import InputError from "@/js/Components/Forms/InputError";
 import Select from "@/js/Components/Forms/Select";
 
-const CreateAPIKeyModal = forwardRef(({ availableAbilities }, ref) => {
+const EditAPIKeyModal = forwardRef(({ availableAbilities }, ref) => {
     const ModalRef = useRef(null);
+    const [apiKey, setApiKey] = useState(null);
 
-    const open = () => {
-        ModalRef.current?.open();
-    }
+    const mapAbilities = (it) => ({
+        label: it.title,
+        value: it.name,
+    });
 
-    const close = () => {
-        ModalRef.current?.close();
-    }
+    const options = (availableAbilities || []).map(mapAbilities);
 
-    useImperativeHandle(ref, () => ({ open, close }))
-
-    const {data, setData, errors, post, transform, processing} = useForm(`CreateApiKey`, {
+    const {data, setData, errors, patch, transform, processing} = useForm({
         label: '',
         permissions: [],
     })
@@ -36,22 +34,41 @@ const CreateAPIKeyModal = forwardRef(({ availableAbilities }, ref) => {
             permissions: form.permissions.map((it) => it.value),
         }));
 
-        post(route('account.security.access.api-keys.create'), {
+        patch(route('account.security.access.api-keys.update', { apiKey: apiKey?.label }), {
             preserveScroll: true,
             onSuccess: () => {
-                toast.success('API Key created successfully!');
+                toast.success('API Key successfully saved!');
                 ModalRef.current?.close();
             },
         })
     }
 
-    const options = (availableAbilities || []).map(it => ({
-        label: it.title,
-        value: it.name,
-    }));
+    const regenerate = () => {
+        router.patch(route('account.security.access.api-keys.regenerate', { apiKey: apiKey?.label }), {}, {
+            onSuccess: () => {
+                toast.success('Successfully regenerated API Key.');
+                ModalRef.current?.close();
+            },
+        })
+    }
+
+    const open = (value) => {
+        setApiKey(value);
+        setData({
+            label: value?.label,
+            permissions: availableAbilities.filter(it => (value?.permissions || []).includes(it.name)).map(mapAbilities)
+        })
+        ModalRef.current?.open();
+    }
+
+    const close = () => {
+        ModalRef.current?.close();
+    }
+
+    useImperativeHandle(ref, () => ({ open, close }))
 
     return (
-        <Modal title="Create API Key" ref={ModalRef}>
+        <Modal title={`Editing ${apiKey?.label}`} ref={ModalRef}>
             <Modal.Icon>
                 <ModalIcon color="bg-brand-300" icon={<PlusCircleIcon className="w-6 h-6"/>}/>
             </Modal.Icon>
@@ -78,6 +95,7 @@ const CreateAPIKeyModal = forwardRef(({ availableAbilities }, ref) => {
                     <Select
                         name="permissions"
                         options={options}
+                        value={data.permissions}
                         onChange={values => setData('permissions', values)}
                         isClearable
                         isMulti
@@ -85,13 +103,25 @@ const CreateAPIKeyModal = forwardRef(({ availableAbilities }, ref) => {
 
                     <InputError message={errors.permissions} className="mt-2"/>
                 </div>
+
+                <div className="mt-5">
+                    <Label forInput="api_key" value="API Key"/>
+
+                    <Input
+                        name="api_key"
+                        value={apiKey?.api_key?.substring(0, 7) + obfuscateText(apiKey?.api_key?.substring(7))}
+                        handleFocus={() => copyToClipboard(apiKey?.api_key)}
+                        readOnly
+                    />
+                </div>
             </Modal.Body>
             <Modal.Footer>
-                <Button color={400} onClick={submit} processing={processing}>Create</Button>
+                <Button color={400} onClick={submit} processing={processing}>Save</Button>
+                <Button color={100} onClick={regenerate}>Regenerate Key</Button>
                 <Button color={200} onClick={ModalRef.current?.close}>Cancel</Button>
             </Modal.Footer>
         </Modal>
     )
 })
 
-export default CreateAPIKeyModal;
+export default EditAPIKeyModal;

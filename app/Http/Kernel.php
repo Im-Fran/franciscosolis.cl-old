@@ -8,6 +8,7 @@ use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\LogoutDestroyedSession;
 use App\Http\Middleware\PreventRequestsDuringMaintenance;
 use App\Http\Middleware\RedirectIfAuthenticated;
+use App\Http\Middleware\TokenAuthenticationMiddleware;
 use App\Http\Middleware\TrimStrings;
 use App\Http\Middleware\TrustHosts;
 use App\Http\Middleware\TrustProxies;
@@ -92,6 +93,7 @@ class Kernel extends HttpKernel {
         'auth' => Authenticate::class,
         'auth.basic' => AuthenticateWithBasicAuth::class,
         'auth.session' => AuthenticateSession::class,
+	    'auth.token' => TokenAuthenticationMiddleware::class,
         'cache.headers' => SetCacheHeaders::class,
         'can' => Authorize::class,
         'guest' => RedirectIfAuthenticated::class,

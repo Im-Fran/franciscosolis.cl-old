@@ -67,3 +67,11 @@ export const uuidv4 = () => {
 export const isString = (value) => {
     return typeof value === 'string' || value instanceof String;
 }
+
+export const copyToClipboard = (text) => {
+    window.dispatchEvent(new CustomEvent('clipboard-copy', { detail: { text } } ));
+}
+
+export const obfuscateText = (text) => {
+    return (text || '').replace(/./g, '*');
+}

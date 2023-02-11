@@ -12,7 +12,7 @@ import Sidebar from "@/js/Components/Sidebar/Sidebar";
 import SidebarLink from "@/js/Components/Sidebar/SidebarLink";
 import SidebarTitle from "@/js/Components/Sidebar/SidebarTitle";
 
-export default function AdminLayout({ children, title, className }) {
+export default function AdminLayout({ children, title, className = '' }) {
     return (
         <App title={title} vertical="top" horizontal="center">
             <Sidebar className="mx-5">
