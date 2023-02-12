@@ -87,14 +87,20 @@ class User extends Authenticatable implements MustVerifyEmail {
 
     protected static function booted() {
         // Ensure that the user has a settings attribute and it's has all the keys.
-        static::retrieved(function(User $user) {
-            $user->update([
+		static::created(function(User $user) {
+			$user->update([
 				'settings' => array_merge(UserSettings::$defaultSettings, $user->settings ?: []),
-            ]);
-        });
-    }
+			]);
+		});
 	
-	// Attributes
+	    static::retrieved(function(User $user) {
+		    $user->update([
+			    'settings' => array_merge(UserSettings::$defaultSettings, $user->settings ?: []),
+		    ]);
+	    });
+    }
+
+    // Attributes
 
     public function getSlugOptions(): SlugOptions {
         return SlugOptions::create()
@@ -121,19 +127,19 @@ class User extends Authenticatable implements MustVerifyEmail {
             set: fn ($value) => $value != null ? encrypt($value) : null,
         );
     }
-	
-	/**
-	 * Interact with the user's two-factor recovery codes.
-	 *
-	 * @return Attribute
-	 */
+
+    /**
+     * Interact with the user's two-factor recovery codes.
+     *
+     * @return Attribute
+     */
     protected function twoFactorRecoveryCodes(): Attribute {
         return new Attribute(
             get: fn ($value) => $value != null ? json_decode(decrypt($value)) : null,
             set: fn ($value) => $value != null ? encrypt(json_encode($value)) : null,
         );
     }
-	
+
     /* Check if the user is online (in the last 5 minutes) */
     public function getIsOnlineAttribute(): bool {
         if ($this->settings['activity.public']) {
@@ -142,13 +148,13 @@ class User extends Authenticatable implements MustVerifyEmail {
 
         return false;
     }
-	
-	/* Gets the Api Keys of this user */
-	public function apiKeys(): HasMany {
-		return $this->hasMany(ApiKey::class);
-	}
-	
-	// Actions
+
+    /* Gets the Api Keys of this user */
+    public function apiKeys(): HasMany {
+        return $this->hasMany(ApiKey::class);
+    }
+
+    // Actions
 
     /* Updates the given settings */
     public function updateSettings(array $settings) {
@@ -168,36 +174,37 @@ class User extends Authenticatable implements MustVerifyEmail {
             $this->save();
         }
     }
-	
-	/**
-	 * Validate the given two-factor authentication code.
-	 *
-	 * @param string $input
-	 * @return bool
-	 * @throws IncompatibleWithGoogleAuthenticatorException
-	 * @throws InvalidCharactersException
-	 * @throws SecretKeyTooShortException
-	 * @throws InvalidArgumentException
-	 */
-	public function validate2FA(string $input): bool {
-		if (!preg_match('/[0-9]{6}|[A-Za-z0-9]{6}\.[A-Za-z0-9]{4}\.[A-Za-z0-9]{6}\.[A-Za-z0-9]{4}/', $input)) {
-			return false;
-		}
-		
-		if (app(TwoFactorAuthenticationProvider::class)->verify($this->two_factor_secret, $input)) {
-			return true;
-		}
-		
-		if (collect($this->two_factor_recovery_codes)->filter(fn ($it) => preg_match('/[0-9]{6}|[A-Za-z0-9]{6}\.[A-Za-z0-9]{4}\.[A-Za-z0-9]{6}\.[A-Za-z0-9]{4}/', $it))->contains($input)) {
-			// Replace the used code with a new one
-			$this->update([
-				'two_factor_recovery_codes' => collect($this->two_factor_recovery_codes)->map(fn ($it) => $it == $input ? Helpers::generateRecoveryCode() : $it),
-			]);
-			
-			return true;
-		}
-		
-		return false;
-	}
-	
+
+    /**
+     * Validate the given two-factor authentication code.
+     *
+     * @param string $input
+     *
+     * @throws IncompatibleWithGoogleAuthenticatorException
+     * @throws InvalidCharactersException
+     * @throws SecretKeyTooShortException
+     * @throws InvalidArgumentException
+     *
+     * @return bool
+     */
+    public function validate2FA(string $input): bool {
+        if (!preg_match('/[0-9]{6}|[A-Za-z0-9]{6}\.[A-Za-z0-9]{4}\.[A-Za-z0-9]{6}\.[A-Za-z0-9]{4}/', $input)) {
+            return false;
+        }
+
+        if (app(TwoFactorAuthenticationProvider::class)->verify($this->two_factor_secret, $input)) {
+            return true;
+        }
+
+        if (collect($this->two_factor_recovery_codes)->filter(fn ($it) => preg_match('/[0-9]{6}|[A-Za-z0-9]{6}\.[A-Za-z0-9]{4}\.[A-Za-z0-9]{6}\.[A-Za-z0-9]{4}/', $it))->contains($input)) {
+            // Replace the used code with a new one
+            $this->update([
+                'two_factor_recovery_codes' => collect($this->two_factor_recovery_codes)->map(fn ($it) => $it == $input ? Helpers::generateRecoveryCode() : $it),
+            ]);
+
+            return true;
+        }
+
+        return false;
+    }
 }

@@ -46,25 +46,25 @@ Route::prefix('/account')->name('account')->middleware(['auth', '2fa', 'verified
             Route::patch('/password', [Account\Security\AccessController::class, 'updatePassword'])->middleware(['password.confirm'])->name('.password');
 
             Route::prefix('/two-factor-auth')->name('.two-factor-auth')->group(function() {
-	            Route::get('/', [Account\Security\AccessController::class, 'twoFactorSetup'])->name('.setup');
-	            Route::post('/', [Account\Security\AccessController::class, 'validateTwoFactor'])->name('.validate');
-	            Route::delete('/', [Account\Security\AccessController::class, 'disableTwoFactor'])->name('.delete');
-	            Route::patch('/secret', [Account\Security\AccessController::class, 'regenerateTwoFactorSecret'])->name('.secret.regenerate');
-	            Route::patch('/codes', [Account\Security\AccessController::class, 'regenerateRecoveryCodes'])->name('.recovery-codes.regenerate');
+                Route::get('/', [Account\Security\AccessController::class, 'twoFactorSetup'])->name('.setup');
+                Route::post('/', [Account\Security\AccessController::class, 'validateTwoFactor'])->name('.validate');
+                Route::delete('/', [Account\Security\AccessController::class, 'disableTwoFactor'])->name('.delete');
+                Route::patch('/secret', [Account\Security\AccessController::class, 'regenerateTwoFactorSecret'])->name('.secret.regenerate');
+                Route::patch('/codes', [Account\Security\AccessController::class, 'regenerateRecoveryCodes'])->name('.recovery-codes.regenerate');
             });
 
-			Route::prefix('/devices')->name('.devices')->group(function() {
-				Route::get('/devices', [Account\Security\DevicesController::class, 'index']);
-				Route::delete('/devices', [Account\Security\DevicesController::class, 'destroy'])->name('.delete');
-			});
-			
-			Route::prefix('/api-keys')->name('.api-keys')->group(function(){
-				 Route::get('/', [Account\Security\ApiKeysController::class, 'index']);
-				 Route::post('/', [Account\Security\ApiKeysController::class, 'create'])->name('.create');
-				 Route::patch('/{apiKey}', [Account\Security\ApiKeysController::class, 'update'])->name('.update');
-				 Route::patch('/{apiKey}/regenerate', [Account\Security\ApiKeysController::class, 'regenerateKey'])->name('.regenerate');
-				 Route::delete('/{apiKey}', [Account\Security\ApiKeysController::class, 'delete'])->name('.delete');
-			});
+            Route::prefix('/devices')->name('.devices')->group(function() {
+                Route::get('/devices', [Account\Security\DevicesController::class, 'index']);
+                Route::delete('/devices', [Account\Security\DevicesController::class, 'destroy'])->name('.delete');
+            });
+
+            Route::prefix('/api-keys')->name('.api-keys')->group(function() {
+                Route::get('/', [Account\Security\ApiKeysController::class, 'index']);
+                Route::post('/', [Account\Security\ApiKeysController::class, 'create'])->name('.create');
+                Route::patch('/{apiKey}', [Account\Security\ApiKeysController::class, 'update'])->name('.update');
+                Route::patch('/{apiKey}/regenerate', [Account\Security\ApiKeysController::class, 'regenerateKey'])->name('.regenerate');
+                Route::delete('/{apiKey}', [Account\Security\ApiKeysController::class, 'delete'])->name('.delete');
+            });
         });
     });
 

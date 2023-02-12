@@ -93,7 +93,7 @@ class Kernel extends HttpKernel {
         'auth' => Authenticate::class,
         'auth.basic' => AuthenticateWithBasicAuth::class,
         'auth.session' => AuthenticateSession::class,
-	    'auth.token' => TokenAuthenticationMiddleware::class,
+        'auth.token' => TokenAuthenticationMiddleware::class,
         'cache.headers' => SetCacheHeaders::class,
         'can' => Authorize::class,
         'guest' => RedirectIfAuthenticated::class,

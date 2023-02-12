@@ -59,6 +59,6 @@ class RouteServiceProvider extends ServiceProvider {
         Route::bind('user', fn ($value) => User::withTrashed(strpos(request()->route()->uri, 'admin/') == 0)->whereRaw('LOWER(slug) = ?', [is_string($value) ? strtolower($value) : ''])->firstOrFail());
         Route::bind('ability', fn ($value) => Ability::query()->whereRaw('LOWER(name) = ?', [is_string($value) ? strtolower($value) : ''])->firstOrFail());
         Route::bind('role', fn ($value) => Role::query()->whereRaw('LOWER(name) = ?', [is_string($value) ? strtolower($value) : ''])->firstOrFail());
-		Route::bind('apiKey', fn($value) => ApiKey::whereRaw('LOWER(label) = ?', [is_string($value) ? strtolower($value) : ''])->first());
+        Route::bind('apiKey', fn ($value) => ApiKey::whereRaw('LOWER(label) = ?', [is_string($value) ? strtolower($value) : ''])->first());
     }
 }
