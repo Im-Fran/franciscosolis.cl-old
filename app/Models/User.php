@@ -87,17 +87,17 @@ class User extends Authenticatable implements MustVerifyEmail {
 
     protected static function booted() {
         // Ensure that the user has a settings attribute and it's has all the keys.
-		static::created(function(User $user) {
-			$user->update([
-				'settings' => array_merge(UserSettings::$defaultSettings, $user->settings ?: []),
-			]);
-		});
-	
-	    static::retrieved(function(User $user) {
-		    $user->update([
-			    'settings' => array_merge(UserSettings::$defaultSettings, $user->settings ?: []),
-		    ]);
-	    });
+        static::created(function(User $user) {
+            $user->update([
+                'settings' => array_merge(UserSettings::$defaultSettings, $user->settings ?: []),
+            ]);
+        });
+
+        static::retrieved(function(User $user) {
+            $user->update([
+                'settings' => array_merge(UserSettings::$defaultSettings, $user->settings ?: []),
+            ]);
+        });
     }
 
     // Attributes
