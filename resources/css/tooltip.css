@@ -5,7 +5,11 @@
     --rt-color-error: #be6464;
     --rt-color-warning: #f0ad4e;
     --rt-color-info: #337ab7;
-    --rt-opacity: 0.9;
+    --rt-opacity: 0.96;
+}
+
+:root .dark {
+    --rt-color-dark: #0f172a;
 }
 
 .styles-module_tooltip__mnnfp {
@@ -21,6 +25,7 @@
     opacity: 0;
     transition: opacity 0.3s ease-out;
     will-change: opacity, visibility;
+    z-index: 99999;
 }
 
 .styles-module_fixed__7ciUi {

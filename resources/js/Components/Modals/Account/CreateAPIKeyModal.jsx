@@ -57,7 +57,11 @@ const CreateAPIKeyModal = forwardRef(({ availableAbilities }, ref) => {
             </Modal.Icon>
             <Modal.Body>
                 <div className="mt-5">
-                    <Label forInput="label" value="Label" info="(Optional) This text will be the label of the API Key. Might be useful to identify the key among other keys."/>
+                    <Label forInput="label" value="Label (Optional)" info={`
+                        This text will be the label of the API Key.
+                        <br/>
+                        Might be useful to identify the key among other keys.
+                    `}/>
 
                     <Input
                         type="text"
