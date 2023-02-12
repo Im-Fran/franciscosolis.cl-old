@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import {Head, Link, router, usePage} from '@inertiajs/react';
 import toast, { Toaster } from 'react-hot-toast';
-import { Tooltip } from 'react-tooltip';
+import { Tooltip, TooltipProvider } from 'react-tooltip';
 
 import Header from '@/js/Shared/Header';
 import Foot from '@/js/Shared/Foot';
@@ -73,7 +73,7 @@ export default function App({ children, title, vertical = "top", horizontal = "l
     }
 
     return (
-        <>
+        <TooltipProvider>
             <div className={(localStorage.getItem('theme') === 'dark') ? 'dark' : ''}>
                 <Head>
                     <title>{title}</title>
@@ -81,13 +81,13 @@ export default function App({ children, title, vertical = "top", horizontal = "l
                 <div className="transition transform-all duration-200 bg-white dark:bg-[#212121] text-gray-900 dark:text-white">
                     <Header />
                     <Toaster position="top-right" reverseOrder />
+                    <Tooltip delayShow={1} delayHide={1} float/>
                     <div className={"container mx-auto my-10 min-h-screen flex " + (vertical === "center" ? "items-center" : (vertical === "bottom" ? "items-end" : "items-start")) + " " + (horizontal === "center" ? "justify-center" : (horizontal === "right" ? "justify-end" : "justify-start"))}>
                         {children}
-                        <Tooltip backgroundColor="#111827" textColor="#fff" />
                     </div>
                     <Foot />
                 </div>
             </div>
-        </>
+        </TooltipProvider>
     );
 }
