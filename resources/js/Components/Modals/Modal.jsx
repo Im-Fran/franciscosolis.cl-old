@@ -20,14 +20,20 @@ const Icon = () => null;
 const Body = () => null;
 const Footer = () => null;
 
-const Modal = forwardRef(({children = null, title = null, defaultShow = false, onModalOpen = () => {}, onModalClose = () => {}}, ref) => {
+const Modal = forwardRef(({children, title = null, defaultShow = false, onModalOpen = () => {}, onModalClose = () => {}}, ref) => {
     const nodeRef = useRef(null);
     const [show, setShow] = useState(defaultShow);
     const [hidden, setHidden] = useState(!show);
 
-    const icon = children ? children.find(child => child.type === Icon) : null;
-    const body = children ? children.find(child => child.type === Body) : null;
-    const footer = children ? children.find(child => child.type === Footer) : null;
+    const [icon, setIcon] = useState(null);
+    const [body, setBody] = useState(null);
+    const [footer, setFooter] = useState(null);
+
+    useEffect(() => {
+        setIcon(children ? children.find(child => child.type === Icon) : null)
+        setBody(children ? children.find(child => child.type === Body) : null)
+        setFooter(children ? children.find(child => child.type === Footer) : null)
+    }, [children])
 
     const open = () => {
         setShow(true);
@@ -49,10 +55,18 @@ const Modal = forwardRef(({children = null, title = null, defaultShow = false, o
         return () => document.removeEventListener('keydown', escListener);
     }, [])
 
+    useEffect(() => {
+        if (show) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'auto';
+        }
+    }, [show])
+
     useImperativeHandle(ref, () => ({open, close}));
 
     return (
-        <div ref={ref} className="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div ref={ref} className="relative z-[999]" aria-labelledby="modal-title" role="dialog" aria-modal="true">
             <Transition nodeRef={nodeRef} in={show} timeout={1500} onEnter={() => {
                 setHidden(false);
                 onModalOpen();
@@ -62,10 +76,10 @@ const Modal = forwardRef(({children = null, title = null, defaultShow = false, o
             }, 500)}>
                 {state => (
                     <div hidden={hidden}>
-                        <div className={"fixed inset-0 bg-gray-600 bg-opacity-75 dark:bg-opacity-50 transition-opacity " + backgroundBackDropClass[state]} onClick={() => console.log('test')}></div>
+                        <div className={"fixed inset-0 bg-gray-600 bg-opacity-75 dark:bg-opacity-50 transition-opacity " + backgroundBackDropClass[state]}></div>
                         <div className={"fixed inset-0 z-10 overflow-y-auto " + modalPanelClass[state]}>
                             <div className={"flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0"}>
-                                <div className="relative transform overflow-hidden rounded-lg bg-white dark:bg-slate-800 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                                <div className="relative transform rounded-lg bg-white dark:bg-slate-800 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
                                     <div className="absolute flex justify-end w-full text-black dark:text-white pr-2 pt-1">
                                         <XMarkIcon onClick={close} className="w-6 h-6 cursor-pointer"/>
                                     </div>

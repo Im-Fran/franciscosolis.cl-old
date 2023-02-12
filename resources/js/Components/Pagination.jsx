@@ -120,7 +120,7 @@ export default function Pagination({ children, data, only = null, queryField = n
                         <Button color={200} onClick={() => ModalRef.current?.close()}>Cancel</Button>
                     </Modal.Footer>
                 </Modal>
-                <MagnifyingGlassIcon className="absolute w-6 h-6 cursor-pointer" onClick={() => ModalRef.current?.open()}/>
+                <MagnifyingGlassIcon className={"absolute w-6 h-6 cursor-pointer transition duration-300 hover:-translate-y-1 " + (currentSearch?.length > 0 ? 'animate-bounce' : '')} onClick={() => ModalRef.current?.open()}/>
             </div>}
 
             <Link href={data.first_page_url} disabled={first() === 1} className="flex items-center justify-center w-10 h-10 transition duration-300 hover:-translate-y-1">

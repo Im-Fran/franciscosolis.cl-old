@@ -3,14 +3,16 @@ import toast from "react-hot-toast";
 
 // Handles the image size of the given url. This will allow us to show smaller/larger images and support all the 3rd party image providers.
 export const handleImageSize = (url, size) => {
-    // Check if is from gravatar
-    const urlObj = new URL(url)
-    if (urlObj.hostname === 'www.gravatar.com') {
-        urlObj.searchParams.set("s", size);
-        return urlObj.toString();
-    } else {
-        return url;
-    }
+    try {
+        // Check if is from gravatar
+        const urlObj = new URL(url)
+        if (urlObj.hostname === 'www.gravatar.com') {
+            urlObj.searchParams.set("s", size);
+            return urlObj.toString();
+        }
+    } catch(e) {}
+
+    return url;
 }
 
 // Handles the onChange event for the input types
@@ -64,4 +66,12 @@ export const uuidv4 = () => {
 
 export const isString = (value) => {
     return typeof value === 'string' || value instanceof String;
+}
+
+export const copyToClipboard = (text) => {
+    window.dispatchEvent(new CustomEvent('clipboard-copy', { detail: { text } } ));
+}
+
+export const obfuscateText = (text) => {
+    return (text || '').replace(/./g, '*');
 }

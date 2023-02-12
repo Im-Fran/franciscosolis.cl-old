@@ -9,10 +9,15 @@ use App\Traits\HasProfilePhoto;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use PragmaRX\Google2FA\Exceptions\IncompatibleWithGoogleAuthenticatorException;
+use PragmaRX\Google2FA\Exceptions\InvalidCharactersException;
+use PragmaRX\Google2FA\Exceptions\SecretKeyTooShortException;
+use Psr\SimpleCache\InvalidArgumentException;
 use Silber\Bouncer\Database\HasRolesAndAbilities;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
@@ -82,22 +87,20 @@ class User extends Authenticatable implements MustVerifyEmail {
 
     protected static function booted() {
         // Ensure that the user has a settings attribute and it's has all the keys.
-        static::creating(function(User $user) {
-            $user->settings = array_merge(UserSettings::$defaultSettings, $user->settings ?: []);
-        });
-
-        static::updating(function(User $user) {
-            $user->settings = array_merge(UserSettings::$defaultSettings, $user->settings ?: []);
-        });
-
-        static::saving(function(User $user) {
-            $user->settings = array_merge(UserSettings::$defaultSettings, $user->settings ?: []);
+        static::created(function(User $user) {
+            $user->update([
+                'settings' => array_merge(UserSettings::$defaultSettings, $user->settings ?: []),
+            ]);
         });
 
         static::retrieved(function(User $user) {
-            $user->settings = array_merge(UserSettings::$defaultSettings, $user->settings ?: []);
+            $user->update([
+                'settings' => array_merge(UserSettings::$defaultSettings, $user->settings ?: []),
+            ]);
         });
     }
+
+    // Attributes
 
     public function getSlugOptions(): SlugOptions {
         return SlugOptions::create()
@@ -109,7 +112,7 @@ class User extends Authenticatable implements MustVerifyEmail {
         return "User.{$this->id}";
     }
 
-    public function getTwoFactorEnabledAttribute() {
+    public function getTwoFactorEnabledAttribute(): bool {
         return !is_null($this->two_factor_secret) && !is_null($this->two_factor_verified_at);
     }
 
@@ -128,7 +131,7 @@ class User extends Authenticatable implements MustVerifyEmail {
     /**
      * Interact with the user's two-factor recovery codes.
      *
-     * @return null|array|Attribute
+     * @return Attribute
      */
     protected function twoFactorRecoveryCodes(): Attribute {
         return new Attribute(
@@ -137,10 +140,52 @@ class User extends Authenticatable implements MustVerifyEmail {
         );
     }
 
+    /* Check if the user is online (in the last 5 minutes) */
+    public function getIsOnlineAttribute(): bool {
+        if ($this->settings['activity.public']) {
+            return $this->last_activity_at?->gt(now()->subMinutes(5)) ?: false;
+        }
+
+        return false;
+    }
+
+    /* Gets the Api Keys of this user */
+    public function apiKeys(): HasMany {
+        return $this->hasMany(ApiKey::class);
+    }
+
+    // Actions
+
+    /* Updates the given settings */
+    public function updateSettings(array $settings) {
+        $newSettings = $this->settings;
+        foreach ($settings as $key => $value) {
+            if (isset(UserSettings::$defaultSettings[$key])) {
+                $newSettings[$key] = $value ?: UserSettings::$defaultSettings[$key];
+            }
+        }
+        $this->update(['settings' => $newSettings]);
+    }
+
+    /* Updates the given setting */
+    public function updateSetting($key, $value = null) {
+        if (UserSettings::$defaultSettings[$key]) {
+            $this->settings[$key] = $value ?: UserSettings::$defaultSettings[$key];
+            $this->save();
+        }
+    }
+
     /**
      * Validate the given two-factor authentication code.
      *
      * @param string $input
+     *
+     * @throws IncompatibleWithGoogleAuthenticatorException
+     * @throws InvalidCharactersException
+     * @throws SecretKeyTooShortException
+     * @throws InvalidArgumentException
+     *
+     * @return bool
      */
     public function validate2FA(string $input): bool {
         if (!preg_match('/[0-9]{6}|[A-Za-z0-9]{6}\.[A-Za-z0-9]{4}\.[A-Za-z0-9]{6}\.[A-Za-z0-9]{4}/', $input)) {
@@ -161,33 +206,5 @@ class User extends Authenticatable implements MustVerifyEmail {
         }
 
         return false;
-    }
-
-    /* Check if the user is online (in the last 5 minutes) */
-    public function getIsOnlineAttribute(): bool {
-        if ($this->settings['activity.public']) {
-            return $this->last_activity_at?->gt(now()->subMinutes(5)) ?: false;
-        }
-
-        return false;
-    }
-
-    /* Updates the given settings */
-    public function updateSettings(array $settings) {
-        $newSettings = $this->settings;
-        foreach ($settings as $key => $value) {
-            if (isset(UserSettings::$defaultSettings[$key])) {
-                $newSettings[$key] = $value ?: UserSettings::$defaultSettings[$key];
-            }
-        }
-        $this->update(['settings' => $newSettings]);
-    }
-
-    /* Updates the given setting */
-    public function updateSetting($key, $value = null) {
-        if (UserSettings::$defaultSettings[$key]) {
-            $this->settings[$key] = $value ?: UserSettings::$defaultSettings[$key];
-            $this->save();
-        }
     }
 }

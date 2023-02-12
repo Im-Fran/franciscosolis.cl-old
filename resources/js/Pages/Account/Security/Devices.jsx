@@ -1,18 +1,16 @@
 import { router } from '@inertiajs/react';
 
-import { ComputerDesktopIcon, DevicePhoneMobileIcon } from '@heroicons/react/24/outline';
+import {ArrowRightOnRectangleIcon, ComputerDesktopIcon, DevicePhoneMobileIcon} from '@heroicons/react/24/outline';
 import RelativeTime from "@/js/Components/RelativeTime";
 import AccountLayout from "@/js/Layouts/AccountLayout";
 import Table from '@/js/Components/Table/Table';
 import Column from '@/js/Components/Table/Column';
 import Row from '@/js/Components/Table/Row';
 import RowItem from '@/js/Components/Table/RowItem';
+import Button from "@/js/Components/Button";
 
 export default function Devices({ sessions }) {
-    const logout = (e, session_id) => {
-        e.stopPropagation()
-        e.preventDefault()
-
+    const logout = (session_id) => {
         router.post(route('account.security.access.devices.delete'), {
             _method: 'DELETE',
             session_id: session_id,
@@ -24,18 +22,15 @@ export default function Devices({ sessions }) {
     return (
         <AccountLayout title="Security > Devices">
             <div className="flex flex-col w-full items-start mb-5">
-                <h2 className="text-xl">Devices</h2>
-                <hr className="w-1/4 border-0 border-t-2 border-gray-500 mb-10"/>
-
                 <div className="flex flex-col w-full">
-                    <div className="overflow-x-auto bg-white rounded-lg shadow overflow-y-auto relative">
+                    <div className="overflow-x-auto overflow-y-auto relative">
                         <Table>
                             <Table.Columns>
                                 <Column>Device</Column>
-                                <Column>Last Used</Column>
-                                <Column>IP Address</Column>
+                                <Column sort="last_activity">Last Used</Column>
+                                <Column sort="ip_address">IP Address</Column>
+                                <Column sort="user_agent">Browser</Column>
                                 <Column>Location</Column>
-                                <Column>Browser</Column>
                                 <Column>Actions</Column>
                             </Table.Columns>
                             <Table.Rows>
@@ -51,12 +46,10 @@ export default function Devices({ sessions }) {
                                         </RowItem>
                                         <RowItem><RelativeTime date={session.last_used_at} /></RowItem>
                                         <RowItem>{session.ip_address}</RowItem>
-                                        <RowItem>{session.location}</RowItem>
                                         <RowItem>{session.agent.browser}</RowItem>
+                                        <RowItem>{session.location}</RowItem>
                                         <RowItem>
-                                            <button onClick={(e) => logout(e, session.id)} className="bg-brand-200 bg-opacity-75 hover:bg-opacity-100 text-white font-bold py-2 px-4 rounded">
-                                                Logout
-                                            </button>
+                                            <Button color={200} onClick={() => logout(session.id)}><ArrowRightOnRectangleIcon className="w-6 h-6"/>&nbsp;Log out</Button>
                                         </RowItem>
                                     </Row>
                                 ))}
@@ -68,9 +61,7 @@ export default function Devices({ sessions }) {
                 {/* Log out of all devices but this one */}
                 <div className="flex flex-col w-full items-end mt-10">
                     <div className="flex">
-                        <button onClick={(e) => logout(e, 'all')} className="bg-brand-200 bg-opacity-75 hover:bg-opacity-100 text-white font-bold py-2 px-4 rounded">
-                            Log out of all devices
-                        </button>
+                        <Button color={200} onClick={() => logout('all')} className="flex items-center h-8 my-auto">Log out of all devices</Button>
                     </div>
                 </div>
             </div>

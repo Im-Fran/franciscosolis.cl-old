@@ -6,6 +6,7 @@ import {
     QueueListIcon,
     BellIcon,
     LockClosedIcon,
+    LockOpenIcon,
     ComputerDesktopIcon,
     LinkIcon,
 } from '@heroicons/react/24/outline';
@@ -15,7 +16,7 @@ import Sidebar from "@/js/Components/Sidebar/Sidebar";
 import SidebarLink from "@/js/Components/Sidebar/SidebarLink";
 import SidebarTitle from "@/js/Components/Sidebar/SidebarTitle";
 
-export default function AccountLayout({ children, title, className }) {
+export default function AccountLayout({ children, title, className = '' }) {
     return (
         <App title={title} vertical="top" horizontal="center">
             <Sidebar className="mx-5">
@@ -29,6 +30,7 @@ export default function AccountLayout({ children, title, className }) {
                     <SidebarTitle title="SECURITY" icon={<LockClosedIcon className="w-6 h-6"/>}/>
                     <SidebarLink title="Access" icon={<KeyIcon className="w-6 h-6"/>} href={route('account.security.access')} activeRoute={['account.security.access', 'account.security.access.two-factor-auth.setup']}/>
                     <SidebarLink title="Devices" icon={<ComputerDesktopIcon className="w-6 h-6"/>} href={route('account.security.access.devices')} activeRoute="account.security.access.devices"/>
+                    <SidebarLink title="API Keys" icon={<LockOpenIcon className="w-6 h-6"/>} href={route('account.security.access.api-keys')} activeRoute="account.security.access.api-keys"/>
 
                     <div className="my-5"/>
 

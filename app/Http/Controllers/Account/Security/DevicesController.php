@@ -25,7 +25,7 @@ class DevicesController extends Controller {
             'sessions' => fn () => DB::connection(config('session.connection'))->table(config('session.table', 'session'))
                 ->where('user_id', $request->user()->id)
                 ->whereNotIn('id', Cache::rememberForever("logout-{$user->id}", fn () => collect()))
-                ->orderByDesc('last_activity')
+                ->orderBy($request->input('order', 'last_activity'), $request->input('orderBy', 'desc'))
                 ->get(['id', 'user_agent', 'ip_address', 'last_activity'])
                 ->map(function($session) use ($request) {
                     $agent = $this->createAgent($session);

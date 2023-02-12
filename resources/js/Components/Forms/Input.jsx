@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-export default function Input({ type = 'text', name, value, className, autoComplete, required, isFocused = false, handleChange, handleBlur, handleClick, placeholder, pattern, readOnly, hidden = false }) {
+export default function Input({ type = 'text', name, value, className, autoComplete, required, isFocused = false, handleChange, handleBlur, handleClick, handleFocus, placeholder, pattern, readOnly, hidden = false }) {
     const input = useRef(null);
 
     useEffect(() => {
@@ -28,6 +28,7 @@ export default function Input({ type = 'text', name, value, className, autoCompl
                 onBlur={handleBlur}
                 readOnly={readOnly}
                 onClick={handleClick}
+                onFocus={handleFocus}
             />
         </div>
     );
