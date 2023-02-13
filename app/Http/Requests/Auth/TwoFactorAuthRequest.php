@@ -11,7 +11,7 @@ class TwoFactorAuthRequest extends FormRequest {
      *
      * @return bool
      */
-    public function authorize() {
+    public function authorize(): bool {
         return session()->has('auth.user.id');
     }
 
@@ -20,7 +20,7 @@ class TwoFactorAuthRequest extends FormRequest {
      *
      * @return array<string, mixed>
      */
-    public function rules() {
+    public function rules(): array {
         return [
             'one_time_password' => ['string', 'required', new OneTimePassword()],
         ];

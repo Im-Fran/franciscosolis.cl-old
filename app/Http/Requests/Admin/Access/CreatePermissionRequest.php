@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Admin\Access;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class CreatePermissionRequest extends FormRequest {
     /**
@@ -10,8 +11,8 @@ class CreatePermissionRequest extends FormRequest {
      *
      * @return bool
      */
-    public function authorize() {
-        return \Auth::user()->can('admin.permissions.create');
+    public function authorize(): bool {
+        return Auth::user()->can('admin.permissions.create');
     }
 
     /**
@@ -19,7 +20,7 @@ class CreatePermissionRequest extends FormRequest {
      *
      * @return array<string, mixed>
      */
-    public function rules() {
+    public function rules(): array {
         return [
             'name' => ['required', 'string', 'max:255', 'unique:abilities,name'],
             'title' => ['required', 'string', 'max:255', 'unique:abilities,title'],

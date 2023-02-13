@@ -3,8 +3,8 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Inertia\Middleware;
-use Session;
 use Silber\Bouncer\Database\Ability;
 use Tightenco\Ziggy\Ziggy;
 
@@ -19,18 +19,18 @@ class HandleInertiaRequests extends Middleware {
     /**
      * Determine the current asset version.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      *
      * @return null|string
      */
-    public function version(Request $request) {
+    public function version(Request $request): ?string {
         return parent::version($request);
     }
 
     /**
      * Define the props that are shared by default.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      *
      * @return array
      */

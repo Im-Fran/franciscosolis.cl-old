@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Admin\Access;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class EditRoleRequest extends FormRequest {
@@ -11,8 +12,8 @@ class EditRoleRequest extends FormRequest {
      *
      * @return bool
      */
-    public function authorize() {
-        return \Auth::user()->can('admin.roles.update');
+    public function authorize(): bool {
+        return Auth::user()->can('admin.roles.update');
     }
 
     /**
@@ -20,7 +21,7 @@ class EditRoleRequest extends FormRequest {
      *
      * @return array<string, mixed>
      */
-    public function rules() {
+    public function rules(): array {
         return [
             'name' => ['required', 'string', 'max:255', Rule::unique('roles', 'name')->ignore($this->role->id)],
             'title' => ['required', 'string', 'max:255', Rule::unique('roles', 'title')->ignore($this->role->id)],

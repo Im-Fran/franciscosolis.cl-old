@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests\Admin\Users;
 
-use Auth;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class EditUserRequest extends FormRequest {
     /**

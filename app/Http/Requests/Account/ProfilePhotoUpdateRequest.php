@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests\Account;
 
-use Auth;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class ProfilePhotoUpdateRequest extends FormRequest {
     /**
@@ -11,7 +11,7 @@ class ProfilePhotoUpdateRequest extends FormRequest {
      *
      * @return bool
      */
-    public function authorize() {
+    public function authorize(): bool {
         return Auth::check();
     }
 
@@ -20,7 +20,7 @@ class ProfilePhotoUpdateRequest extends FormRequest {
      *
      * @return array<string, mixed>
      */
-    public function rules() {
+    public function rules(): array {
         return [
             'profile_photo' => ['required_if:type,file', 'image', 'nullable'],
             'type' => ['string', 'nullable'],

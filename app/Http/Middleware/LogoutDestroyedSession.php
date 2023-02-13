@@ -6,18 +6,20 @@ use Auth;
 use Cache;
 use Closure;
 use DB;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class LogoutDestroyedSession {
     /**
      * Handle an incoming request.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
+     * @param Request $request
+     * @param Closure(Request): (Response|RedirectResponse) $next
      *
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response
+     * @return RedirectResponse|Response
      */
-    public function handle(Request $request, Closure $next) {
+    public function handle(Request $request, Closure $next): Response|RedirectResponse {
         $user = $request->user();
         if (!$user) {
             return $next($request);

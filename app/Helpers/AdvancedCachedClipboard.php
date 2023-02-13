@@ -2,9 +2,9 @@
 
 namespace App\Helpers;
 
-use Cache;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Silber\Bouncer\CachedClipboard;
 
 /* Credits: https://github.com/JosephSilber/bouncer/issues/430#issuecomment-488839014 */

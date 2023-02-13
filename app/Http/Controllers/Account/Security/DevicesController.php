@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Account\Security;
 
 use App\Http\Controllers\Controller;
 use App\Models\IpLocation;
-use Cache;
 use Carbon\Carbon;
-use DB;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Inertia\Response;
 use Inertia\ResponseFactory;
 use Jenssegers\Agent\Agent;
@@ -23,7 +23,7 @@ class DevicesController extends Controller {
                 ['name' => 'og:description', 'content' => 'Manage your devices'],
             ],
             'sessions' => fn () => DB::connection(config('session.connection'))->table(config('session.table', 'session'))
-                ->where('user_id', $request->user()->id)
+                ->where('user_id', $user->id)
                 ->whereNotIn('id', Cache::rememberForever("logout-{$user->id}", fn () => collect()))
                 ->orderBy($request->input('order', 'last_activity'), $request->input('orderBy', 'desc'))
                 ->get(['id', 'user_agent', 'ip_address', 'last_activity'])
@@ -48,7 +48,7 @@ class DevicesController extends Controller {
 
     public function destroy(Request $request): RedirectResponse {
         $user = $request->user();
-        $sessionId = $request->session_id;
+        $sessionId = $request->input('session_id');
 
         if ($sessionId === 'all') {
             $logouts = Cache::rememberForever("logout-{$user->id}", fn () => collect());
