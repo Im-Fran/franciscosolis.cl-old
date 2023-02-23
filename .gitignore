@@ -41,3 +41,5 @@ laravel-echo-server.lock
 
 # Yarn Integrity file
 .yarn-integrity
+rr
+.rr.yaml
