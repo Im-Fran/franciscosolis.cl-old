@@ -8,7 +8,7 @@ return new class() extends Migration {
     /**
      * Run the migrations.
      */
-    public function up() {
+    public function up(): void {
         Schema::create('ip_locations', function(Blueprint $table) {
             $table->text('id')->unique()->primary();
             $table->text('ip_address');
@@ -20,7 +20,7 @@ return new class() extends Migration {
     /**
      * Reverse the migrations.
      */
-    public function down() {
+    public function down(): void {
         Schema::dropIfExists('ip_locations');
     }
 };

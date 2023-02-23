@@ -1,7 +1,3 @@
-/* Load lodash */
-import _ from 'lodash';
-window._ = _;
-
 /* Load XSRF Token */
 import axios from 'axios';
 window.axios = axios;

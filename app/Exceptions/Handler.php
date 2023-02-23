@@ -50,12 +50,12 @@ class Handler extends ExceptionHandler {
     /**
      * Register the exception handling callbacks for the application.
      */
-    public function register() {
+    public function register(): void {
         $this->renderable(function(HttpExceptionInterface $e, Request $request) {
             $code = $e->getStatusCode();
             if ($code === 419) {
                 return back()->withErrors(['error' => 'Sorry but it looks like your session has expired. Please try again.']);
-            } elseif (!app()->isProduction() && in_array($code, array_keys($this->errorMessages))) {
+            } else {
                 $headers = $request->headers;
                 $headers->add($e->getHeaders());
                 $data = [
@@ -65,7 +65,7 @@ class Handler extends ExceptionHandler {
                         'host' => gethostname(),
                         'timestamp' => Carbon::now()->format('m/d/Y H:i:s'),
                         'code' => $code,
-                        'message' => $e->getMessage() ?: $this->errorMessages[$code],
+                        'message' => app()->isProduction() ? $this->errorMessages[$code] : $e->getMessage(),
                     ],
                 ];
 

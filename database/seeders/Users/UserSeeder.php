@@ -9,7 +9,7 @@ class UserSeeder extends Seeder {
     /**
      * Run the database seeds.
      */
-    public function run() {
+    public function run(): void {
         User::factory(500)->create();
     }
 }

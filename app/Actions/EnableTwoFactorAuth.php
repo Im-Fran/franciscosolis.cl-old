@@ -10,6 +10,7 @@ use PragmaRX\Google2FA\Exceptions\InvalidCharactersException;
 use PragmaRX\Google2FA\Exceptions\SecretKeyTooShortException;
 
 class EnableTwoFactorAuth {
+	
     /**
      * The two-factor authentication provider.
      *
@@ -38,9 +39,7 @@ class EnableTwoFactorAuth {
     public function __invoke(mixed $user): void {
         $user->update([
             'two_factor_secret' => $this->provider->generateSecretKey(),
-            'two_factor_recovery_codes' => Collection::times(8, function() {
-                return Helpers::generateRecoveryCode();
-            })->all(),
+            'two_factor_recovery_codes' => Collection::times(8, fn() => Helpers::generateRecoveryCode())->all(),
         ]);
     }
 }

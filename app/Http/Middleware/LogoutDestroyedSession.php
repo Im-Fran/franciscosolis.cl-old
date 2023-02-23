@@ -6,20 +6,19 @@ use Auth;
 use Cache;
 use Closure;
 use DB;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\Response;
 
 class LogoutDestroyedSession {
-    /**
-     * Handle an incoming request.
-     *
-     * @param Request $request
-     * @param Closure(Request): (Response|RedirectResponse) $next
-     *
-     * @return RedirectResponse|Response
-     */
-    public function handle(Request $request, Closure $next): Response|RedirectResponse {
+	/**
+	 * Handle an incoming request.
+	 *
+	 * @param Request $request
+	 * @param Closure $next
+	 *
+	 * @return Response
+	 */
+    public function handle(Request $request, Closure $next): Response {
         $user = $request->user();
         if (!$user) {
             return $next($request);

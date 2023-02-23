@@ -7,18 +7,13 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class Authenticate extends Middleware {
-    /**
-     * Get the path the user should be redirected to when they are not authenticated.
-     *
-     * @param Request $request
-     *
-     * @return null|JsonResponse|string
-     */
-    protected function redirectTo($request): JsonResponse|string|null {
-        if ($request->expectsJson()) {
-            return response()->json(['message' => 'Authentication is required to continue.'], 401);
-        }
-
-        return route('login');
+	/**
+	 * Get the path the user should be redirected to when they are not authenticated.
+	 *
+	 * @param Request $request
+	 * @return string|null
+	 */
+    protected function redirectTo(Request $request): ?string {
+        return $request->expectsJson() ? null : route('login');
     }
 }

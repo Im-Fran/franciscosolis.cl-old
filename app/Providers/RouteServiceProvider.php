@@ -25,7 +25,7 @@ class RouteServiceProvider extends ServiceProvider {
     /**
      * Define your route model bindings, pattern filters, and other route configuration.
      */
-    public function boot() {
+    public function boot(): void {
         $this->configureRateLimiting();
         $this->configureAliases();
 
@@ -42,7 +42,7 @@ class RouteServiceProvider extends ServiceProvider {
     /**
      * Configure the rate limiters for the application.
      */
-    protected function configureRateLimiting() {
+    protected function configureRateLimiting(): void {
         RateLimiter::for('api', function(Request $request) {
             $id = optional($request->user())->id ?: $request->ip();
 
@@ -55,7 +55,7 @@ class RouteServiceProvider extends ServiceProvider {
      *
      * @noinspection PhpMethodParametersCountMismatchInspection
      */
-    protected function configureAliases() {
+    protected function configureAliases(): void {
         Route::bind('user', fn ($value) => User::withTrashed(strpos(request()->route()->uri, 'admin/') == 0)->whereRaw('LOWER(slug) = ?', [is_string($value) ? strtolower($value) : ''])->firstOrFail());
         Route::bind('ability', fn ($value) => Ability::query()->whereRaw('LOWER(name) = ?', [is_string($value) ? strtolower($value) : ''])->firstOrFail());
         Route::bind('role', fn ($value) => Role::query()->whereRaw('LOWER(name) = ?', [is_string($value) ? strtolower($value) : ''])->firstOrFail());
