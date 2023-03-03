@@ -10,3 +10,7 @@
 
 	$meta->each(fn($item) => print(isset($item['name']) && $item['name'] === 'og:title' ? "<meta name='og:title' content='{$item['content']} | FranciscoSolis' />" : "<meta " . implode(" ", array_map(fn($key, $value) => "$key='$value'", array_keys($item), $item)) . " />"));
 @endphp
+
+<script>
+    window.csrf_token = '{{ csrf_token() }}';
+</script>

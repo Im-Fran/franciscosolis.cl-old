@@ -98,6 +98,7 @@ class HandleInertiaRequests extends Middleware {
             'utils' => [
                 'global_warning' => 'This is a global warning!',
                 'env' => app()->environment(),
+	            'csrf_token' => csrf_token(),
             ],
             'ziggy' => function() use ($request) {
                 return array_merge((new Ziggy())->toArray(), [

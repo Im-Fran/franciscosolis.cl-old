@@ -9,7 +9,16 @@ import {BellIcon} from "@heroicons/react/24/outline";
 import axios from "axios";
 
 export default function App({ children, title, vertical = "top", horizontal = "left" }) {
-    const { auth, flash } = usePage().props;
+    const { auth, flash, utils } = usePage().props;
+
+    useEffect(() => { // Csrf Updater
+        document.dispatchEvent(new CustomEvent('csrf-update', {
+            detail: {
+                token: utils.csrf_token,
+            }
+        }));
+    }, [utils]);
+
     useEffect(() => {
         flash.forEach(item => {
             const message = markdown.renderInline(item.message)

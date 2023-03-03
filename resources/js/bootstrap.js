@@ -3,13 +3,7 @@ import axios from 'axios';
 window.axios = axios;
 
 window.axios.defaults.withCredentials = import.meta.env.VITE_APP_ENV === 'production';
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-let token = document.head.querySelector('meta[name="csrf-token"]');
-if (token) {
-    window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
-} else {
-    console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
-}
+window.axios.defaults.headers.common['X-CSRF-TOKEN'] = window.csrf_token;
 
 /* Load WebSocket */
 import Echo from 'laravel-echo';
@@ -72,3 +66,25 @@ window.addEventListener('clipboard-copy', e => {
 import MarkdownIt from 'markdown-it';
 
 window.markdown = new MarkdownIt();
+
+/* Token Updater */
+document.addEventListener('csrf-update', e => {
+    window.csrf_token = e.detail.token;
+    window.axios.defaults.headers.common['X-CSRF-TOKEN'] = window.csrf_token;
+    document.head.querySelector('meta[name="csrf-token"]').setAttribute('content', window.csrf_token);
+    document.querySelectorAll('input[name="_token"]').forEach(el => el?.setAttribute('value', window.csrf_token));
+
+    // Now we update every form
+    document.querySelectorAll('form').forEach(form => {
+        // Now we check that there are no input with the name '_token' to avoid duplicates
+        if(!form.querySelector('input[name="_token"]')) {
+            const input = document.createElement('input');
+            input.hidden = true
+            input.type = 'text'
+            input.name = '_token';
+            input.setAttribute('value', window.csrf_token)
+            console.log(input)
+            form.appendChild(input);
+        }
+    });
+})
