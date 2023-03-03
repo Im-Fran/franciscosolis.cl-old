@@ -19,10 +19,6 @@ class LoginNotification extends Notification implements ShouldBroadcast {
 
     /**
      * Create a new notification instance.
-     *
-     * @param string $ip
-     * @param string $device
-     * @param string $location
      */
     public function __construct(string $ip, string $device = 'Unknown Device', string $location = 'Unknown Location') {
         $this->ip = $ip;
@@ -32,10 +28,6 @@ class LoginNotification extends Notification implements ShouldBroadcast {
 
     /**
      * Get the notification's delivery channels.
-     *
-     * @param mixed $notifiable
-     *
-     * @return array
      */
     public function via(mixed $notifiable): array {
         return ['mail', 'database', 'broadcast'];
@@ -43,10 +35,6 @@ class LoginNotification extends Notification implements ShouldBroadcast {
 
     /**
      * Get the mail representation of the notification.
-     *
-     * @param mixed $notifiable
-     *
-     * @return MailMessage
      */
     public function toMail(mixed $notifiable): MailMessage {
         return (new MailMessage())
@@ -60,10 +48,6 @@ class LoginNotification extends Notification implements ShouldBroadcast {
 
     /**
      * Get the array representation of the notification.
-     *
-     * @param mixed $notifiable
-     *
-     * @return array
      */
     public function toArray(mixed $notifiable): array {
         return [
@@ -75,10 +59,6 @@ class LoginNotification extends Notification implements ShouldBroadcast {
 
     /**
      * Get the broadcastable representation of the notification.
-     *
-     * @param mixed $notifiable
-     *
-     * @return BroadcastMessage
      */
     public function toBroadcast(mixed $notifiable): BroadcastMessage {
         return (new BroadcastMessage([

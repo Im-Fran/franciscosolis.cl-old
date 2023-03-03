@@ -23,12 +23,13 @@ class TwoFactorConfirmationTest extends TestCase {
      */
     public function test_2fa(): void {
         $user = User::factory()->create();
-	
-	    try {
-		    app(EnableTwoFactorAuth::class)($user);
-	    } catch(IncompatibleWithGoogleAuthenticatorException|InvalidCharactersException|SecretKeyTooShortException $ignored) {}
-	
-	    $user->update([
+
+        try {
+            app(EnableTwoFactorAuth::class)($user);
+        } catch (IncompatibleWithGoogleAuthenticatorException|InvalidCharactersException|SecretKeyTooShortException $ignored) {
+        }
+
+        $user->update([
             'two_factor_verified_at' => now(),
         ]);
 
@@ -47,12 +48,13 @@ class TwoFactorConfirmationTest extends TestCase {
      */
     public function test_incorrect_2fa(): void {
         $user = User::factory()->create();
-	
-	    try {
-		    app(EnableTwoFactorAuth::class)($user);
-	    } catch(IncompatibleWithGoogleAuthenticatorException|InvalidCharactersException|SecretKeyTooShortException $ignored) {}
-	
-	    $user->update([
+
+        try {
+            app(EnableTwoFactorAuth::class)($user);
+        } catch (IncompatibleWithGoogleAuthenticatorException|InvalidCharactersException|SecretKeyTooShortException $ignored) {
+        }
+
+        $user->update([
             'two_factor_verified_at' => now(),
         ]);
 
@@ -71,12 +73,13 @@ class TwoFactorConfirmationTest extends TestCase {
      */
     public function test_backup_codes(): void {
         $user = User::factory()->create();
-	
-	    try {
-		    app(EnableTwoFactorAuth::class)($user);
-	    } catch(IncompatibleWithGoogleAuthenticatorException|SecretKeyTooShortException|InvalidCharactersException $ignored) {}
-	
-	    $user->update([
+
+        try {
+            app(EnableTwoFactorAuth::class)($user);
+        } catch (IncompatibleWithGoogleAuthenticatorException|SecretKeyTooShortException|InvalidCharactersException $ignored) {
+        }
+
+        $user->update([
             'two_factor_verified_at' => now(),
         ]);
 
@@ -95,12 +98,13 @@ class TwoFactorConfirmationTest extends TestCase {
      */
     public function test_used_backup_codes(): void {
         $user = User::factory()->create();
-	
-	    try {
-		    app(EnableTwoFactorAuth::class)($user);
-	    } catch(IncompatibleWithGoogleAuthenticatorException|InvalidCharactersException|SecretKeyTooShortException $ignored) {}
-	
-	    $user->update([
+
+        try {
+            app(EnableTwoFactorAuth::class)($user);
+        } catch (IncompatibleWithGoogleAuthenticatorException|InvalidCharactersException|SecretKeyTooShortException $ignored) {
+        }
+
+        $user->update([
             'two_factor_verified_at' => now(),
         ]);
 
@@ -133,15 +137,16 @@ class TwoFactorConfirmationTest extends TestCase {
     public function test_backup_codes_from_another_user(): void {
         $user = User::factory()->create();
         $anotherUser = User::factory()->create();
-	
-		$enable2fa = app(EnableTwoFactorAuth::class);
-	    try {
-		    $enable2fa($user);
-		    $enable2fa($anotherUser);
-	    } catch(IncompatibleWithGoogleAuthenticatorException|InvalidCharactersException|SecretKeyTooShortException $ignored) {}
-	
-	
-	    $user->update([
+
+        $enable2fa = app(EnableTwoFactorAuth::class);
+
+        try {
+            $enable2fa($user);
+            $enable2fa($anotherUser);
+        } catch (IncompatibleWithGoogleAuthenticatorException|InvalidCharactersException|SecretKeyTooShortException $ignored) {
+        }
+
+        $user->update([
             'two_factor_verified_at' => now(),
         ]);
 
@@ -160,12 +165,13 @@ class TwoFactorConfirmationTest extends TestCase {
      */
     public function test_non_existent_backup_code(): void {
         $user = User::factory()->create();
-	
-	    try {
-		    app(EnableTwoFactorAuth::class)($user);
-	    } catch(IncompatibleWithGoogleAuthenticatorException|InvalidCharactersException|SecretKeyTooShortException $ignored) {}
-	
-	    $user->update([
+
+        try {
+            app(EnableTwoFactorAuth::class)($user);
+        } catch (IncompatibleWithGoogleAuthenticatorException|InvalidCharactersException|SecretKeyTooShortException $ignored) {
+        }
+
+        $user->update([
             'two_factor_verified_at' => now(),
         ]);
 

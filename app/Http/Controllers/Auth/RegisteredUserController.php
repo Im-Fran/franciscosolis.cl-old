@@ -16,8 +16,6 @@ use Inertia\Response;
 class RegisteredUserController extends Controller {
     /**
      * Display the registration view.
-     *
-     * @return Response
      */
     public function create(): Response {
         return inertia('Auth/Register', [
@@ -30,10 +28,6 @@ class RegisteredUserController extends Controller {
 
     /**
      * Handle an incoming registration request.
-     *
-     * @param Request $request
-     *
-     * @return RedirectResponse
      */
     public function store(Request $request): RedirectResponse {
         $request->validate([

@@ -14,33 +14,21 @@ interface TwoFactorAuthenticationProvider {
      * @throws IncompatibleWithGoogleAuthenticatorException
      * @throws InvalidCharactersException
      * @throws SecretKeyTooShortException
-     *
-     * @return string
      */
     public function generateSecretKey(): string;
 
     /**
      * Get the two-factor authentication QR code URL.
-     *
-     * @param $email
-     * @param string $secret
-     *
-     * @return string
      */
     public function qrCodeUrl($email, string $secret): string;
 
     /**
      * Verify the given token.
      *
-     * @param string $secret
-     * @param string $code
-     *
      * @throws IncompatibleWithGoogleAuthenticatorException
      * @throws InvalidCharactersException
      * @throws SecretKeyTooShortException
      * @throws InvalidArgumentException
-     *
-     * @return bool
      */
     public function verify(string $secret, string $code): bool;
 }

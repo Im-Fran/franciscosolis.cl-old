@@ -7,8 +7,6 @@ use App\Notifications\Account\TwoFactorAuthenticationDisabled;
 class DisableTwoFactorAuth {
     /**
      * Enable two-factor authentication for the user.
-     *
-     * @param mixed $user
      */
     public function __invoke(mixed $user): void {
         if (!is_null($user->two_factor_secret) || !is_null($user->two_factor_recovery)) {

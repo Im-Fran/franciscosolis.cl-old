@@ -9,15 +9,11 @@ use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class RedirectIfAuthenticated {
-	/**
-	 * Handle an incoming request.
-	 *
-	 * @param Request $request
-	 * @param Closure $next
-	 * @param null|string ...$guards
-	 *
-	 * @return Response
-	 */
+    /**
+     * Handle an incoming request.
+     *
+     * @param null|string ...$guards
+     */
     public function handle(Request $request, Closure $next, string ...$guards): Response {
         $guards = empty($guards) ? [null] : $guards;
 

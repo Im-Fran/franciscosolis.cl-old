@@ -12,8 +12,6 @@ use Inertia\Response;
 class PasswordResetLinkController extends Controller {
     /**
      * Display the password reset link request view.
-     *
-     * @return Response
      */
     public function create(): Response {
         return inertia('Auth/ForgotPassword', [
@@ -28,11 +26,7 @@ class PasswordResetLinkController extends Controller {
     /**
      * Handle an incoming password reset link request.
      *
-     * @param Request $request
-     *
      * @throws ValidationException
-     *
-     * @return RedirectResponse
      */
     public function store(Request $request): RedirectResponse {
         $request->validate([

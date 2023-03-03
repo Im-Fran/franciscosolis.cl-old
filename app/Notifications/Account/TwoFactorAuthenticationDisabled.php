@@ -19,10 +19,6 @@ class TwoFactorAuthenticationDisabled extends Notification implements ShouldBroa
 
     /**
      * Get the notification's delivery channels.
-     *
-     * @param mixed $notifiable
-     *
-     * @return array
      */
     public function via(mixed $notifiable): array {
         return ['mail', 'database', 'broadcast'];
@@ -30,10 +26,6 @@ class TwoFactorAuthenticationDisabled extends Notification implements ShouldBroa
 
     /**
      * Get the mail representation of the notification.
-     *
-     * @param mixed $notifiable
-     *
-     * @return MailMessage
      */
     public function toMail(mixed $notifiable): MailMessage {
         return (new MailMessage())
@@ -45,10 +37,6 @@ class TwoFactorAuthenticationDisabled extends Notification implements ShouldBroa
 
     /**
      * Get the array representation of the notification.
-     *
-     * @param mixed $notifiable
-     *
-     * @return array
      */
     public function toArray(mixed $notifiable): array {
         return [];
@@ -56,10 +44,6 @@ class TwoFactorAuthenticationDisabled extends Notification implements ShouldBroa
 
     /**
      * Get the broadcastable representation of the notification.
-     *
-     * @param mixed $notifiable
-     *
-     * @return BroadcastMessage
      */
     public function toBroadcast(mixed $notifiable): BroadcastMessage {
         return (new BroadcastMessage([

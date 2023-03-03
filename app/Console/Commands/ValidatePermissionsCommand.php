@@ -22,8 +22,6 @@ class ValidatePermissionsCommand extends Command {
 
     /**
      * Execute the console command.
-     *
-     * @return int
      */
     public function handle(): int {
         $this->info('Validating permissions...');

@@ -9,8 +9,6 @@ use Illuminate\Validation\Rule;
 class EditPermissionRequest extends FormRequest {
     /**
      * Determine if the user is authorized to make this request.
-     *
-     * @return bool
      */
     public function authorize(): bool {
         return Auth::user()->can('admin.permissions.update');

@@ -21,8 +21,7 @@ class AdvancedCachedClipboard extends CachedClipboard {
     /**
      * Get the given authority's abilities.
      *
-     * @param Model $authority
-     * @param bool  $allowed
+     * @param bool $allowed
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
@@ -36,8 +35,6 @@ class AdvancedCachedClipboard extends CachedClipboard {
 
     /**
      * Get the given authority's roles.
-     *
-     * @param Model $authority
      *
      * @return Collection
      */
@@ -69,8 +66,6 @@ class AdvancedCachedClipboard extends CachedClipboard {
 
     /**
      * Clear the cache for the given authority.
-     *
-     * @param Model $authority
      *
      * @return $this
      */

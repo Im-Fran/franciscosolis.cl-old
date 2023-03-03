@@ -12,10 +12,6 @@ use Inertia\ResponseFactory;
 class EmailVerificationPromptController extends Controller {
     /**
      * Display the email verification prompt.
-     *
-     * @param Request $request
-     *
-     * @return RedirectResponse|Response|ResponseFactory
      */
     public function __invoke(Request $request): RedirectResponse|ResponseFactory|Response {
         if ($request->user()->hasVerifiedEmail()) {

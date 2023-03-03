@@ -18,10 +18,6 @@ class EmailVerifiedNotification extends Notification implements ShouldBroadcast 
 
     /**
      * Get the notification's delivery channels.
-     *
-     * @param mixed $notifiable
-     *
-     * @return array
      */
     public function via(mixed $notifiable): array {
         return ['database', 'broadcast'];
@@ -29,10 +25,6 @@ class EmailVerifiedNotification extends Notification implements ShouldBroadcast 
 
     /**
      * Get the array representation of the notification.
-     *
-     * @param mixed $notifiable
-     *
-     * @return array
      */
     public function toArray(mixed $notifiable): array {
         return [

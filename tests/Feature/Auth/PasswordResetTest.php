@@ -20,11 +20,11 @@ class PasswordResetTest extends TestCase {
 
         $response->assertStatus(200);
     }
-	
-	/**
-	 * @throws Exception
-	 */
-	public function test_reset_password_link_can_be_requested(): void {
+
+    /**
+     * @throws Exception
+     */
+    public function test_reset_password_link_can_be_requested(): void {
         Notification::fake();
 
         $user = User::factory()->create();
@@ -33,11 +33,11 @@ class PasswordResetTest extends TestCase {
 
         Notification::assertSentTo($user, ResetPassword::class);
     }
-	
-	/**
-	 * @throws Exception
-	 */
-	public function test_reset_password_screen_can_be_rendered(): void {
+
+    /**
+     * @throws Exception
+     */
+    public function test_reset_password_screen_can_be_rendered(): void {
         Notification::fake();
 
         $user = User::factory()->create();
@@ -52,11 +52,11 @@ class PasswordResetTest extends TestCase {
             return true;
         });
     }
-	
-	/**
-	 * @throws Exception
-	 */
-	public function test_password_can_be_reset_with_valid_token(): void {
+
+    /**
+     * @throws Exception
+     */
+    public function test_password_can_be_reset_with_valid_token(): void {
         Notification::fake();
 
         $user = User::factory()->create();

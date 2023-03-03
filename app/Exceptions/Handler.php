@@ -55,27 +55,26 @@ class Handler extends ExceptionHandler {
             $code = $e->getStatusCode();
             if ($code === 419) {
                 return back()->withErrors(['error' => 'Sorry but it looks like your session has expired. Please try again.']);
-            } else {
-                $headers = $request->headers;
-                $headers->add($e->getHeaders());
-                $data = [
-                    'errors' => new ViewErrorBag(),
-                    'exception' => $e,
-                    'data' => [
-                        'host' => gethostname(),
-                        'timestamp' => Carbon::now()->format('m/d/Y H:i:s'),
-                        'code' => $code,
-                        'message' => app()->isProduction() ? $this->errorMessages[$code] : $e->getMessage(),
-                    ],
-                ];
-
-                $data['meta'] = [
-                    ['name' => 'og:title', 'content' => "Error {$code}"],
-                    ['name' => 'og:description', 'content' => $data['data']['message']],
-                ];
-
-                return inertia('Error', $data)->toResponse($request)->setStatusCode($code)->withHeaders($headers);
             }
+            $headers = $request->headers;
+            $headers->add($e->getHeaders());
+            $data = [
+                'errors' => new ViewErrorBag(),
+                'exception' => $e,
+                'data' => [
+                    'host' => gethostname(),
+                    'timestamp' => Carbon::now()->format('m/d/Y H:i:s'),
+                    'code' => $code,
+                    'message' => app()->isProduction() ? $this->errorMessages[$code] : $e->getMessage(),
+                ],
+            ];
+
+            $data['meta'] = [
+                ['name' => 'og:title', 'content' => "Error {$code}"],
+                ['name' => 'og:description', 'content' => $data['data']['message']],
+            ];
+
+            return inertia('Error', $data)->toResponse($request)->setStatusCode($code)->withHeaders($headers);
         });
     }
 }

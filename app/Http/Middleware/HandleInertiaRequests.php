@@ -18,10 +18,6 @@ class HandleInertiaRequests extends Middleware {
 
     /**
      * Determine the current asset version.
-     *
-     * @param Request $request
-     *
-     * @return null|string
      */
     public function version(Request $request): ?string {
         return parent::version($request);
@@ -29,8 +25,6 @@ class HandleInertiaRequests extends Middleware {
 
     /**
      * Define the props that are shared by default.
-     *
-     * @param Request $request
      *
      * @return array
      */
@@ -98,7 +92,7 @@ class HandleInertiaRequests extends Middleware {
             'utils' => [
                 'global_warning' => 'This is a global warning!',
                 'env' => app()->environment(),
-	            'csrf_token' => csrf_token(),
+                'csrf_token' => csrf_token(),
             ],
             'ziggy' => function() use ($request) {
                 return array_merge((new Ziggy())->toArray(), [

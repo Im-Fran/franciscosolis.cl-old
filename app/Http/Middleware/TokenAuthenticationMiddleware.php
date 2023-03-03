@@ -15,11 +15,6 @@ use Illuminate\Support\Str;
 class TokenAuthenticationMiddleware {
     /**
      * Handle an incoming request.
-     *
-     * @param Request $request
-     * @param Closure $next
-     *
-     * @return JsonResponse|RedirectResponse|Response
      */
     public function handle(Request $request, Closure $next): Response|RedirectResponse|JsonResponse {
         if (!$request->hasHeader('authorization')) {

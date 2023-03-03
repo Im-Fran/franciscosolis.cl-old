@@ -10,14 +10,9 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class LogoutDestroyedSession {
-	/**
-	 * Handle an incoming request.
-	 *
-	 * @param Request $request
-	 * @param Closure $next
-	 *
-	 * @return Response
-	 */
+    /**
+     * Handle an incoming request.
+     */
     public function handle(Request $request, Closure $next): Response {
         $user = $request->user();
         if (!$user) {

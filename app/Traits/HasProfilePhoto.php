@@ -9,8 +9,6 @@ use Illuminate\Support\Str;
 trait HasProfilePhoto {
     /**
      * Updates the profile photo.
-     *
-     * @param string|UploadedFile $photo
      */
     public function updateProfilePhoto(string|UploadedFile $photo): void {
         tap($this->profile_photo_path, function($previous) use ($photo) {
@@ -50,8 +48,6 @@ trait HasProfilePhoto {
 
     /**
      * Get the URL to the profile photo.
-     *
-     * @return string
      */
     public function getProfilePhotoUrlAttribute(): string {
         if ($this->profile_photo_path && str_starts_with($this->profile_photo_path, 'http')) {
@@ -67,8 +63,6 @@ trait HasProfilePhoto {
 
     /**
      * Get the default profile photo URL if no profile photo has been uploaded.
-     *
-     * @return string
      */
     protected function defaultProfilePhotoUrl(): string {
         $name = urlencode($this->name);
@@ -78,8 +72,6 @@ trait HasProfilePhoto {
 
     /**
      * Get the disk that profile photos should be stored on.
-     *
-     * @return string
      */
     protected function profilePhotoDisk(): string {
         return isset($_ENV['VAPOR_ARTIFACT_NAME']) ? 's3' : config('app.profile_photo_disk', 'public');
