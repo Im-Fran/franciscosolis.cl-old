@@ -1,0 +1,16 @@
+{
+    "configurations": [
+        {
+            "type": "command",
+            "name": "Run PINT",
+            "program": "./vendor/bin/sail",
+            "args": ["pint"],
+        },
+        {
+            "type": "command",
+            "name": "Run PHP Unit",
+            "program": "./vendor/bin/sail",
+            "args": ["test"],
+        },
+    ]
+}

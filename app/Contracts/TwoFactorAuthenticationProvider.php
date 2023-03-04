@@ -19,6 +19,8 @@ interface TwoFactorAuthenticationProvider {
 
     /**
      * Get the two-factor authentication QR code URL.
+     *
+     * @param mixed $email
      */
     public function qrCodeUrl($email, string $secret): string;
 

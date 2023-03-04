@@ -83,7 +83,6 @@ document.addEventListener('csrf-update', e => {
             input.type = 'text'
             input.name = '_token';
             input.setAttribute('value', window.csrf_token)
-            console.log(input)
             form.appendChild(input);
         }
     });

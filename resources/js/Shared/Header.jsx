@@ -107,7 +107,7 @@ export default function Header() {
                                             {utils.env === 'local' && <>
                                                 <hr className="border-gray-200 dark:border-gray-700"/>
                                                 <AccountDropdownItem href={route('admin.dashboard')} method="GET" icon={<UsersIcon className="w-6 h-6"/>} display="Admin Dashboard"/>
-                                                <AccountDropdownItem href={'http://franciscosolis.test:8025/'} icon={<EnvelopeIcon className="w-6 h-6"/>} display="Mailhog Dashboard" inertia={false}/>
+                                                <AccountDropdownItem href={'http://franciscosolis.test:8025/'} icon={<EnvelopeIcon className="w-6 h-6"/>} display="Mailpit Dashboard" inertia={false}/>
                                             </>}
 
 
