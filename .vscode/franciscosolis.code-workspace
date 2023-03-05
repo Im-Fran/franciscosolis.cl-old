@@ -15,8 +15,8 @@
 				"driver": "PostgreSQL",
 				"name": "FranciscoSolis",
 				"database": "franciscosolis",
-				"username": "sail",
-				"password": "password"
+				"username": "franciscosolis",
+				"password": "secret"
 			}
 		]
     }
