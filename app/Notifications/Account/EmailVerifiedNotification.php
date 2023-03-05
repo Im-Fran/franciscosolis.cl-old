@@ -18,29 +18,21 @@ class EmailVerifiedNotification extends Notification implements ShouldBroadcast 
 
     /**
      * Get the notification's delivery channels.
-     *
-     * @param mixed $notifiable
-     *
-     * @return array
      */
-    public function via($notifiable) {
+    public function via(mixed $notifiable): array {
         return ['database', 'broadcast'];
     }
 
     /**
      * Get the array representation of the notification.
-     *
-     * @param mixed $notifiable
-     *
-     * @return array
      */
-    public function toArray($notifiable) {
+    public function toArray(mixed $notifiable): array {
         return [
             'message' => 'Your email has been verified!',
         ];
     }
 
-    public function toBroadcast() {
+    public function toBroadcast(): BroadcastMessage {
         return (new BroadcastMessage([
             'message' => 'Your email has been verified!',
         ]));

@@ -9,7 +9,16 @@ import {BellIcon} from "@heroicons/react/24/outline";
 import axios from "axios";
 
 export default function App({ children, title, vertical = "top", horizontal = "left" }) {
-    const { auth, flash } = usePage().props;
+    const { auth, flash, utils } = usePage().props;
+
+    useEffect(() => { // Csrf Updater
+        document.dispatchEvent(new CustomEvent('csrf-update', {
+            detail: {
+                token: utils.csrf_token,
+            }
+        }));
+    }, [utils]);
+
     useEffect(() => {
         flash.forEach(item => {
             const message = markdown.renderInline(item.message)
@@ -28,7 +37,7 @@ export default function App({ children, title, vertical = "top", horizontal = "l
     useEffect(() => {
         if(auth.user?.settings['activity.public']) {
             const heartbeat = () => { // Send heartbeat every 3 minutes, but try to every minute
-                if(dayjs().diff(dayjs(auth.user?.last_activity_at), 'm') > 3) { // Validate that it's been 3 minutes since last heartbeat
+                if(dayjs().diff(dayjs(auth.user?.last_activity_at), 'm') > 3 || !auth.user?.last_activity_at) { // Validate that it's been 3 minutes since last heartbeat
                     axios.get(route('api.v1.self.heartbeat')).then(() => { // Send heartbeat
                         router.reload({ // Reload page to update last_activity_at
                             only: ['auth'],

@@ -19,12 +19,8 @@ class LoginNotification extends Notification implements ShouldBroadcast {
 
     /**
      * Create a new notification instance.
-     *
-     * @param mixed $ip
-     * @param mixed $device
-     * @param mixed $location
      */
-    public function __construct($ip, $device = 'Unknown Device', $location = 'Unknown Location') {
+    public function __construct(string $ip, string $device = 'Unknown Device', string $location = 'Unknown Location') {
         $this->ip = $ip;
         $this->device = $device;
         $this->location = $location;
@@ -32,23 +28,15 @@ class LoginNotification extends Notification implements ShouldBroadcast {
 
     /**
      * Get the notification's delivery channels.
-     *
-     * @param mixed $notifiable
-     *
-     * @return array
      */
-    public function via($notifiable) {
+    public function via(mixed $notifiable): array {
         return ['mail', 'database', 'broadcast'];
     }
 
     /**
      * Get the mail representation of the notification.
-     *
-     * @param mixed $notifiable
-     *
-     * @return MailMessage
      */
-    public function toMail($notifiable) {
+    public function toMail(mixed $notifiable): MailMessage {
         return (new MailMessage())
             ->subject('New Login Activity')
             ->markdown('mail.account.login', [
@@ -60,12 +48,8 @@ class LoginNotification extends Notification implements ShouldBroadcast {
 
     /**
      * Get the array representation of the notification.
-     *
-     * @param mixed $notifiable
-     *
-     * @return array
      */
-    public function toArray($notifiable) {
+    public function toArray(mixed $notifiable): array {
         return [
             'ip' => $this->ip,
             'device' => $this->device,
@@ -75,10 +59,6 @@ class LoginNotification extends Notification implements ShouldBroadcast {
 
     /**
      * Get the broadcastable representation of the notification.
-     *
-     * @param mixed $notifiable
-     *
-     * @return BroadcastMessage
      */
     public function toBroadcast(mixed $notifiable): BroadcastMessage {
         return (new BroadcastMessage([

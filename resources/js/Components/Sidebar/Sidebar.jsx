@@ -1,12 +1,7 @@
 import { Component as ReactComponent } from 'react'
 
-function Links() {
-    return null;
-}
-
-function Content() {
-    return null;
-}
+const Links = () => null
+const Content = () => null
 
 class Sidebar extends ReactComponent {
     static Links = Links;

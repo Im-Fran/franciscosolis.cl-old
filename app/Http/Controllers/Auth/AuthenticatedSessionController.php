@@ -12,14 +12,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\ValidationException;
-use function inertia;
 use Inertia\Response;
 
 class AuthenticatedSessionController extends Controller {
     /**
      * Display the login view.
-     *
-     * @return Response
      */
     public function create(): Response {
         return inertia('Auth/Login', [
@@ -35,11 +32,7 @@ class AuthenticatedSessionController extends Controller {
     /**
      * Handle an incoming authentication request.
      *
-     * @param LoginRequest $request
-     *
      * @throws ValidationException
-     *
-     * @return RedirectResponse
      */
     public function store(LoginRequest $request): RedirectResponse {
         $user = User::whereEmail($request->email)->first();
@@ -59,10 +52,6 @@ class AuthenticatedSessionController extends Controller {
 
     /**
      * Destroy an authenticated session.
-     *
-     * @param Request $request
-     *
-     * @return RedirectResponse
      */
     public function destroy(Request $request): RedirectResponse {
         Auth::guard('web')->logout();

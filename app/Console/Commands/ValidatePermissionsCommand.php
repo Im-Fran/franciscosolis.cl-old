@@ -22,10 +22,8 @@ class ValidatePermissionsCommand extends Command {
 
     /**
      * Execute the console command.
-     *
-     * @return int
      */
-    public function handle() {
+    public function handle(): int {
         $this->info('Validating permissions...');
         $abilitites = [];
         foreach (config('permissions.permissions') as $permission => $name) {
@@ -50,6 +48,6 @@ class ValidatePermissionsCommand extends Command {
 
         $this->info('Done!');
 
-        return Command::SUCCESS;
+        return self::SUCCESS;
     }
 }

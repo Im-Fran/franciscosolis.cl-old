@@ -4,10 +4,11 @@ namespace App\Http\Controllers\API\v1\Self;
 
 use App\Events\HeartbeatEvent;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class HeartbeatController extends Controller {
-    public function __invoke(Request $request) {
+    public function __invoke(Request $request): JsonResponse {
         $user = $request->user();
         if (!$user->settings['activity.public']) {
             return response()->json([

@@ -6,14 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Account\Security\CreateApiKeyRequest;
 use App\Http\Requests\Account\Security\UpdateApiKeyRequest;
 use App\Models\ApiKey;
-use Auth;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Inertia\Response;
 use Inertia\ResponseFactory;
 use Silber\Bouncer\Database\Ability;
 use Silber\Bouncer\Database\Role;
-use Str;
 
 class ApiKeysController extends Controller {
     /* Get the list of API Keys */

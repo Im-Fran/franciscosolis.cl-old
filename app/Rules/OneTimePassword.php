@@ -8,9 +8,9 @@ class OneTimePassword implements InvokableRule {
     /**
      * Run the validation rule.
      *
-     * @param string $attribute
-     * @param mixed  $value
-     * @param  \Closure(string): \Illuminate\Translation\PotentiallyTranslatedString  $fail
+     * @param string                                                                $attribute
+     * @param mixed                                                                 $value
+     * @param \Closure(string): \Illuminate\Translation\PotentiallyTranslatedString $fail
      */
     public function __invoke($attribute, $value, $fail) {
         if (!preg_match('/[0-9]{6}|[A-Za-z0-9]{6}\.[A-Za-z0-9]{4}\.[A-Za-z0-9]{6}\.[A-Za-z0-9]{4}/', $value)) {

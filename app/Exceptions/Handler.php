@@ -50,32 +50,31 @@ class Handler extends ExceptionHandler {
     /**
      * Register the exception handling callbacks for the application.
      */
-    public function register() {
+    public function register(): void {
         $this->renderable(function(HttpExceptionInterface $e, Request $request) {
             $code = $e->getStatusCode();
             if ($code === 419) {
                 return back()->withErrors(['error' => 'Sorry but it looks like your session has expired. Please try again.']);
-            } elseif (!app()->isProduction() && in_array($code, array_keys($this->errorMessages))) {
-                $headers = $request->headers;
-                $headers->add($e->getHeaders());
-                $data = [
-                    'errors' => new ViewErrorBag(),
-                    'exception' => $e,
-                    'data' => [
-                        'host' => gethostname(),
-                        'timestamp' => Carbon::now()->format('m/d/Y H:i:s'),
-                        'code' => $code,
-                        'message' => $e->getMessage() ?: $this->errorMessages[$code],
-                    ],
-                ];
-
-                $data['meta'] = [
-                    ['name' => 'og:title', 'content' => "Error {$code}"],
-                    ['name' => 'og:description', 'content' => $data['data']['message']],
-                ];
-
-                return inertia('Error', $data)->toResponse($request)->setStatusCode($code)->withHeaders($headers);
             }
+            $headers = $request->headers;
+            $headers->add($e->getHeaders());
+            $data = [
+                'errors' => new ViewErrorBag(),
+                'exception' => $e,
+                'data' => [
+                    'host' => gethostname(),
+                    'timestamp' => Carbon::now()->format('m/d/Y H:i:s'),
+                    'code' => $code,
+                    'message' => app()->isProduction() ? $this->errorMessages[$code] : $e->getMessage(),
+                ],
+            ];
+
+            $data['meta'] = [
+                ['name' => 'og:title', 'content' => "Error {$code}"],
+                ['name' => 'og:description', 'content' => $data['data']['message']],
+            ];
+
+            return inertia('Error', $data)->toResponse($request)->setStatusCode($code)->withHeaders($headers);
         });
     }
 }

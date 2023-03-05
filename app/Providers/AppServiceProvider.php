@@ -13,7 +13,7 @@ class AppServiceProvider extends ServiceProvider {
     /**
      * Register any application services.
      */
-    public function register() {
+    public function register(): void {
         if (app()->isLocal()) {
             app()->register(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
         }
@@ -28,7 +28,7 @@ class AppServiceProvider extends ServiceProvider {
     /**
      * Bootstrap any application services.
      */
-    public function boot() {
+    public function boot(): void {
         Bouncer::setClipboard(new AdvancedCachedClipboard());
     }
 }

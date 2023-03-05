@@ -8,9 +8,9 @@ use App\Contracts\TwoFactorAuthenticationProvider;
 use App\Helpers\Helpers;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Account\Security\PasswordUpdateRequest;
-use Hash;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Inertia\Response;
 use Inertia\ResponseFactory;
 use PragmaRX\Google2FA\Exceptions\IncompatibleWithGoogleAuthenticatorException;
@@ -31,7 +31,7 @@ class AccessController extends Controller {
     /* Updates the current password to the given one */
     public function updatePassword(PasswordUpdateRequest $request): RedirectResponse {
         $request->user()->update([
-            'password' => Hash::make($request->password),
+            'password' => Hash::make($request->input('password')),
         ]);
 
         return back();
@@ -87,7 +87,7 @@ class AccessController extends Controller {
     public function validateTwoFactor(Request $request): RedirectResponse {
         $user = $request->user();
 
-        if ($user->validate2FA($request->one_time_password)) {
+        if ($user->validate2FA($request->input('one_time_password'))) {
             if ($user->two_factor_verified_at == null) {
                 $user->update([
                     'two_factor_verified_at' => now(),

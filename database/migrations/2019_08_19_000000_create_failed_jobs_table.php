@@ -8,7 +8,7 @@ return new class() extends Migration {
     /**
      * Run the migrations.
      */
-    public function up() {
+    public function up(): void {
         Schema::create('failed_jobs', function(Blueprint $table) {
             $table->id();
             $table->string('uuid')->unique();
@@ -23,7 +23,7 @@ return new class() extends Migration {
     /**
      * Reverse the migrations.
      */
-    public function down() {
+    public function down(): void {
         Schema::dropIfExists('failed_jobs');
     }
 };

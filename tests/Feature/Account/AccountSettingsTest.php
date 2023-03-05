@@ -15,7 +15,7 @@ class AccountSettingsTest extends TestCase {
     /**
      * Test gravatar usage.
      */
-    public function test_gravatar_usage() {
+    public function test_gravatar_usage(): void {
         $user = User::factory()->create();
 
         // Visit account settings
@@ -32,7 +32,7 @@ class AccountSettingsTest extends TestCase {
     /**
      * Test name change.
      */
-    public function test_name_change() {
+    public function test_name_change(): void {
         $user = User::factory()->create();
 
         // Visit account settings
@@ -50,7 +50,7 @@ class AccountSettingsTest extends TestCase {
     /**
      * Test email change.
      */
-    public function test_email_change() {
+    public function test_email_change(): void {
         $user = User::factory()->create();
 
         // Visit account settings
@@ -69,7 +69,7 @@ class AccountSettingsTest extends TestCase {
     /**
      * Test gravatar email change.
      */
-    public function test_gravatar_email_change() {
+    public function test_gravatar_email_change(): void {
         $user = User::factory()->create();
 
         // Visit account settings

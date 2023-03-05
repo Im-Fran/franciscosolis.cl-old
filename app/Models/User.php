@@ -118,8 +118,6 @@ class User extends Authenticatable implements MustVerifyEmail {
 
     /**
      * Interact with the user's two-factor secret.
-     *
-     * @return Attribute
      */
     protected function twoFactorSecret(): Attribute {
         return new Attribute(
@@ -130,8 +128,6 @@ class User extends Authenticatable implements MustVerifyEmail {
 
     /**
      * Interact with the user's two-factor recovery codes.
-     *
-     * @return Attribute
      */
     protected function twoFactorRecoveryCodes(): Attribute {
         return new Attribute(
@@ -178,14 +174,10 @@ class User extends Authenticatable implements MustVerifyEmail {
     /**
      * Validate the given two-factor authentication code.
      *
-     * @param string $input
-     *
      * @throws IncompatibleWithGoogleAuthenticatorException
      * @throws InvalidCharactersException
      * @throws SecretKeyTooShortException
      * @throws InvalidArgumentException
-     *
-     * @return bool
      */
     public function validate2FA(string $input): bool {
         if (!preg_match('/[0-9]{6}|[A-Za-z0-9]{6}\.[A-Za-z0-9]{4}\.[A-Za-z0-9]{6}\.[A-Za-z0-9]{4}/', $input)) {

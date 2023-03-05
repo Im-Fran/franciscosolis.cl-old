@@ -13,23 +13,16 @@ use Psr\SimpleCache\InvalidArgumentException;
 class TwoFactorAuthProvider {
     /**
      * The underlying library providing two-factor authentication helper services.
-     *
-     * @var Google2FA
      */
     protected Google2FA $engine;
 
     /**
      * The cache repository implementation.
-     *
-     * @var null|Repository
      */
     protected ?Repository $cache;
 
     /**
      * Create a new two-factor authentication provider instance.
-     *
-     * @param Google2FA       $engine
-     * @param null|Repository $cache
      */
     public function __construct(Google2FA $engine, ?Repository $cache = null) {
         $this->engine = $engine;
@@ -45,8 +38,6 @@ class TwoFactorAuthProvider {
      * @throws IncompatibleWithGoogleAuthenticatorException
      * @throws InvalidCharactersException
      * @throws SecretKeyTooShortException
-     *
-     * @return string
      */
     public function generateSecretKey(): string {
         return $this->engine->generateSecretKey();
@@ -54,11 +45,6 @@ class TwoFactorAuthProvider {
 
     /**
      * Get the two-factor authentication QR code URL.
-     *
-     * @param string $email
-     * @param string $secret
-     *
-     * @return string
      */
     public function qrCodeUrl(string $email, string $secret): string {
         return $this->engine->getQRCodeUrl(config('app.name'), $email, $secret);
@@ -67,15 +53,10 @@ class TwoFactorAuthProvider {
     /**
      * Verify the given code.
      *
-     * @param string $secret
-     * @param string $code
-     *
      * @throws IncompatibleWithGoogleAuthenticatorException
      * @throws InvalidCharactersException
      * @throws SecretKeyTooShortException
      * @throws InvalidArgumentException
-     *
-     * @return bool
      */
     public function verify(string $secret, string $code): bool {
         $this->engine->setWindow(1); // A code lasts 60 seconds
@@ -101,10 +82,6 @@ class TwoFactorAuthProvider {
 
     /**
      * Gets the current OTP for the given secret.
-     *
-     * @param string $secret
-     *
-     * @return string
      */
     public function getCurrentOtp(string $secret): string {
         return $this->engine->getCurrentOtp($secret);
