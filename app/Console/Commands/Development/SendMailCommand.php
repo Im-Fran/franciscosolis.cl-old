@@ -4,10 +4,8 @@ namespace App\Console\Commands\Development;
 
 use App\Models\User;
 use Illuminate\Console\Command;
-use Str;
 
-class SendMailCommand extends Command
-{
+class SendMailCommand extends Command {
     /**
      * The name and signature of the console command.
      *
@@ -34,9 +32,9 @@ class SendMailCommand extends Command
         $ref = new \ReflectionClass($class);
         $constructor = $ref->getConstructor();
         $params = $constructor->getParameters();
-        if($this->option('args') == null || collect($params)->filter(fn ($it) => !$it->isOptional())->count() != sizeof(explode(';', $this->option('args')))) {
+        if ($this->option('args') == null || collect($params)->filter(fn ($it) => !$it->isOptional())->count() != count(explode(';', $this->option('args')))) {
             $args = [];
-            foreach($params as $param) {
+            foreach ($params as $param) {
                 $args[$param->getPosition()] = $this->ask("Please input the value for \${$param->getName()} ({$param->getType()})", $param->isOptional() ? $param->getDefaultValue() : null);
             }
         } else {
@@ -47,8 +45,9 @@ class SendMailCommand extends Command
 
         $user = User::whereRaw('id = ? OR name = ?', [$this->option('user'), $this->option('user')])->first();
 
-        if($user === null) {
+        if ($user === null) {
             $this->error('Could not find user with the given ID/Name');
+
             return;
         }
 
