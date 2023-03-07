@@ -18,18 +18,21 @@ use PragmaRX\Google2FA\Exceptions\IncompatibleWithGoogleAuthenticatorException;
 use PragmaRX\Google2FA\Exceptions\InvalidCharactersException;
 use PragmaRX\Google2FA\Exceptions\SecretKeyTooShortException;
 use Psr\SimpleCache\InvalidArgumentException;
+use Qirolab\Laravel\Reactions\Contracts\ReactsInterface;
+use Qirolab\Laravel\Reactions\Traits\Reacts;
 use Silber\Bouncer\Database\HasRolesAndAbilities;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
-class User extends Authenticatable implements MustVerifyEmail {
+class User extends Authenticatable implements MustVerifyEmail, ReactsInterface {
     use HasFactory,
         HasSlug,
         HasApiTokens,
         Notifiable,
         HasProfilePhoto,
         HasRolesAndAbilities,
-        SoftDeletes;
+        SoftDeletes,
+        Reacts;
 
     /**
      * The attributes that are mass assignable.

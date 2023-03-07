@@ -209,7 +209,7 @@ export default function Settings() {
                     <div className="flex mb-5">
                         <button type="button" onClick={() => onClickEditProfilePhoto()} onMouseEnter={onProfilePhotoMouseEnter} onMouseLeave={onProfilePhotoMouseLeave} className="block flex-grow-0 flex-shrink-0 relative w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden bg-none box-border cursor-pointer">
                             <UserProfilePicture showStatus={false} user={auth.user} id="profilePhotoImage" sizeClass="w-24 h-24 md:w-32 md:h-32" size={128}/>
-                            <div id="profilePhotoEdit" className={"absolute text-center text-xs md:text-base bg-gray-500 bg-opacity-50 transition-all ease-in-out duration-200 left-0 right-0 bottom-0 " + (profilePhotoState === 'Edit' ? 'h-0' : 'h-1/4')}>
+                            <div id="profilePhotoEdit" className={"z-30 absolute text-center text-xs md:text-base bg-gray-500 bg-opacity-50 transition-all ease-in-out duration-200 left-0 right-0 bottom-0 " + (profilePhotoState === 'Edit' ? 'h-0' : 'h-1/4')}>
                                 {profilePhotoState}
                             </div>
                         </button>
