@@ -23,7 +23,7 @@ export default function Foot(props) {
                     <div className="md:col-span-1flex flex-col justify-start items-start">
                         <h1 className="text-white text-xl font-bold md:text-2xl">Community</h1>
                         <ul className="list-disc list-inside">
-                            <li><AnimatedLink href="#" className="">Forum</AnimatedLink></li>
+                            <li><AnimatedLink href="#" className="">Discussions</AnimatedLink></li>
                             <li><AnimatedLink href="#" className="">Discord</AnimatedLink></li>
                         </ul>
                     </div>
