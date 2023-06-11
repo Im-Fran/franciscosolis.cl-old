@@ -29,6 +29,6 @@ class AppServiceProvider extends ServiceProvider {
      * Bootstrap any application services.
      */
     public function boot(): void {
-        Bouncer::setClipboard(new AdvancedCachedClipboard());
+        Bouncer::cache();
     }
 }

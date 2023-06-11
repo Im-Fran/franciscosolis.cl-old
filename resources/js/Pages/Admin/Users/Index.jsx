@@ -8,6 +8,7 @@ import AdminLayout from "@/js/Layouts/AdminLayout";
 import Button from "@/js/Components/Button";
 import {ArrowPathRoundedSquareIcon, CheckIcon, PencilSquareIcon, TrashIcon, XMarkIcon} from "@heroicons/react/24/outline";
 import {router} from "@inertiajs/react";
+import DynamicDate from "@/js/Components/DynamicDate";
 
 export default function Index({ users }) {
     return (
@@ -18,6 +19,7 @@ export default function Index({ users }) {
                     <Column sort="name">Name</Column>
                     <Column sort="email">Email</Column>
                     <Column sort="email_verified_at">Verified</Column>
+                    <Column sort="created_at">Registered</Column>
                     <Column sort="deleted_at">Deleted</Column>
                     <Column>Actions</Column>
                 </Table.Columns>
@@ -26,15 +28,20 @@ export default function Index({ users }) {
                         <Row key={user.id}>
                             <RowItem>#{user.id}</RowItem>
                             <RowItem>
-                                <div className="flex flex-row items-center my-auto gap-2">
-                                    <UserProfilePicture user={user}/>
-                                    <span>{user.name}</span>
+                                <div className="inline-grid grid-cols-5 items-center gap-2">
+                                    <UserProfilePicture user={user} />
+                                    <span className={"col-span-4 whitespace-nowrap overflow-scroll min-w-fit"}>
+                                        {user.name}
+                                    </span>
                                 </div>
                             </RowItem>
                             <RowItem>{user.email}</RowItem>
                             <RowItem>
                                 {user.email_verified_at && <CheckIcon className="w-5 h-5 text-green-500"/>}
                                 {!user.email_verified_at && <XMarkIcon className="w-5 h-5 text-red-500"/>}
+                            </RowItem>
+                            <RowItem>
+                                <DynamicDate date={user.created_at}/>
                             </RowItem>
                             <RowItem>
                                 {user.deleted_at && <CheckIcon className="w-5 h-5 text-green-500"/>}

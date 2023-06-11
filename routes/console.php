@@ -1,6 +1,8 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Support\Facades\Artisan;
+use Silber\Bouncer\Database\Role;
 use Symfony\Component\Console\Output\BufferedOutput;
 
 /*
@@ -14,28 +16,14 @@ use Symfony\Component\Console\Output\BufferedOutput;
 |
 */
 
-Artisan::command('franciscosolis:ide', function() {
-    $this->info('Generating IDE helpers...');
+Artisan::command('app:assign-roles', function() {
+    $user = User::whereName($this->anticipate('Write the user name', User::pluck('name')->toArray()))->firstOrFail();
 
-    $bar = $this->output->createProgressBar(3);
-    $bar->start();
+    do {
+        $user->assign(Bouncer::role()->where('name', '=', $this->anticipate('Write the role name', Bouncer::role()->pluck('name')->toArray()))->firstOrFail());
 
-    $outputBuffer = new BufferedOutput();
+        $continue = $this->confirm('Do you want to assign another role?');
+    } while ($continue);
 
-    Artisan::call('ide-helper:generate -n', [], $outputBuffer);
-    $bar->advance();
-
-    Artisan::call('ide-helper:models -n --nowrite', [], $outputBuffer); // -q (Quiet), -n (No Interaction), --nowrite (Don't write to Model file)
-    $bar->advance();
-
-    Artisan::call('ide-helper:meta -n', [], $outputBuffer);
-    $bar->advance();
-
-    $bar->finish();
-
-    $this->line('');
-    $this->info('Generated IDE Helpers!');
-    $this->line('');
-
-    $this->line($outputBuffer->fetch());
-})->describe('Generate IDE helpers for the Website.');
+    Bouncer::refreshFor($user);
+})->describe('Assigns the given roles.');

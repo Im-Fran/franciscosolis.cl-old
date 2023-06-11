@@ -89,14 +89,14 @@ class Modal extends Component {
                     }} onExited={() => this.close()}>
                         {state => (
                             <div hidden={hidden}>
-                                <div className={"fixed inset-0 bg-gray-600 bg-opacity-75 dark:bg-opacity-50 transition-opacity " + backgroundBackDropClass[state]}></div>
+                                <div className={"fixed inset-0 bg-black bg-opacity-50 dark:bg-opacity-30 transition-opacity " + backgroundBackDropClass[state]}></div>
                                  <div className={"fixed inset-0 z-10 overflow-y-auto " + modalPanelClass[state]}>
                                     <div className={"flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0"}>
-                                        <div className="relative transform rounded-lg bg-white dark:bg-slate-800 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                                        <div className={"relative backdrop-blur-2xl border border-brand-500 transform rounded-lg text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg"}>
                                             <div className="absolute flex justify-end w-full text-black dark:text-white pr-2 pt-1">
-                                                <XMarkIcon onClick={close} className="w-6 h-6 cursor-pointer"/>
+                                                <XMarkIcon onClick={() => this.close()} className="w-6 h-6 cursor-pointer"/>
                                             </div>
-                                            <div className="bg-white dark:bg-[#333] px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                                            <div className="px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                                                 <div className="sm:flex sm:items-start">
                                                     {icon && icon.props.children || <></>}
                                                     <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
@@ -113,7 +113,7 @@ class Modal extends Component {
                                                     </div>
                                                 </div>
                                             </div>
-                                            {footer && <div className="bg-gray-300 dark:bg-[#1C1C1C] px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 gap-6">
+                                            {footer && <div className="bg-gray-300 dark:bg-[#1C1C1C] px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 gap-6 rounded-b-lg">
                                                 {footer.props.children}
                                             </div>}
                                         </div>

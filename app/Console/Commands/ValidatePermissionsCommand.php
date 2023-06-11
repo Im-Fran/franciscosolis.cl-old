@@ -33,6 +33,8 @@ class ValidatePermissionsCommand extends Command {
             ]);
         }
 
+        $this->info('Created ' . count($abilitites) . ' permissions.');
+
         $this->info('Validating roles...');
         foreach (config('permissions.roles') as $name => $data) {
             $role = Bouncer::role()->firstOrCreate([
@@ -45,6 +47,8 @@ class ValidatePermissionsCommand extends Command {
                 Bouncer::allow($role)->to($abilitites[$permission]);
             }
         }
+
+        $this->info('Created ' . count(config('permissions.roles')) . ' roles.');
 
         $this->info('Done!');
 
